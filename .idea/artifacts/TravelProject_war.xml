@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="TravelProject:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="hadoopweb.war">
+      <element id="artifact" artifact-name="TravelProject:war exploded" />
+    </root>
+  </artifact>
+</component>

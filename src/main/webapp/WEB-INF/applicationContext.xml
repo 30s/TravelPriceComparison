@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+    <beans xmlns="http://www.springframework.org/schema/beans"  
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:hdp="http://www.springframework.org/schema/hadoop"
+   xsi:schemaLocation="  
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  
+    http://www.springframework.org/schema/hadoop http://www.springframework.org/schema/hadoop/spring-hadoop.xsd">
+   <bean id="phoenixDataSource" class="org.apache.commons.dbcp.BasicDataSource">
+       <property name="driverClassName" value="org.apache.phoenix.jdbc.PhoenixDriver"/>
+       <property name="url" value="jdbc:phoenix:master"/>
+       <property name="initialSize" value="15"/>
+       <property name="maxActive" value="0"/>   
+   </bean>
+   
+   <bean id="phoenixJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+       <constructor-arg ref="phoenixDataSource"/>
+       <qualifier value="phoenixJdbcTemplate"/> 
+   </bean>
+
+   <bean id="phoenixTest" class="com.mobin.wordcount.PhoenixHBaseTest">
+      <property name="jdbcTemplate" ref="phoenixJdbcTemplate"></property>
+   </bean>
+
+   
+    <hdp:configuration resources="classpath:/hbase-site.xml" id="hadoopConfiguration"/>
+    <hdp:hbase-configuration configuration-ref="hadoopConfiguration" id="hbaseConfiguration"/>
+    <!-- 配置HbaseTemplate -->  
+    <bean id="htemplate" class="org.springframework.data.hadoop.hbase.HbaseTemplate">  
+        <property name="configuration" ref="hbaseConfiguration"/>  
+    </bean>
+
+    <bean id="travelDao" class="com.mobin.dao.impl.TravelDaoImpl">
+        <property name="jdbcTemplate" ref="phoenixJdbcTemplate"/>
+    </bean>
+
+    <bean id="travelService" class="com.mobin.serviceDao.impl.TravelServiceDaoImpl">
+        <property name="travelDao" ref="travelDao"/>
+    </bean>
+
+    <bean id="travelAction" class="com.mobin.action.TravelAction">
+        <property name="travelServiceDao" ref="travelService"/>
+    </bean>
+
+
+
+    
+
+
+
+ </beans> 
