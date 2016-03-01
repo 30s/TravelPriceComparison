@@ -51,7 +51,7 @@ public class PutDataToHBase {
 	static class HBaseMapper extends Mapper<LongWritable, Text, ImmutableBytesWritable, Put>{
 
 
-		
+		static int i = 0;
 		
 		protected void map(LongWritable key, Text value,
 				Context context)
@@ -71,7 +71,8 @@ public class PutDataToHBase {
 		      put.addColumn(Bytes.toBytes("INFO"),Bytes.toBytes("TRAFFIC"), Bytes.toBytes(values[9]));
 		      put.addColumn(Bytes.toBytes("INFO"),Bytes.toBytes("TRAVELTYPE"), Bytes.toBytes(values[10]));
 		      put.addColumn(Bytes.toBytes("INFO"),Bytes.toBytes("SUPPLIER"), Bytes.toBytes(values[11]));
-		      
+			  put.addColumn(Bytes.toBytes("INFO"),Bytes.toBytes("RECORD"),Bytes.toBytes(++i + ""));
+
 		      context.write(new ImmutableBytesWritable(Bytes.toBytes(rowkey)),put);
 		}
 	}

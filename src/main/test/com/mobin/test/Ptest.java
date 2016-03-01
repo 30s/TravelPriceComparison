@@ -1,5 +1,6 @@
 package com.mobin.test;
 
+import com.mobin.util.CreateTable;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -14,7 +15,7 @@ import java.util.Date;
 public class Ptest {
 	@Test
 	public void ttest(){
-		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContextg.xml");
 		PhoenixHBaseTest phoenixHBaseTest = (PhoenixHBaseTest) context.getBean("phoenixTest");
 		phoenixHBaseTest.query();
 	}
@@ -23,7 +24,7 @@ public class Ptest {
 	public void dao(){
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 	    TravelDao travelDao = (TravelDao) context.getBean("travelDao");
-	    travelDao.query("澳门","黔东南","2015-12-15");
+	 //   travelDao.query("澳门","黔东南","2015-12-15");
 	}
 
 	@Test
@@ -38,6 +39,13 @@ public class Ptest {
 		}
 		System.out.println(date);
 
+	}
+
+	@Test
+	public void createtable(){
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		CreateTable ct = (CreateTable) context.getBean("createtable");
+		ct.createView("2016-02-01","澳门","龙虎山");
 	}
 
 }

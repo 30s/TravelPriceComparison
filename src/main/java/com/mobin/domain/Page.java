@@ -1,4 +1,4 @@
-package com.mobin.common;
+package com.mobin.domain;
 
 import java.util.List;
 

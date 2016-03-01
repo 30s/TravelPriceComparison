@@ -48,7 +48,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="container">
 
 <div class="banner-top">
-  <h1>快速查询，帮您选出最佳的旅游比价决策</h1>
+  <h3>帮您快速选出最佳的旅游比价决策</h3>
   <div class="banner-bottom">
     <div class="bnr-one">
       <div class="bnr-left">
@@ -58,6 +58,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       
       <form action="travelAction.action" method="post">
         <input class="date" name="ST" id="datepicker" type="text" required="" />
+
       </div>
       <div class="clearfix"></div>
     </div>
@@ -105,118 +106,50 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<h3>搜索结果</h3>
 				</div>
 				
-			    <c:if test="${!empty page.records }">
-			    <c:forEach items="${page.records}" var="c" varStatus="status">
-			    <c:choose>
-			    <c:when test="${status.count ==1 || status.count ==5}">
-				<div class="top-grids">
+			    <c:forEach items="${travel}" var="c" varStatus="status">
+
 				<div class="top-grid">
-				</c:when>
-				
-				<c:otherwise>
-				<div class="top-grid">
-				</c:otherwise>
-				</c:choose>
-				
+
 						<a href="${c.URL}"><img src="images/6.jpg" alt="" /></a>
 						<div class="top-grid-info">
 							<a href="${c.URL}">${c.EP}</a>
 							<p>出发地点：${c.SP}</p>
                             <p>目的地点：${c.EP}</p>
 							<p>出发时间：${c.ST}</p>
-                            <p>路由路线：${c.SIGHTS}</p>
-                            <p>路由价格：${c.TOTALPRICE}</p>
+                            <p>路线：${c.SIGHTS}</p>
+                            <p>价格：${c.TOTALPRICE}</p>
 						</div>
 					</div>
 				
-					<c:if test="${status.count%4 == 0}">
-					 <div class="clearfix"> </div>
-					 </c:if>
 				</c:forEach>
-					
-				 </c:if>			
-			
+
 				  
 			</div>	 
 			
-			</div>	
-			
-			<!-- //container -->
-			 <center><%@include file="Page.jsp"%></center>
-		</div>	
+			</div>
+				<a href="http://localhost:8787/hadoopweb/travelAction.action">下一页</a>
+			<!-- //container
+				第${page.currentPageNum}页/共${page.totalPage}页&nbsp;&nbsp;
+				首页</a>
+				<a href="${page.uri}?num=${page.prePageNum}&ST=${page.records[0].ST}&SP=${page.records[0].SP}&EP=${page.records[0].EP}">上一页</a>
+				&nbsp;&nbsp;
+
+				<c:forEach begin="${page.startPage}" end="${page.endPage}" var="num">
+					<a href="${page.uri}?num=${num}&ST=${page.records[0].ST}&SP=${page.records[0].SP}&EP=${page.records[0].EP}">${num}</a>
+				</c:forEach>
+
+				&nbsp;&nbsp;
+				<a href="${page.uri}?num=${page.nextPageNum}&ST=${page.records[0].ST}&SP=${page.records[0].SP}&EP=${page.records[0].EP}">下一页</a>
+				<a href="${page.uri}?num=${page.totalPage}&ST=${page.records[0].ST}&SP=${page.records[0].SP}&EP=${page.records[0].EP}">尾页</a>
+		 -->
+		</div>
 	
 		<!-- //banner-grids -->
 		<!-- before -->
-		<div class="before">
-			<!-- container -->
-			<div class="container">
-				<h2>Brief about us</h2>
-				<div class="before-grids">
-					<div class="before-grid">
-						<h3>Why us</h3>
-						<p>Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.
-							Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.
-						</p>
-						<div class="who-button">
-							<a href="#">Read More</a>
-						</div>
-					</div>
-					<div class="before-grid">
-						<h3>What we do</h3>
-						<p>Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.
-							Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.
-						</p>
-						<div class="who-button">
-							<a href="#">Read More</a>
-						</div>
-					</div>
-					<div class="before-grid">
-						<h3>Services</h3>
-						<p>Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.
-							Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.
-						</p>
-						<div class="who-button">
-							<a href="#">Read More</a>
-						</div>
-					</div>
-					<div class="clearfix"> </div>
-				</div>
-			</div>
-			<!-- //container -->
-		</div>
+
 		<!-- //before -->
 		<!-- footer -->
-		<div class="footer">
-			<!-- container -->
-			<div class="container">
-				<div class="footer-top">
-					<div class="footer-nav">
-						<ul>
-							<li><a href="index.html">Home</a></li>                                                  
-							<li><a href="about.html">About</a></li>  
-							<li><a href="booking.html">Booking</a></li>  
-							<li><a href="news.html">News</a></li>  
-							<li><a href="mail.html">Mail Us</a></li>  
-						</ul>
-					</div>
-					<div class="footer-bottom">
-						<div class="copyright">
-							<p>Copyrights &copy 2015 Journey . Design by <a href="http://w3layouts.com/">W3layouts</a></p>
-						</div>
-						<div class="social-icons">
-							<ul>
-								<li><a href="#" class="facebook"></a></li>
-								<li><a href="#" class="twitter"></a></li>
-								<li><a href="#" class="dribbile"></a></li>
-							</ul>
-						</div>
-						<div class="clearfix"> </div>
-					</div>
-				</div>
-				<div class="clearfix"> </div>
-			</div>
-			<!-- //container -->
-		</div>
+
 		<!-- //footer -->
 		<script type="text/javascript">
 									$(document).ready(function() {

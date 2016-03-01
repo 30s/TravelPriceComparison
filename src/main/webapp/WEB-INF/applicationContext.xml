@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>  
-    <beans xmlns="http://www.springframework.org/schema/beans"  
+    <!--suppress SpringFacetInspection -->
+<beans xmlns="http://www.springframework.org/schema/beans"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xmlns:hdp="http://www.springframework.org/schema/hadoop"
    xsi:schemaLocation="  
@@ -31,6 +32,7 @@
 
     <bean id="travelDao" class="com.mobin.dao.impl.TravelDaoImpl">
         <property name="jdbcTemplate" ref="phoenixJdbcTemplate"/>
+        <property name="dataSource" ref="phoenixDataSource"/>
     </bean>
 
     <bean id="travelService" class="com.mobin.serviceDao.impl.TravelServiceDaoImpl">
@@ -38,7 +40,12 @@
     </bean>
 
     <bean id="travelAction" class="com.mobin.action.TravelAction">
-        <property name="travelServiceDao" ref="travelService"/>
+        <property name="travelServicedao" ref="travelService"/>
+    </bean>
+
+    <bean id="createtable" class="com.mobin.util.CreateTable">
+        <property name="jdbcTemplate" ref="phoenixJdbcTemplate"/>
+        <property name="dataSource" ref="phoenixDataSource"/>
     </bean>
 
 

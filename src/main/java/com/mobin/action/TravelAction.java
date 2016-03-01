@@ -1,77 +1,81 @@
 package com.mobin.action;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.List;
 
-import com.mobin.common.Page;
-import com.mobin.dao.TravelDao;
+import com.mobin.domain.Page;
 import com.mobin.domain.Travel;
 import com.mobin.serviceDao.TravelServiceDao;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ModelDriven;
-import org.apache.hadoop.hbase.Cell;
-import org.apache.hadoop.hbase.CellUtil;
-import org.apache.hadoop.hbase.client.Result;
 import org.apache.struts2.ServletActionContext;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.data.hadoop.hbase.HbaseTemplate;
-import org.springframework.data.hadoop.hbase.RowMapper;
 
-import com.mobin.wordcount.PhoenixHBaseTest;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
-import org.springframework.stereotype.Controller;
-
-import javax.annotation.Resource;
+import com.opensymphony.xwork2.ModelDriven;
 
 
-public class TravelAction extends ActionSupport {
-
-
-	private String ST;
-	private String SP;
-	private String EP;
-	private List<Travel> travels;
-	private TravelServiceDao travelServiceDao;
-
-	public TravelServiceDao getTravelServiceDao() {
-		return travelServiceDao;
+public class TravelAction extends ActionSupport implements ModelDriven<Travel>{
+ 
+	private Travel travel=new Travel();
+	
+	private TravelServiceDao travelServicedao;
+			
+	public Travel getTravel() {
+		return travel;
 	}
 
-	public void setTravelServiceDao(TravelServiceDao travelServiceDao) {
-		this.travelServiceDao = travelServiceDao;
+	public void setTravel(Travel travel) {
+		this.travel = travel;
 	}
 
-	public String execute() throws Exception {
-		System.out.println(SP+EP+ST+"333333333");
-		travels = travelServiceDao.query("澳门","黔东南","2015-12-15");
-		ActionContext.getContext().put("travel",travels);
-		return this.SUCCESS;
+	public TravelServiceDao getTravelServicedao() {
+		return travelServicedao;
 	}
 
-	public String getST() {
-		return ST;
+	public void setTravelServicedao(TravelServiceDao travelServicedao) {
+		this.travelServicedao = travelServicedao;
 	}
 
-	public void setST(String ST) {
-		this.ST = ST;
+	public String findPageRecords() throws UnsupportedEncodingException{
+	  String num=null;
+	  String ST;
+	  String SP;
+	  String EP;
+	  
+	  String flag = ServletActionContext.getRequest().getParameter("num");
+	  
+	  if(flag == null){
+		  ST=travel.getST();
+		  SP = travel.getSP();
+		  EP=travel.getEP();
+	  }else {
+		 
+		  num=ServletActionContext.getRequest().getParameter("num");
+		  
+		  ST=ServletActionContext.getRequest().getParameter("ST");
+		  
+		  SP =ServletActionContext.getRequest().getParameter("SP");
+		 // SP= new String(SP.getBytes("iso8859-1"),"UTF-8");
+		  System.out.print(SP+"WWWW");
+		
+	
+		  EP=ServletActionContext.getRequest().getParameter("EP");
+		 // EP= new String(EP.getBytes("iso8859-1"),"UTF-8");
+		  System.out.print(EP+"WWWW");
+		
+	}
+	  
+
+	  Page page= travelServicedao.findPage(num,ST,SP,EP);
+	  page.setUri("travelAction.action");
+	  ServletActionContext.getRequest().setAttribute("page", page);
+	  
+	  return SUCCESS;
+  }
+
+
+	public Travel getModel() {
+		// TODO Auto-generated method stub
+		return travel;
 	}
 
-	public String getSP() {
-		return SP;
-	}
-
-	public void setSP(String SP) {
-		this.SP = SP;
-	}
-
-	public String getEP() {
-		return EP;
-	}
-
-	public void setEP(String EP) {
-		this.EP = EP;
-	}
 }

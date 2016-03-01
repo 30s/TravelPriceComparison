@@ -6,7 +6,7 @@
     <constant name="struts.devMode" value="true" />
     
     <package name="struts" extends="struts-default">
-        <action name="travelAction" class="travelAction">
+        <action name="travelAction" class="travelAction" method="findPageRecords">
            <result>/index.jsp</result>
         </action>
     
