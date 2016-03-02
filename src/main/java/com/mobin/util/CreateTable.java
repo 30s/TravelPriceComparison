@@ -70,7 +70,8 @@ public class CreateTable {
 
              System.out.print("lll");
         return 0;*/
-     int i =  jdbcTemplate.queryForInt("SELECT PAGEID FROM TRAVELS WHERE ROWKEY LIKE '"+SP+EP+"%"+"' limit 1");
+     //int i =  jdbcTemplate.queryForInt("SELECT PAGEID FROM TRAVELS WHERE ROWKEY LIKE '"+SP+EP+"%"+"' limit 1");
+       int i = jdbcTemplate.queryForObject("SELECT PAGEID FROM TRAVELS WHERE ST >= ? AND ROWKEY LIKE ? LIMIT 1",Integer.class,ST,SP+EP+"%");
         System.out.print(i+"bbbb");
         return  i ;
 
