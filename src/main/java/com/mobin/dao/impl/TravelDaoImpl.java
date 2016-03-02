@@ -17,7 +17,6 @@ public class TravelDaoImpl implements TravelDao{
 
 	private JdbcTemplate jdbcTemplate;
 
-	private DataSource dataSource;
 	private static  String rowKey = " ";
 
 
@@ -55,9 +54,9 @@ public class TravelDaoImpl implements TravelDao{
 
 
 	public List findPageRecords(int currentPageNum, int pageSize,String ST,String SP,String EP) {
-		//String startkey_sql = "SELECT PAGEID FROM TRAVELS WHERE SP=";
-		//int startKey = jdbcTemplate.execute("SELECT PAGEID FROM TRAVELS WHERE PAGEID = ").;
-		int startkey =  jdbcTemplate.queryForInt("SELECT PAGEID FROM TRAVELS WHERE ROWKEY LIKE '"+SP+EP+"%"+"' limit 1");
+		//得到每种不同条件查询的起始值
+		int startkey = jdbcTemplate.queryForObject("SELECT * FROM TRAVELS WHERE ST >= ? AND ROWKEY LIKE ? LIMIT 1",Integer.class,ST,SP+EP+"%");
+
 		List<Travel> travels = 	jdbcTemplate.query("SELECT * FROM TRAVELS where PAGEID > ? AND ST >= ? AND SP=? AND EP=? limit 8",
 				new RowMapper<Travel>() {
 					public Travel mapRow(ResultSet rs, int rowNum)
@@ -82,45 +81,11 @@ public class TravelDaoImpl implements TravelDao{
 				},startkey+(currentPageNum - 1)*pageSize,ST,SP,EP);
 
 		    return  travels;
-			//stmt = conn.prepareStatement("SELECT * FROM TRAVEL where PAGEID > ? AND ST=? AND SP=? AND EP=? limit 8");
-
 	}
 
 	public int getTotalRecords(String ST,String SP,String EP) {
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		try{
-			conn = dataSource.getConnection();
-			stmt = conn.prepareStatement("SELECT COUNT(*) FROM TRAVELS WHERE ST >= ? AND ROWKEY LIKE ?");
-			stmt.setString(1, ST);
-			stmt.setString(2, SP+EP+"%");
-			rs = stmt.executeQuery();
-			if(rs.next()){
-				System.out.print("uuuuuuuuu");
-				return rs.getInt(1);
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally {
-			try {
-				if (rs != null)
-					rs.close();
-				if (stmt != null)
-					stmt.close();
-				if (conn != null)
-					conn.close();
-
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return 0;
-
+		return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM TRAVELS WHERE ST >= ? AND ROWKEY LIKE ?",Integer.class,ST,SP+EP+"%");
 	}
-
 
 	public JdbcTemplate getJdbcTemplate() {
 		return jdbcTemplate;
@@ -128,13 +93,5 @@ public class TravelDaoImpl implements TravelDao{
 
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
-	}
-
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
 	}
 }
