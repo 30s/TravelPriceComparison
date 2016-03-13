@@ -3,6 +3,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xmlns:hdp="http://www.springframework.org/schema/hadoop"
+       xmlns:p="http://www.springframework.org/schema/p"
    xsi:schemaLocation="  
     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  
     http://www.springframework.org/schema/hadoop http://www.springframework.org/schema/hadoop/spring-hadoop.xsd">
@@ -22,8 +23,64 @@
       <property name="jdbcTemplate" ref="phoenixJdbcTemplate"></property>
    </bean>
 
-   
-    <hdp:configuration resources="classpath:/hbase-site.xml" id="hadoopConfiguration"/>
+    <hdp:configuration id="hadoopConfiguration"  resources="classpath:/core-site.xml,classpath:/hdfs-site.xml,classpath:/mapred-site.xml,classpath:/yarn-site.xml,classpath:/hbase-site.xml">
+
+    </hdp:configuration>
+
+
+    <bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean"/>
+    <bean id="transactionManager" class="org.springframework.batch.support.transaction.ResourcelessTransactionManager"/>
+    <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher" p:jobRepository-ref="jobRepository"/>
+
+<!--
+ input-path="hdfs://master:9000/澳门"
+             output-path="hdfs://master:9000/澳门URL"
+-->
+    <!--Creating a Hadoop Job-->
+    <hdp:job id="downURLSpiderJob"
+             mapper="com.mobin.downURL.DownURLMapper"
+             number-reducers="0"/>
+
+    <hdp:job id="extractionDataSpiderJob"
+             mapper="com.mobin.extractionData.ExtractionDataMap"
+             reducer="com.mobin.extractionData.ExtractionDataReduce"/>
+
+    <hdp:job id="cartesianMRJob"
+             mapper="com.mobin.CartesianMapReduce.CartestianMap"
+             reducer="com.mobin.CartesianMapReduce.CartesianReduce"/>
+
+    <hdp:job id="cleanDataJob"
+             mapper="com.mobin.cleanData.TravelDataCleanMapper"
+             reducer="com.mobin.cleanData.TravelDataCleanReducer"/>
+
+    <hdp:job id="convertDataJob"
+             mapper="com.mobin.convert.ConvertMapper"/>
+
+    <hdp:job id="putDataToHBaseJob"
+             mapper="com.mobin.putDataToHBase.PutDataToHBaseDefault"/>
+
+
+
+    <!--Running a Hadoop Job-->
+    <hdp:job-runner id="downURLjobRunner"
+                    job-ref="downURLSpiderJob" run-at-startup="false"/>
+
+    <hdp:job-runner id="extractionDatajobRunner"
+                    job-ref="extractionDataSpiderJob" run-at-startup="false"/>
+
+    <hdp:job-runner id="cartesianjobRunner"
+                    job-ref="cartesianMRJob" run-at-startup="false"/>
+
+    <hdp:job-runner id="cleanDataJobRunner"
+                    job-ref="cleanDataJob" run-at-startup="false"/>
+
+    <hdp:job-runner id="convertDataJobRunner"
+                    job-ref="convertDataJob" run-at-startup="false"/>
+
+    <hdp:job-runner id="putDataToHBaseJobRunner"
+                    job-ref="putDataToHBaseJob" run-at-startup="false"/>
+
+
     <hdp:hbase-configuration configuration-ref="hadoopConfiguration" id="hbaseConfiguration"/>
     <!-- 配置HbaseTemplate -->  
     <bean id="htemplate" class="org.springframework.data.hadoop.hbase.HbaseTemplate">  
@@ -42,10 +99,23 @@
         <property name="travelServicedao" ref="travelService"/>
     </bean>
 
+    <bean id="loginAction" class="com.mobin.action.LoginAction">
+        <property name="service" ref="travelService"/>
+    </bean>
+
+    <bean id="spiderAction" class="com.mobin.action.SpiderAction">
+    </bean>
+
+    <bean id="adminAction" class="com.mobin.action.AdminAction">
+        <property name="service" ref="travelService"/>
+        <property name="spider" ref="spiderAction"/>
+    </bean>
+
     <bean id="createtable" class="com.mobin.util.CreateTable">
         <property name="jdbcTemplate" ref="phoenixJdbcTemplate"/>
         <property name="dataSource" ref="phoenixDataSource"/>
     </bean>
+
 
 
 
