@@ -104,8 +104,42 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<div class="banner-grid-info">
 					<h3>搜索结果</h3>
 				</div>
-				
-			    <c:if test="${!empty page.records }">
+				<div class="" style="font-size: 20px;margin-top: 20px">
+						价格排65566序：
+						<select id="order" style="width: 100px" onchange="submitFun('order')">
+							<option value="ASC" name="price" <c:if test="${page.placelevel == 'ASC'}">selected</c:if>  id="id_asc">升序</option>
+							<option value="DESC" name="price" <c:if test="${page.placelevel == 'DESC'}">selected</c:if> id="id_desc">降序</option>
+						</select>
+
+						酒店星级数筛选：
+						<select name="level" style="width: 100px" onchange="submitFun1('px_form1')">
+							<option value="default" name="hotel" selected="selected">所有</option>
+							<option value="3" name="hotel">三星</option>
+							<option value="4" name="hotel">四星</option>
+							<option value="5" name="hotel">五星</option>
+						</select>
+
+					<script type="text/javascript">
+						function submitFun(name){
+
+							var obj = document.getElementById(name);
+							var index = obj.selectedIndex;
+							var value = obj.options[index].value;
+							alert(value);
+							window.location.href="${page.uri}?num=1&ST=${page.records[0].ST}&SP=${page.records[0].SP}&EP=${page.records[0].EP}&placelevel="+value
+						}
+					</script>
+
+					<script type="text/javascript">
+						function submitFun1(name){
+							var obj = document.getElementByIndex("px_form1");
+							var index = obj.selectedIndex;
+							var value = obj.options[index].value;
+							window.location.href="${page.uri}?num=1&ST=${page.records[0].ST}&SP=${page.records[0].SP}&EP=${page.records[0].EP}&hotellevel"+value
+						}
+					</script>
+				</div>
+			<c:if test="${!empty page.records }">
 			    <c:forEach items="${page.records}" var="c" varStatus="status">
 			    <c:choose>
 			    <c:when test="${status.count ==1 || status.count ==5}">
@@ -118,7 +152,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				</c:otherwise>
 				</c:choose>
 				
-						<a href="${c.URL}"><img src="images/6.jpg" alt="" /></a>
+						<a href="${c.URL}"><img src="${c.IMAGE}" alt="" /></a>
 						<div class="top-grid-info">
 							<a href="${c.URL}">${c.EP}</a>
 							<p>出发地点：${c.SP}</p>
@@ -147,93 +181,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	
 		<!-- //banner-grids -->
 		<!-- before -->
-		<div class="before">
-			<!-- container -->
-			<div class="container">
-				<h2>Brief about us</h2>
-				<div class="before-grids">
-					<div class="before-grid">
-						<h3>Why us</h3>
-						<p>Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.
-							Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.
-						</p>
-						<div class="who-button">
-							<a href="#">Read More</a>
-						</div>
-					</div>
-					<div class="before-grid">
-						<h3>What we do</h3>
-						<p>Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.
-							Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.
-						</p>
-						<div class="who-button">
-							<a href="#">Read More</a>
-						</div>
-					</div>
-					<div class="before-grid">
-						<h3>Services</h3>
-						<p>Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.
-							Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.
-						</p>
-						<div class="who-button">
-							<a href="#">Read More</a>
-						</div>
-					</div>
-					<div class="clearfix"> </div>
-				</div>
-			</div>
-			<!-- //container -->
-		</div>
-		<!-- //before -->
-		<!-- footer -->
-		<div class="footer">
-			<!-- container -->
-			<div class="container">
-				<div class="footer-top">
-					<div class="footer-nav">
-						<ul>
-							<li><a href="index.html">Home</a></li>                                                  
-							<li><a href="about.html">About</a></li>  
-							<li><a href="booking.html">Booking</a></li>  
-							<li><a href="news.html">News</a></li>  
-							<li><a href="mail.html">Mail Us</a></li>  
-						</ul>
-					</div>
-					<div class="footer-bottom">
-						<div class="copyright">
-							<p>Copyrights &copy 2015 Journey . Design by <a href="http://w3layouts.com/">W3layouts</a></p>
-						</div>
-						<div class="social-icons">
-							<ul>
-								<li><a href="#" class="facebook"></a></li>
-								<li><a href="#" class="twitter"></a></li>
-								<li><a href="#" class="dribbile"></a></li>
-							</ul>
-						</div>
-						<div class="clearfix"> </div>
-					</div>
-				</div>
-				<div class="clearfix"> </div>
-			</div>
-			<!-- //container -->
-		</div>
-		<!-- //footer -->
-		<script type="text/javascript">
-									$(document).ready(function() {
-										/*
-										var defaults = {
-								  			containerID: 'toTop', // fading element id
-											containerHoverID: 'toTopHover', // fading element hover id
-											scrollSpeed: 1200,
-											easingType: 'linear' 
-								 		};
-										*/
-										
-										$().UItoTop({ easingType: 'easeOutQuart' });
-										
-									});
-								</script>
-									<a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
-	<!-- content-Get-in-touch -->
+
 	</body>
 </html>
