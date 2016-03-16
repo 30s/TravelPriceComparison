@@ -11,4 +11,11 @@ import java.util.List;
 public interface TravelServiceDao {
    // public List<Travel> query(String SP, String EP, String ST);
     public Page findPage(String num, String ST, String SP, String EP);
+    public Page findPage(String num,String SP);
+    public Boolean login(String user,String password);
+    public Boolean deleteRecordsByPlace(String place);
+    public Boolean deleteRecordsAll();
+    public Page sortByPrice(String flagHighORLow,String num, String ST, String SP, String EP);
+    public Page sortByHotel(int hotellevel,String num, String ST, String SP, String EP);
+
 }

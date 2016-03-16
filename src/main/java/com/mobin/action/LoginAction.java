@@ -32,6 +32,7 @@ public class LoginAction extends ActionSupport {
 		}
 		
 	}
+
 	
 	public String showTop(){
 		return "showTop";

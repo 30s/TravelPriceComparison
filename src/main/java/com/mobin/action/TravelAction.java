@@ -40,6 +40,9 @@ public class TravelAction extends ActionSupport implements ModelDriven<Travel>{
 	  String ST;
 	  String SP;
 	  String EP;
+		String placelevel = null;
+		String hotellevel = null;
+		Page page = null;
 	  
 	  String flag = ServletActionContext.getRequest().getParameter("num");
 	  
@@ -50,22 +53,37 @@ public class TravelAction extends ActionSupport implements ModelDriven<Travel>{
 	  }else {
 		 
 		  num=ServletActionContext.getRequest().getParameter("num");
-		  
+
+		  placelevel = ServletActionContext.getRequest().getParameter("placelevel");
+		  System.out.println(placelevel+"3333333");
+          hotellevel = ServletActionContext.getRequest().getParameter("hotellevel");
 		  ST=ServletActionContext.getRequest().getParameter("ST");
 		  
 		  SP =ServletActionContext.getRequest().getParameter("SP");
 		 // SP= new String(SP.getBytes("iso8859-1"),"UTF-8");
-		  System.out.print(SP+"WWWW");
-		
-	
+
 		  EP=ServletActionContext.getRequest().getParameter("EP");
 		 // EP= new String(EP.getBytes("iso8859-1"),"UTF-8");
-		  System.out.print(EP+"WWWW");
-		
-	}
-	  
 
-	  Page page= travelServicedao.findPage(num,ST,SP,EP);
+	}
+
+		System.out.println(num+"num");
+		System.out.println(ST+"num");
+		System.out.println(SP+"num");
+		System.out.println(EP+"num");
+	  if(placelevel != null && !"".equals(placelevel)){
+		  System.out.println(placelevel+"999999999999");
+		  page= travelServicedao.sortByPrice(placelevel,num,ST,SP,EP);
+		  page.setPlacelevel(placelevel);
+	  }else if(hotellevel != null && !"".equals(hotellevel)&& !hotellevel.equals("all")){
+		  page = travelServicedao.sortByHotel(Integer.valueOf(hotellevel),num,ST,SP,EP);
+		  page.setHotellevel(hotellevel);
+	  }else {
+		  page= travelServicedao.findPage(num,ST,SP,EP);
+		  page.setPlacelevel("");
+		  page.setHotellevel("");
+	  }
+
 	  page.setUri("travelAction.action");
 	  ServletActionContext.getRequest().setAttribute("page", page);
 	  

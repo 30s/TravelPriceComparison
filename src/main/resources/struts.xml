@@ -9,6 +9,27 @@
         <action name="travelAction" class="travelAction" method="findPageRecords">
            <result>/index.jsp</result>
         </action>
-    
+
+        <action name="*Ac" class="loginAction" method="{1}">
+            <result name="success">/WEB-INF/admin/index.jsp</result>
+            <result name="error">login.jsp</result>
+            <result name="showTop">/WEB-INF/admin/admin_top.jsp</result>
+            <result name="showLeft">/WEB-INF/admin/left.jsp</result>
+            <result name="showRight">/WEB-INF/admin/oneKeyGetData.jsp</result>
+            <result name="oneKeyUpdate">/WEB-INF/admin/oneKeyUpdate.jsp</result>
+        </action>
+
+        <!-- 管理数据 -->
+        <action name="*Action" class="adminAction" method="{1}">
+            <result name="success">/WEB-INF/admin/index.jsp</result>
+            <result name="showdata">/WEB-INF/admin/showData.jsp</result>
+            <result name="delete" type="redirectAction">/WEB-INF/admin/index.jsp</result>
+        </action>
+        
+        <action name="QuartzSpiderAction" class="quartzSpiderAction">
+            <result>/WEB-INF/admin/oneKeyGetData.jsp</result>
+        </action>
+
+
     </package>
 </struts>

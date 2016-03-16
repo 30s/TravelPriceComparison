@@ -29,7 +29,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <body>
 <!-- contact-form -->	
 <div class="message warning">
-<div class="contact-form"">
+<div class="contact-form">
 	<div class="logo">
 		<h1>Sign In</h1>
 	</div>	

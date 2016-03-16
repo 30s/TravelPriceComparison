@@ -6,7 +6,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <html>
 <head>
-<title><%= title %> - 管理页面</title>
+<title>- 管理页面</title>
 <script language=JavaScript1.2>
 function showsubmenu(sid) {
 	var whichEl = eval("submenu" + sid);

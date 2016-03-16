@@ -3,7 +3,7 @@ package com.mobin.domain;
 import java.util.List;
 
 public class Page {
-	private List records;//存放分页记录
+	private List<Travel> records;//存放分页记录
 
 	private int currentPageNum;//当前页码
 	private int totalPage;//总页数
@@ -20,6 +20,9 @@ public class Page {
 	private int endPage;//结束页码
 
 	private String uri;//查询分页的地址
+
+	private String placelevel;
+	private String hotellevel;
 
 
 	public Page(int currentPageNum,int totalRecords){
@@ -93,16 +96,13 @@ public class Page {
 		this.endPage = endPage;
 	}
 
-
-	public List getRecords() {
+	public List<Travel> getRecords() {
 		return records;
 	}
 
-
-	public void setRecords(List records) {
+	public void setRecords(List<Travel> records) {
 		this.records = records;
 	}
-
 
 	public int getCurrentPageNum() {
 		return currentPageNum;
@@ -153,6 +153,21 @@ public class Page {
 		this.startIndex = startIndex;
 	}
 
+	public String getPlacelevel() {
+		return placelevel;
+	}
+
+	public void setPlacelevel(String placelevel) {
+		this.placelevel = placelevel;
+	}
+
+	public String getHotellevel() {
+		return hotellevel;
+	}
+
+	public void setHotellevel(String hotellevel) {
+		this.hotellevel = hotellevel;
+	}
 
 	public int getPrePageNum() {
 		prePageNum = currentPageNum-1;
@@ -168,6 +183,7 @@ public class Page {
 
 
 	public int getNextPageNum() {
+		nextPageNum = currentPageNum+1;
 		nextPageNum = currentPageNum+1;
 		if(nextPageNum>totalPage)
 			nextPageNum = totalPage;

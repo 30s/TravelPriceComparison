@@ -17,6 +17,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:4.1.6.RELEASE" />
           <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.1.6.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context-support:4.1.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.apache.phoenix:phoenix-core:4.6.0-HBase-1.1" />
           <element id="library" level="project" name="Maven: org.antlr:antlr:3.5" />
           <element id="library" level="project" name="Maven: org.antlr:ST4:4.0.7" />
@@ -140,7 +141,6 @@
           <element id="library" level="project" name="Maven: asm:asm-commons:3.3" />
           <element id="library" level="project" name="Maven: asm:asm-tree:3.3" />
           <element id="library" level="project" name="Maven: org.springframework.data:spring-data-hadoop:2.1.2.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-context-support:4.1.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.1.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.data:spring-data-hadoop-pig:2.1.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.batch:spring-batch-core:3.0.3.RELEASE" />
@@ -158,6 +158,18 @@
           <element id="library" level="project" name="Maven: org.springframework.data:spring-data-hadoop-hbase:2.1.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.data:spring-data-hadoop-hive:2.1.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:4.1.6.RELEASE" />
+          <element id="library" level="project" name="Maven: us.codecraft:webmagic-extension:0.5.2" />
+          <element id="library" level="project" name="Maven: redis.clients:jedis:2.0.0" />
+          <element id="library" level="project" name="Maven: us.codecraft:webmagic-core:0.5.2" />
+          <element id="library" level="project" name="Maven: us.codecraft:xsoup:0.2.4" />
+          <element id="library" level="project" name="Maven: org.assertj:assertj-core:1.5.0" />
+          <element id="library" level="project" name="Maven: org.jsoup:jsoup:1.7.2" />
+          <element id="library" level="project" name="Maven: com.jayway.jsonpath:json-path:0.8.1" />
+          <element id="library" level="project" name="Maven: net.minidev:json-smart:1.1.1" />
+          <element id="library" level="project" name="Maven: com.alibaba:fastjson:1.1.37" />
+          <element id="library" level="project" name="Maven: org.quartz-scheduler:quartz:2.2.2" />
+          <element id="library" level="project" name="Maven: c3p0:c3p0:0.9.1.1" />
+          <element id="library" level="project" name="Maven: org.quartz-scheduler:quartz-jobs:2.2.2" />
         </element>
       </element>
       <element id="directory" name="META-INF">

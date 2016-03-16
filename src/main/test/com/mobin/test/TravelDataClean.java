@@ -1,4 +1,4 @@
-package com.mobin.cleanData;
+package com.mobin.test;
 
 import java.io.IOException;
 
@@ -32,12 +32,13 @@ public class TravelDataClean {
 		Job job = applicationContext.getBean("extractionDataSpider",Job.class);*/
 
 
-		JobRunner jobRunner = applicationContext.getBean("cleandataJobRunner",JobRunner.class);
-		Job job = applicationContext.getBean("cleandata",Job.class);
+		JobRunner jobRunner = applicationContext.getBean("cleanDataJobRunner",JobRunner.class);
+		Job job = applicationContext.getBean("cleanDataJob",Job.class);
+		job.getConfiguration().set("mapred.jar","/home/hadoop/TravelProject/out/artifacts/Travel_jar/Travel.jar");
 		
 		FileInputFormat.setInputPaths(job, "hdfs://master:9000/澳门DATA/part-r-00000");
 		
-		FileOutputFormat.setOutputPath(job, new Path("hdfs://master:9000/澳门INFO"));
+		FileOutputFormat.setOutputPath(job, new Path("hdfs://master:9000/澳门INFO1"));
 
 		jobRunner.call();
 		

@@ -1,11 +1,16 @@
 package com.mobin.action;
 
+import java.io.IOException;
 import java.util.List;
 
+import com.mobin.dao.HBaseDao;
 import com.mobin.domain.Page;
 import com.mobin.domain.Travel;
 import com.mobin.serviceDao.TravelServiceDao;
 import com.mobin.serviceDao.impl.TravelServiceDaoImpl;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -16,6 +21,17 @@ public class AdminAction extends ActionSupport {
 	private String SP;
 	private Page page;
 	private String place;
+	private SpiderAction spider;
+	private String type;
+	private HBaseDao hBaseDao;
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 
 	public String getPlace() {
 		return place;
@@ -49,51 +65,40 @@ public class AdminAction extends ActionSupport {
 		SP = sP;
 	}
 
+	public SpiderAction getSpider() {
+		return spider;
+	}
 
+	public void setSpider(SpiderAction spider) {
+		this.spider = spider;
+	}
 
-	//一键爬取数据
-	public String oneKeyGet(){
+	public HBaseDao gethBaseDao() {
+		return hBaseDao;
+	}
 
-		String type=ServletActionContext.getRequest().getParameter("type");
-
-		if (type.equals("all")){
-
-			//在这里添加爬虫函数();
-
-		}else if (type.equals("single")){
-			String place=ServletActionContext.getRequest().getParameter("place");
-
-			//在这里添加爬虫函数();
-		}
-		return SUCCESS;
+	public void sethBaseDao(HBaseDao hBaseDao) {
+		this.hBaseDao = hBaseDao;
 	}
 
 	//一键更新数据
 	public String oneKeyUpdate(){
-		String type=ServletActionContext.getRequest().getParameter("type");
-
+		//String type=ServletActionContext.getRequest().getParameter("type");
 		if (type.equals("all")){
-			//一键更新();
-		}else if (type.equals("single")){
-			String place=ServletActionContext.getRequest().getParameter("place");
-			SpiderAction.execute(place);
 
+		}else if (type.equals("single")){
+			System.out.println("99999999999999999999999999999999999999");
+			String place=ServletActionContext.getRequest().getParameter("place");
+		//	SpiderAction.execute(place);
 		}
 
 		return SUCCESS;
 
 	}
 
-	//一键删除数据
 	public String oneKeyDelete(){
-
-		//判断管理员是否选删除所有 并且 删除所有成功
-		if (place.equals("all") && service.deleteRecordsAll()){
-			return "delete";
-		}else {
-			if(service.deleteRecordsByPlace(place)==true) return "delete";
-		}
-		return "delete";
+       hBaseDao.truncate();
+		return  this.SUCCESS;
 	}
 
 	public String showData(){

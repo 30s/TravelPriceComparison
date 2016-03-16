@@ -6,6 +6,10 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import static org.quartz.CronScheduleBuilder.cronSchedule;
 import static org.quartz.CronScheduleBuilder.dailyAtHourAndMinute;
 import static org.quartz.JobBuilder.newJob;
@@ -13,11 +17,17 @@ import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 /**
  * Created by hadoop on 3/14/16.
+ * 爬虫调度器
  */
 public class QuartzAction extends ActionSupport{
     private String place;
     private String startTime;   //"0 0 0/12 ? * MON,WED,FRI"
     private int repeateCount;
+    private static  int hour;
+    private static  int min;
+    private static  Date date = null;
+
+
 
 
     public String execute() throws Exception {
@@ -26,17 +36,30 @@ public class QuartzAction extends ActionSupport{
         scheduler.start();
         JobDetail jobDetail = newJob(SpiderAction.class)
                 .withIdentity("spiderJob","groupSpider")
-                .usingJobData("place","澳门")
+                .usingJobData("place",place)
                 .build();
 
-        CronTrigger trigger = newTrigger()
-                .withIdentity("cronTrigger", "groupSpider")
-                .withSchedule(dailyAtHourAndMinute(10,23))//two
-                .forJob("spiderJob","groupSpider")
+        System.out.println(repeateCount+"55555");
+        Trigger trigger = newTrigger()
+                .withIdentity("simpleTigger","groupSpider")
+                .startAt(QuartzAction.coventDate())
+                .withSchedule(simpleSchedule().withIntervalInHours(6).withRepeatCount(repeateCount))
+                .forJob(jobDetail)
                 .build();
+
 
         scheduler.scheduleJob(jobDetail,trigger);
         return this.SUCCESS;
+    }
+
+    public static  Date coventDate(){
+
+        try {
+            date = new SimpleDateFormat("HH:mm").parse(String.valueOf(hour)+":"+String.valueOf(min));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return  date;
     }
 
     public String getPlace() {
@@ -61,5 +84,21 @@ public class QuartzAction extends ActionSupport{
 
     public void setRepeateCount(int repeateCount) {
         this.repeateCount = repeateCount;
+    }
+
+    public static int getHour() {
+        return hour;
+    }
+
+    public static void setHour(int hour) {
+        QuartzAction.hour = hour;
+    }
+
+    public static int getMin() {
+        return min;
+    }
+
+    public static void setMin(int min) {
+        QuartzAction.min = min;
     }
 }

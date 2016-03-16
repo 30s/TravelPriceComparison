@@ -15,7 +15,6 @@ import java.util.Random;
  * 将出发点  目的地  价格作为RowKey
  */
 public class PutDataToHBaseSortPrice extends Mapper<LongWritable, Text, ImmutableBytesWritable, Put> {
-    static int i = 0;
     protected void map(LongWritable key, Text value,
                        Context context)
             throws IOException, InterruptedException {

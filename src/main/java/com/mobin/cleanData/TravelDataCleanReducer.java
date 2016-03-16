@@ -18,8 +18,6 @@ public class TravelDataCleanReducer extends Reducer<Text , Text, Text, NullWrita
             value = text.toString();
             break;
         }
-        StringBuffer sb=new StringBuffer().append(key).append(value);
-
-        context.write(new Text(sb.toString()), NullWritable.get());
+        context.write(new Text(value), NullWritable.get());
     }
 }

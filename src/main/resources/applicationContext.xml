@@ -22,9 +22,26 @@
    <bean id="phoenixTest" class="com.mobin.wordcount.PhoenixHBaseTest">
       <property name="jdbcTemplate" ref="phoenixJdbcTemplate"></property>
    </bean>
+<!--
+    <hdp:configuration id="hadoopConfiguration" resources="classpath:/core-site.xml,classpath:/hdfs-site.xml,classpath:/mapred-site.xml,classpath:/yarn-site.xml,classpath:/hbase-site.xml">
 
-    <hdp:configuration id="hadoopConfiguration"  resources="classpath:/core-site.xml,classpath:/hdfs-site.xml,classpath:/mapred-site.xml,classpath:/yarn-site.xml,classpath:/hbase-site.xml">
+    </hdp:configuration>
+    -->
 
+    <hdp:configuration id="hadoopConfiguration">
+        fs.defaultFS=hdfs://master:9000
+        hadoop.tmp.dir=/home/hadoop/hadoop-2.6.0/tmp
+        dfs.namenode.name.dir=/home/hadoop/hadoop-2.6.0/dfs/name
+        dfs.datanode.data.dir=/home/hadoop/hadoop-2.6.0/dfs/data
+        dfs.replication = 2
+        mapreduce.framework.name=yarn
+        yarn.nodemanager.aux-services=mapreduce_shuffle
+        yarn.nodemanager.aux-services.mapreduce.shuffle.class=org.apache.hadoop.mapred.ShuffleHandler
+
+        yarn.resourcemanager.address=master:8032
+        yarn.resourcemanager.scheduler.address=master:8030
+        yarn.resourcemanager.resource-tracker.address=master:8031
+        yarn.resourcemanager.webapp.address=master:50030
     </hdp:configuration>
 
 
@@ -57,7 +74,7 @@
              mapper="com.mobin.convert.ConvertMapper"/>
 
     <hdp:job id="putDataToHBaseJob"
-             mapper="com.mobin.putDataToHBase.PutDataToHBaseDefault"/>
+             mapper="com.mobin.putDataToHBase.PutDataToHBaseDefault" configuration-ref="hadoopConfiguration"/>
 
 
 
@@ -116,6 +133,11 @@
         <property name="dataSource" ref="phoenixDataSource"/>
     </bean>
 
+    <bean id="quartzSpiderAction" class="com.mobin.action.QuartzAction"/>
+
+    <bean id="hbaseDao" class="com.mobin.dao.impl.HBaseDaoImpl">
+        <property name="htemplate" ref="htemplate"/>
+    </bean>
 
 
 

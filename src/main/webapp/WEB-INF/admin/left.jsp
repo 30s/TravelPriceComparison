@@ -168,7 +168,7 @@ H1 a {
           </tr>
         </table>
         <ul class="MM">
-          <li><a href="showDataAction?SP=all" target="main">Hbase</a></li>
+          <li><a href="showDataAction?SP=all" target="main">管理HBase数据集</a></li>
           <li><a href="oneKeyUpdateAc" target="main">一键更新</a></li>
         </ul>
       </div>

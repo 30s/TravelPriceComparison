@@ -18,6 +18,7 @@ public class Travel {
 	private String HOTEL;
 	private String TOTALPRICE;
 	private String TRAFFIC;
+	private String IMAGE;
 	private String TRAVELTYPE;
 	private String SUPPLIER;
 
@@ -101,6 +102,12 @@ public class Travel {
 	public void setSUPPLIER(String sUPPLIER) {
 		SUPPLIER = sUPPLIER;
 	}
-	
-	
+
+	public String getIMAGE() {
+		return IMAGE;
+	}
+
+	public void setIMAGE(String IMAGE) {
+		this.IMAGE = IMAGE;
+	}
 }

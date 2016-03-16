@@ -17,6 +17,7 @@
 	}
 	-->
 	</style>
+	  <script type="text/javascript" src="${pageContext.request.contextPath}/admin/js/cityList.js"></script>
 	<link href="${pageContext.request.contextPath}/admin/images/skin.css" rel="stylesheet" type="text/css">
   </head>
 <body> 
@@ -39,29 +40,27 @@
       <tr>
         <td valign="middle"><span class="left_txt">
 			<div id="addSubjectForm" align="center"><!--录入试题表单-->
-				<form action="oneKeyGetAction" method="post">
+				<form action="QuartzSpiderAction" method="post">
 				<table border="0" cellspacing="10" cellpadding="0">
 				  <tr>
 					<td  colspan="2"><FONT color="red"><s:actionerror/></FONT></td>
 				  </tr>
 				  <tr>
+
 					<td>
-					<input type="radio" name="type" value="all" checked onclick="show('all')"/>全部
-					<input type="radio" name="type" value="single" onclick="show('single')"/>地区
-					</td>	
-					<td>
-					
-					<select name="place" id="abc" style="display:none">
-						<option value="北京">北京
-						<option value="广州">广州
-						<option value="上海">上海
-					</select>
-					
-					</td>				
+						请选择地区:<input type="text" id="city" autocomplete="off" value="澳门" name="place" onclick="this.value='';GetCityList(this);" onkeyup="selCity(event)" class="inputbox" />
+					</td>
+					  </tr>
+					<tr>
+					  <td>
+						设置爬虫周期:
+					    启动时间:<input name="hour"  type="text"/>时<input name="min" type="text"/>分
+					    循环次数:<input name="repeateCount" type="text"/>次
+					  </td>
 				  </tr>
 				  <tr>
 				  	<td colspan="2"><div align="center">
-				  	  <s:submit value="一键爬虫" align="center" onclick="return confirm('是否开始爬取数据？')"/>
+				  	  <s:submit value="开始爬虫" align="center" onclick="return confirm('是否开始爬取数据？')"/>
 			  	  </div>
 				</td>
 				  </tr>

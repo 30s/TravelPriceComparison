@@ -52,7 +52,7 @@
 					<td>
 					
 					<select name="place" id="abc" style="display:none">
-						<option value="北京">北京
+						<option value="北京">澳门
 						<option value="广州">广州
 						<option value="上海">上海
 					</select>

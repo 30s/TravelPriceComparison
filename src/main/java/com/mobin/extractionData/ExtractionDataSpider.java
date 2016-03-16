@@ -38,6 +38,7 @@ public class ExtractionDataSpider implements PageProcessor {
 
                     .append(new JsonPathSelector("$.data.list.results[" + i
                             + "].details.hotel").select(page.getRawText()) + "\t")
+
                     .append(new JsonPathSelector("$.data.list.results[" + i + "].details.tripTime")
                             .select(page.getRawText()) + "\t")
 
@@ -51,7 +52,7 @@ public class ExtractionDataSpider implements PageProcessor {
                     .append(new JsonPathSelector("$.data.list.results[" + i + "].twoLeveltype")
                             .select(page.getRawText()) + "\t")
 
-                    .append(new JsonPathSelector("$.data.list.results[" + i + "].candidateImage")
+                    .append(new JsonPathSelector("$.data.list.results[" + i + "].extensionImg")
                             .select(page.getRawText()) + "\t")
 
                     .append(new JsonPathSelector("$.data.list.results[" + i + "].summary.supplier.name")

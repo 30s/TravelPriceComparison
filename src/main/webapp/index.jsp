@@ -105,18 +105,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<h3>搜索结果</h3>
 				</div>
 				<div class="" style="font-size: 20px;margin-top: 20px">
-						价格排65566序：
+						价格排序：
 						<select id="order" style="width: 100px" onchange="submitFun('order')">
 							<option value="ASC" name="price" <c:if test="${page.placelevel == 'ASC'}">selected</c:if>  id="id_asc">升序</option>
 							<option value="DESC" name="price" <c:if test="${page.placelevel == 'DESC'}">selected</c:if> id="id_desc">降序</option>
 						</select>
 
 						酒店星级数筛选：
-						<select name="level" style="width: 100px" onchange="submitFun1('px_form1')">
-							<option value="default" name="hotel" selected="selected">所有</option>
-							<option value="3" name="hotel">三星</option>
-							<option value="4" name="hotel">四星</option>
-							<option value="5" name="hotel">五星</option>
+						<select id="level" style="width: 100px" onchange="submitFun1('level')">
+							<option value="default" name="hotel" <c:if test="${page.hotellevel == 'all'}">selected</c:if>>所有</option>
+							<option value="3" name="hotel" <c:if test="${page.hotellevel == '1'}">selected</c:if>>111</option>
+							<option value="3" name="hotel" <c:if test="${page.hotellevel == '2'}">selected</c:if>>三星</option>
+							<option value="4" name="hotel" <c:if test="${page.hotellevel == '3'}">selected</c:if>>四星</option>
+							<option value="5" name="hotel" <c:if test="${page.hotellevel == '4'}">selected</c:if>>五星</option>
 						</select>
 
 					<script type="text/javascript">
@@ -126,16 +127,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							var index = obj.selectedIndex;
 							var value = obj.options[index].value;
 							alert(value);
+							alert(${page.records[0].ST});
 							window.location.href="${page.uri}?num=1&ST=${page.records[0].ST}&SP=${page.records[0].SP}&EP=${page.records[0].EP}&placelevel="+value
 						}
 					</script>
 
 					<script type="text/javascript">
 						function submitFun1(name){
-							var obj = document.getElementByIndex("px_form1");
+							var obj = document.getElementById(name);
 							var index = obj.selectedIndex;
 							var value = obj.options[index].value;
-							window.location.href="${page.uri}?num=1&ST=${page.records[0].ST}&SP=${page.records[0].SP}&EP=${page.records[0].EP}&hotellevel"+value
+							alert(value);
+							window.location.href="${page.uri}?num=1&ST=${page.records[0].ST}&SP=${page.records[0].SP}&EP=${page.records[0].EP}&hotellevel="+value
 						}
 					</script>
 				</div>
