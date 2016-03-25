@@ -83,23 +83,13 @@ public class AdminAction extends ActionSupport {
 
 	//一键更新数据
 	public String oneKeyUpdate(){
-		//String type=ServletActionContext.getRequest().getParameter("type");
-		if (type.equals("all")){
-
-		}else if (type.equals("single")){
 			System.out.println("99999999999999999999999999999999999999");
 			String place=ServletActionContext.getRequest().getParameter("place");
-		//	SpiderAction.execute(place);
-		}
-
+		    spider.putDataToHBase(place);
 		return SUCCESS;
 
 	}
 
-	public String oneKeyDelete(){
-       hBaseDao.truncate();
-		return  this.SUCCESS;
-	}
 
 	public String showData(){
 		String num=null;

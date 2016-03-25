@@ -17,6 +17,7 @@
 	}
 	-->
 	</style>
+	  <script type="text/javascript" src="${pageContext.request.contextPath}/admin/js/cityList.js"></script>
 	<link href="${pageContext.request.contextPath}/admin/images/skin.css" rel="stylesheet" type="text/css">
   </head>
 <body> 
@@ -25,7 +26,7 @@
     <td width="17" valign="top" background="${pageContext.request.contextPath}/admin/images/mail_leftbg.gif"><img src="${pageContext.request.contextPath}/admin/images/left-top-right.gif" width="17" height="29" /></td>
     <td valign="top" background="${pageContext.request.contextPath}/admin/images/content-bg.gif"><table width="100%" height="31" border="0" cellpadding="0" cellspacing="0" class="left_topbg" id="table2">
       <tr>
-        <td height="31"><div class="titlebt">一键更新</div></td>
+        <td height="31"><div class="titlebt">更新数据</div></td>
       </tr>
     </table></td>
     <td width="16" valign="top" background="${pageContext.request.contextPath}/admin/images/mail_rightbg.gif"><img src="${pageContext.request.contextPath}/admin/images/nav-right-bg.gif" width="16" height="29" /></td>
@@ -38,30 +39,29 @@
         </tr>
       <tr>
         <td valign="middle"><span class="left_txt">
-			<div id="addSubjectForm" align="center"><!--录入试题表单-->
+			<div id="addSubjectForm" align="center">
 				<form action="oneKeyUpdateAction" method="post">
 				<table border="0" cellspacing="10" cellpadding="0">
 				  <tr>
 					<td  colspan="2"><FONT color="red"><s:actionerror/></FONT></td>
 				  </tr>
+					<tr>
+
+						<td>
+							<input type="radio" name="city1" value="female" />
+							请选择更新地区:<input type="text" id="city" autocomplete="off" value="澳门" name="place" onclick="this.value='';GetCityList(this);" onkeyup="selCity(event)" class="inputbox" />
+						</td>
+
+						<td>
+							<input type="radio" name="city1"/>
+							更新所有已爬下来的数据到HBase中
+						</td>
+
+					</tr>
 				  <tr>
-					<td>
-					<input type="radio" name="type" value="all" checked onclick="show('all')"/>全部
-					<input type="radio" name="type" value="single" onclick="show('single')"/>地区
-					</td>	
-					<td>
-					
-					<select name="place" id="abc" style="display:none">
-						<option value="北京">澳门
-						<option value="广州">广州
-						<option value="上海">上海
-					</select>
-					
-					</td>				
-				  </tr>
-				  <tr>
+					  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				  	<td colspan="2"><div align="center">
-				  	  <s:submit value="一键更新" align="center" onclick="return confirm('是否开始更新数据？')"/>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:submit value="更新数据" align="center" onclick="return confirm('是否开始更新数据？')"/>
 			  	  </div>
 				</td>
 				  </tr>

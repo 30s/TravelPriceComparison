@@ -41,9 +41,7 @@ public class DownURLSpider implements PageProcessor{
 					end = getMatcher(".*kd/list_([\u4e00-\u9fa5]+)",page.getUrl().toString());
 					String url = "http://dujia.qunar.com/golfz/routeList/adaptors/pcTop?&isTouch=0&t=all&o=pop-desc&lm=0%2C20&fhLimit=0%2C20&q="+end+"&d="+start+"&s=all&qs_ts=1447834475346&ti=3&tm=l01_all_search_origin&sourcepage=list&qssrc=eyJ0cyI6IjE0NDc4MzQ0NzUzNDYiLCJzcmMiOiJhbGwuZW52YSIsImFjdCI6InNlYXJjaCJ9&m=l%2Clm&displayStatus=pc&lines6To10=0&_=1447834476708";
 					page.addTargetRequest(url);//将上面的URL添加到队列中来获取总页数
-					 // legalUrl.add("http://dujia.qunar.com/golfz/routeList/adaptors/pcTop?&isTouch=0&t=all&o=pop-desc&lm=0%2C20&fhLimit=0%2C20&q="+end+"&d="+start+"&s=all&qs_ts=1447834475346&ti=3&tm=l01_all_search_origin&sourcepage=list&qssrc=eyJ0cyI6IjE0NDc4MzQ0NzUzNDYiLCJzcmMiOiJhbGwuZW52YSIsImFjdCI6InNlYXJjaCJ9&m=l%2Clm&displayStatus=pc&lines6To10=0&_=1447834476708");
-					//	page.addTargetRequest("http://dujia.qunar.com/golfz/routeList/adaptors/pcTop?&isTouch=0&t=all&o=pop-desc&lm=0%2C20&fhLimit=0%2C20&q="+end+"&d="+start+"&s=all&qs_ts=1447834475346&ti=3&tm=l01_all_search_origin&sourcepage=list&qssrc=eyJ0cyI6IjE0NDc4MzQ0NzUzNDYiLCJzcmMiOiJhbGwuZW52YSIsImFjdCI6InNlYXJjaCJ9&m=l%2Clm&displayStatus=pc&lines6To10=0&_=1447834476708");
-				}					
+				}
 		 }else{//说明是获取总页数的URL
 			
 			 String recordCount =  new JsonPathSelector("$.data.list.numFound")

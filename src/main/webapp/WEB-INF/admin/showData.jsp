@@ -31,7 +31,7 @@
             <table width="100%" height="31" border="0" cellpadding="0" cellspacing="0" class="left_topbg" id="table2">
                 <tr>
                     <td height="31">
-                        <div class="titlebt">Hbase</div>
+                        <div class="titlebt">旅游信息</div>
                     </td>
                 </tr>
             </table>
@@ -66,7 +66,7 @@
                         <td>出发地</td>
                         <td>目的地</td>
                         <td>来源网站</td>
-                        <td>清空</td>
+                        <td>详细信息</td>
                     </tr>
 
                     <s:iterator value="page.records" var="record">
@@ -74,8 +74,8 @@
                             <td>${record.SP}</td>
                             <td>${record.EP}</td>
                             <td>${record.SUPPLIER}</td>
-                            <td><a href="#">查看</a></td>
-                            <td><a href="deleteAction.action" onclick="return confirm('是否清空各个地区的所有数据？')">清空</a></td>
+                                ${record.URL}
+                            <td><a href="${record.URL}">查看详细信息</a></td>
                         </tr>
                     </s:iterator>
 

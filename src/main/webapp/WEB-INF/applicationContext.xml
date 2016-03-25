@@ -19,9 +19,7 @@
        <qualifier value="phoenixJdbcTemplate"/> 
    </bean>
 
-   <bean id="phoenixTest" class="com.mobin.wordcount.PhoenixHBaseTest">
-      <property name="jdbcTemplate" ref="phoenixJdbcTemplate"></property>
-   </bean>
+
 
     <hdp:configuration id="hadoopConfiguration">
         fs.defaultFS=hdfs://master:9000

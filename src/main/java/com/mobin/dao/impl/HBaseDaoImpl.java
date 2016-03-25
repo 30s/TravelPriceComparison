@@ -47,6 +47,7 @@ public class HBaseDaoImpl implements HBaseDao{
     }
 
 
+
     public HbaseTemplate getHtemplate() {
         return htemplate;
     }

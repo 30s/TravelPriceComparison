@@ -26,7 +26,7 @@ public class ExtractionDataReduce extends Reducer<Text,Text,NullWritable,Text> {
 
         }
 
-        Spider.create(extractionDataSpider).thread(10).addUrl(urls.toArray(new String[urls.size()])).run();
+        Spider.create(extractionDataSpider).thread(5).addUrl(urls.toArray(new String[urls.size()])).run();
         int len = extractionDataSpider.getPageMessage().size();
         System.out.println(9999999);
         for(int i = 0; i < len; i ++){

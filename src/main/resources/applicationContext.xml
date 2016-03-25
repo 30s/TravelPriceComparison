@@ -19,9 +19,7 @@
        <qualifier value="phoenixJdbcTemplate"/> 
    </bean>
 
-   <bean id="phoenixTest" class="com.mobin.wordcount.PhoenixHBaseTest">
-      <property name="jdbcTemplate" ref="phoenixJdbcTemplate"></property>
-   </bean>
+
 <!--
     <hdp:configuration id="hadoopConfiguration" resources="classpath:/core-site.xml,classpath:/hdfs-site.xml,classpath:/mapred-site.xml,classpath:/yarn-site.xml,classpath:/hbase-site.xml">
 

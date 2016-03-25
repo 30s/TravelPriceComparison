@@ -24,7 +24,7 @@ public class CartesianReduce extends Reducer<Text,Text,Text,Text> {
             place.add(text.toString());
         }
 
-        for (int i = 1; i< 2; i ++) {
+        int i = 8;
             sbBuffer = new StringBuffer();
             for(j = 368; j < 564; j ++){
                 // System.out.println(place[i]);
@@ -38,7 +38,6 @@ public class CartesianReduce extends Reducer<Text,Text,Text,Text> {
             }
             System.out.println(place.get(i)+"666"+sbBuffer.toString());
             context.write(new Text(place.get(i)), new Text(sbBuffer.toString()));
-        }
 
     }
 }

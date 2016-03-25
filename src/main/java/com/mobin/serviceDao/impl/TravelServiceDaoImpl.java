@@ -44,7 +44,7 @@ public class TravelServiceDaoImpl implements TravelServiceDao {
         }
         int totalRecords = travelDao.getTotalRecords(SP);//获取记录的条数
         Page page = new Page(pageNum, totalRecords);
-        List<Travel> records = travelDao.findPageRecords(page.getStartIndex(),page.getPageSize(),SP);
+        List<Travel> records = travelDao.findPageRecords(page.getCurrentPageNum(),page.getPageSize(),SP);
         page.setRecords(records);
 
         return page;

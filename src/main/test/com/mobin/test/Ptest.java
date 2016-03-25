@@ -3,6 +3,7 @@ package com.mobin.test;
 import com.mobin.action.AdminAction;
 import com.mobin.action.QuartzAction;
 import com.mobin.action.SpiderAction;
+import com.mobin.dao.impl.TravelDaoImpl;
 import com.mobin.domain.Page;
 import com.mobin.domain.Travel;
 import com.mobin.serviceDao.TravelServiceDao;
@@ -14,7 +15,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.mobin.dao.TravelDao;
-import com.mobin.wordcount.PhoenixHBaseTest;
 import org.springframework.data.hadoop.hbase.HbaseTemplate;
 
 import java.io.IOException;
@@ -26,12 +26,11 @@ import java.util.Random;
 import java.util.regex.Pattern;
 
 public class Ptest {
-	@Test
-	public void ttest(){
+	/*public void ttest(){
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContextg.xml");
 		PhoenixHBaseTest phoenixHBaseTest = (PhoenixHBaseTest) context.getBean("phoenixTest");
 		phoenixHBaseTest.query();
-	}
+	}*/
 	
 	@Test
 	public void dao(){
@@ -80,18 +79,50 @@ public class Ptest {
 
 	@Test
 	public void action() throws InterruptedException, IOException, ClassNotFoundException {
-		//ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		//AdminAction adminAction = context.getBean("adminAction",AdminAction.class);
 		//adminAction.oneKeyGet();
-		SpiderAction spiderAction = new SpiderAction();
-		spiderAction.downURLByPlace("澳门");
+		SpiderAction spiderAction = context.getBean("spiderAction",SpiderAction.class);
+		spiderAction.cartesian("安庆");
 	}
+
+
+	@Test
+	public void downURLaction() throws InterruptedException, IOException, ClassNotFoundException {
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		//AdminAction adminAction = context.getBean("adminAction",AdminAction.class);
+		//adminAction.oneKeyGet();
+		SpiderAction spiderAction = context.getBean("spiderAction",SpiderAction.class);
+		spiderAction.downURLByPlace("安庆");
+	}
+
+	@Test
+	public void extractionaction() throws InterruptedException, IOException, ClassNotFoundException {
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		//AdminAction adminAction = context.getBean("adminAction",AdminAction.class);
+		//adminAction.oneKeyGet();
+		SpiderAction spiderAction = context.getBean("spiderAction",SpiderAction.class);
+		spiderAction.extractionData("安庆");
+	}
+
+
+	@Test
+	public void shuffleaction() throws InterruptedException, IOException, ClassNotFoundException {
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		//AdminAction adminAction = context.getBean("adminAction",AdminAction.class);
+		//adminAction.oneKeyGet();
+		SpiderAction spiderAction = context.getBean("spiderAction",SpiderAction.class);
+		spiderAction.cleanData("安庆");
+		spiderAction.convertData("安庆");
+	}
+
+
 
 	@Test
 	public void sortByPrice(){
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		TravelServiceDao travelDao = (TravelServiceDao) context.getBean("travelService");
-		Page page = travelDao.sortByPrice("ASC","2","2016-03-09","澳门","深圳");
+		Page page = travelDao.sortByPrice("DESC","1","2016-03-09","澳门","深圳");
 	    System.out.println(page.getRecords().get(0).getTOTALPRICE());
 	}
 
@@ -104,6 +135,23 @@ public class Ptest {
 	}
 
 	@Test
+	public void sortCostPer(){
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		TravelServiceDao travelDao = (TravelServiceDao) context.getBean("travelService");
+		Page page = travelDao.findPage("2","2016-03-09","澳门","西宁");
+		System.out.println(page.getRecords().size());
+	}
+
+
+	@Test
+	public void adminQuery(){
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		TravelServiceDao travelDao = (TravelServiceDao) context.getBean("travelService");
+		Page page = travelDao.findPage("1","all");
+		System.out.println(page.getRecords().get(0).getEP());
+	}
+
+	@Test
 	public void Quartz(){
 		QuartzAction quartzAction = new QuartzAction();
 		quartzAction.setPlace("澳门");
@@ -112,6 +160,19 @@ public class Ptest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Test
+	public void insert(){
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		TravelDao dao = context.getBean("travelDao", TravelDaoImpl.class);
+		dao.sortByPrice("DESC",1,1,"","","");
+	}
+
+	@Test
+	public void string(){
+		String s = "mobin";
+		System.out.println(s.toCharArray());
 	}
 
 }

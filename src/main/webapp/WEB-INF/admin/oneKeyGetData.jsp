@@ -26,7 +26,7 @@
     <td width="17" valign="top" background="${pageContext.request.contextPath}/admin/images/mail_leftbg.gif"><img src="${pageContext.request.contextPath}/admin/images/left-top-right.gif" width="17" height="29" /></td>
     <td valign="top" background="${pageContext.request.contextPath}/admin/images/content-bg.gif"><table width="100%" height="31" border="0" cellpadding="0" cellspacing="0" class="left_topbg" id="table2">
       <tr>
-        <td height="31"><div class="titlebt">一键爬虫</div></td>
+        <td height="31"><div class="titlebt">爬取数据</div></td>
       </tr>
     </table></td>
     <td width="16" valign="top" background="${pageContext.request.contextPath}/admin/images/mail_rightbg.gif"><img src="${pageContext.request.contextPath}/admin/images/nav-right-bg.gif" width="16" height="29" /></td>
@@ -39,24 +39,24 @@
         </tr>
       <tr>
         <td valign="middle"><span class="left_txt">
-			<div id="addSubjectForm" align="center"><!--录入试题表单-->
+			<div id="addSubjectForm" align="center">
 				<form action="QuartzSpiderAction" method="post">
 				<table border="0" cellspacing="10" cellpadding="0">
 				  <tr>
 					<td  colspan="2"><FONT color="red"><s:actionerror/></FONT></td>
 				  </tr>
-				  <tr>
 
-					<td>
-						请选择地区:<input type="text" id="city" autocomplete="off" value="澳门" name="place" onclick="this.value='';GetCityList(this);" onkeyup="selCity(event)" class="inputbox" />
-					</td>
-					  </tr>
 					<tr>
 					  <td>
-						设置爬虫周期:
-					    启动时间:<input name="hour"  type="text"/>时<input name="min" type="text"/>分
-					    循环次数:<input name="repeateCount" type="text"/>次
+						设置爬虫周期-启动时间:<input name="hour"  type="text" size="5"/>  时  <input name="min" type="text" size="5"/>分
+					    循环次数:  <input name="repeateCount" type="text" size="3"/>次
 					  </td>
+					<tr>
+
+						<td>
+							请选择地区:<input type="text" id="city" size="6" autocomplete="off" value="澳门" name="place" onclick="this.value='';GetCityList(this);" onkeyup="selCity(event)" class="inputbox" />
+						</td>
+					</tr>
 				  </tr>
 				  <tr>
 				  	<td colspan="2"><div align="center">

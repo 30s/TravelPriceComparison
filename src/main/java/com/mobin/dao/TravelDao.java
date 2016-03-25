@@ -18,4 +18,7 @@ public interface TravelDao {
 	public List<Travel> sortByHotel(int hotellevel,int currentPageNum, int pageSize, String ST, String SP, String EP);
 
 	public Boolean deleteRecordsAll();
+
+	public void update();
+
 }

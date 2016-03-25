@@ -51,9 +51,7 @@ public class TravelAction extends ActionSupport implements ModelDriven<Travel>{
 		  SP = travel.getSP();
 		  EP=travel.getEP();
 	  }else {
-		 
 		  num=ServletActionContext.getRequest().getParameter("num");
-
 		  placelevel = ServletActionContext.getRequest().getParameter("placelevel");
 		  System.out.println(placelevel+"3333333");
           hotellevel = ServletActionContext.getRequest().getParameter("hotellevel");
@@ -61,7 +59,6 @@ public class TravelAction extends ActionSupport implements ModelDriven<Travel>{
 		  
 		  SP =ServletActionContext.getRequest().getParameter("SP");
 		 // SP= new String(SP.getBytes("iso8859-1"),"UTF-8");
-
 		  EP=ServletActionContext.getRequest().getParameter("EP");
 		 // EP= new String(EP.getBytes("iso8859-1"),"UTF-8");
 
