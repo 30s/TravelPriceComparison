@@ -32,7 +32,6 @@ public class PutDataToHBaseDefault extends Mapper<LongWritable, Text, ImmutableB
         else if (values[8].length() == 4)
             price = values[8];
 
-        System.out.println(price);
         String rowkey = values[1]+values[2]+values[14];    //default
         String rowKeyPrice = values[1]+values[2]+price;  //price
         String rowKeyHotel = values[1]+values[2]+values[13]+new Random().nextInt();   //hotel
@@ -52,7 +51,7 @@ public class PutDataToHBaseDefault extends Mapper<LongWritable, Text, ImmutableB
         put.addColumn(Bytes.toBytes("INFO"),Bytes.toBytes("SUPPLIER"), Bytes.toBytes(values[12]));
         put.addColumn(Bytes.toBytes("INFO"),Bytes.toBytes("ROWKEYPRICE"), Bytes.toBytes(rowKeyPrice));
         put.addColumn(Bytes.toBytes("INFO"),Bytes.toBytes("ROWKEYHOTEL"), Bytes.toBytes(rowKeyHotel));
-
+        put.addColumn(Bytes.toBytes("INFO"),Bytes.toBytes("HOTELLEVEL"), Bytes.toBytes(Integer.valueOf(values[13])));
         context.write(new ImmutableBytesWritable(Bytes.toBytes(rowkey)),put);
     }
 }
