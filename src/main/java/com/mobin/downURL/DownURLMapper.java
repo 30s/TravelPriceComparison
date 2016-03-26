@@ -27,7 +27,6 @@ public class DownURLMapper extends Mapper<LongWritable,Text,Text,Text> {
             System.out.println(url);
         }
         DownURLSpider downURLSpider = new DownURLSpider(start);
-        //Spider.create(downURLSpider).addUrl(urls).run()
         Spider.create(downURLSpider).addUrl(urls).thread(10).run();//每一个出发点和目的地就去获取所有记录的URL
         for (String page_recordURL : downURLSpider.getAllPageURL()) {
             System.out.println(page_recordURL);

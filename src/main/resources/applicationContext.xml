@@ -20,12 +20,6 @@
    </bean>
 
 
-<!--
-    <hdp:configuration id="hadoopConfiguration" resources="classpath:/core-site.xml,classpath:/hdfs-site.xml,classpath:/mapred-site.xml,classpath:/yarn-site.xml,classpath:/hbase-site.xml">
-
-    </hdp:configuration>
-    -->
-
     <hdp:configuration id="hadoopConfiguration">
         fs.defaultFS=hdfs://master:9000
         hadoop.tmp.dir=/home/hadoop/hadoop-2.6.0/tmp
@@ -47,10 +41,6 @@
     <bean id="transactionManager" class="org.springframework.batch.support.transaction.ResourcelessTransactionManager"/>
     <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher" p:jobRepository-ref="jobRepository"/>
 
-<!--
- input-path="hdfs://master:9000/澳门"
-             output-path="hdfs://master:9000/澳门URL"
--->
     <!--Creating a Hadoop Job-->
     <hdp:job id="downURLSpiderJob"
              mapper="com.mobin.downURL.DownURLMapper"

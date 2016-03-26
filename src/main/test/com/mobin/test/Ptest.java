@@ -26,11 +26,7 @@ import java.util.Random;
 import java.util.regex.Pattern;
 
 public class Ptest {
-	/*public void ttest(){
-		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContextg.xml");
-		PhoenixHBaseTest phoenixHBaseTest = (PhoenixHBaseTest) context.getBean("phoenixTest");
-		phoenixHBaseTest.query();
-	}*/
+
 	
 	@Test
 	public void dao(){
@@ -48,11 +44,6 @@ public class Ptest {
 			e.printStackTrace();
 		}
 
-
-
-
-		//TravelDao travelDao = (TravelDao) context.getBean("travelDao");
-	 //   travelDao.query("澳门","黔东南","2015-12-15");
 	}
 
 	@Test

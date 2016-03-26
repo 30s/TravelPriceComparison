@@ -17,12 +17,6 @@ public class TravelServiceDaoImpl implements TravelServiceDao {
 
     private TravelDao travelDao;
 
-
-  /*  public List<Travel> query(String SP, String EP, String ST) {
-
-        return travelDao.query(SP, EP, ST);
-    }*/
-
     public Page findPage(String num, String ST, String SP, String EP) {
         int pageNum = 1;
         if(num!=null&&!"".equals(num)){

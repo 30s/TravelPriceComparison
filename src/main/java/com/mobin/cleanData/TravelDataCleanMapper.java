@@ -27,7 +27,6 @@ public class TravelDataCleanMapper extends Mapper<LongWritable, Text, Text, Text
                 String urlId = fields1[0];
                 context.write(new Text(urlId), new Text(line));
             }
-
         }
     }
 }

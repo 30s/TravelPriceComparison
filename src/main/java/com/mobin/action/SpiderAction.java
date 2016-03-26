@@ -39,8 +39,6 @@ public class SpiderAction implements org.quartz.Job{
     }
 
 
-
-
     private JobRunner downURLjobRunner;
     private JobRunner extractionDatajobRunner;
     private JobRunner cartesianjobRunner;

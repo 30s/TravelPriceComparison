@@ -90,7 +90,6 @@ public class AdminAction extends ActionSupport {
 
 	}
 
-
 	public String showData(){
 		String num=null;
 		String SP;
@@ -108,7 +107,6 @@ public class AdminAction extends ActionSupport {
 	public TravelServiceDao getService() {
 		return service;
 	}
-
 	public void setService(TravelServiceDao service) {
 		this.service = service;
 	}

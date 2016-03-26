@@ -58,13 +58,11 @@ public class ExtractionDataSpider implements PageProcessor {
                     .append(new JsonPathSelector("$.data.list.results[" + i + "].summary.supplier.name")
                             .select(page.getRawText()) + "\t");
             pageMessage.add(message.toString());
-            // page.putField("trale",message);
         }
 
     }
 
     public Site getSite() {
-        // TODO Auto-generated method stub
         return site;
     }
 

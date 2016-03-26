@@ -12,9 +12,6 @@ import java.util.Random;
 
 /**
  * Created by hadoop on 3/10/16.
- * ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
- Job job = context.getBean("putDataToHBaseJob", Job.class);
- JobRunner jobRunner = context.getBean("putDataToHBaseJobRunner",JobRunner.class);
  */
 public class PutDataToHBaseDefault extends Mapper<LongWritable, Text, ImmutableBytesWritable, Put> {
 

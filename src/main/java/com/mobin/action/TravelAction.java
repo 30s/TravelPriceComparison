@@ -83,13 +83,11 @@ public class TravelAction extends ActionSupport implements ModelDriven<Travel>{
 
 	  page.setUri("travelAction.action");
 	  ServletActionContext.getRequest().setAttribute("page", page);
-	  
 	  return SUCCESS;
   }
 
 
 	public Travel getModel() {
-		// TODO Auto-generated method stub
 		return travel;
 	}
 

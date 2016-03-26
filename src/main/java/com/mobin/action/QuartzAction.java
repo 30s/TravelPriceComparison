@@ -28,8 +28,6 @@ public class QuartzAction extends ActionSupport{
     private static  Date date = null;
 
 
-
-
     public String execute() throws Exception {
         System.out.println(222);
         Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
