@@ -3,8 +3,6 @@
 所以对表进行了拆分，在HBase中存在有4张表（TRAVEL表，PRICE表，HOTEL表，COSTPER表），表的设计如下：
 * TRAVEL表<br/> 
   <img src="https://github.com/hadoop-mobin/TravelProject/blob/master/TRAVEL%E8%A1%A8.png" width="600" height="310"/>  
-
-
 >TRAVEL表中存储了旅游信息的所有信息，是旅游信息中的总表。
 * COSTER表<br/>
   <img src="https://github.com/hadoop-mobin/TravelProject/blob/master/COSTPER%E8%A1%A8.png" width="600" height="310"/>
