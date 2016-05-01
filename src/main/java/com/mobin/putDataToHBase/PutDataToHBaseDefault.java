@@ -1,20 +1,16 @@
 package com.mobin.putDataToHBase;
-
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-
 import java.io.IOException;
 import java.util.Random;
-
 /**
  * Created by hadoop on 3/10/16.
  */
 public class PutDataToHBaseDefault extends Mapper<LongWritable, Text, ImmutableBytesWritable, Put> {
-
     protected void map(LongWritable key, Text value,
                        Context context)
             throws IOException, InterruptedException {
@@ -28,10 +24,9 @@ public class PutDataToHBaseDefault extends Mapper<LongWritable, Text, ImmutableB
             price = "0"+values[8];
         else if (values[8].length() == 4)
             price = values[8];
-
-        String rowkey = values[1]+values[2]+values[14];    //default
-        String rowKeyPrice = values[1]+values[2]+price;  //price
-        String rowKeyHotel = values[1]+values[2]+values[13]+new Random().nextInt();   //hotel
+        String rowkey = values[1]+values[2]+values[14]; //default
+        String rowKeyPrice = values[1]+values[2]+price; //price
+        String rowKeyHotel = values[1]+values[2]+values[13]+new Random().nextInt(); //hotel
         Put put = new Put(Bytes.toBytes(rowkey));
         put.addColumn(Bytes.toBytes("INFO"),Bytes.toBytes("URL"), Bytes.toBytes(values[0]));
         put.addColumn(Bytes.toBytes("INFO"),Bytes.toBytes("SP"), Bytes.toBytes(values[1]));
@@ -52,3 +47,6 @@ public class PutDataToHBaseDefault extends Mapper<LongWritable, Text, ImmutableB
         context.write(new ImmutableBytesWritable(Bytes.toBytes(rowkey)),put);
     }
 }
+
+
+
