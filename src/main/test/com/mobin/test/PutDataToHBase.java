@@ -1,7 +1,5 @@
 package com.mobin.test;
-
 import java.io.IOException;
-
 import com.mobin.putDataToHBase.PutDataToHBaseDefault;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
@@ -13,9 +11,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.hadoop.hbase.HbaseTemplate;
-
-
-//将出发点  目的地  综合指标作为RowKey
+//将出发点 目的地 综合指标作为RowKey
 public class PutDataToHBase {
 	public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
 		final String INPUT_PATH= "hdfs://master:9000/安庆ConvertData/part-r-00000";
@@ -33,5 +29,4 @@ public class PutDataToHBase {
 		job.setOutputFormatClass(TableOutputFormat.class);
 		System.exit(job.waitForCompletion(true)?1:0);
 	}
-
 }
