@@ -42,7 +42,6 @@ public class ExtractionDataSpider implements PageProcessor {
                     .append(new JsonPathSelector("$.data.list.results[" + i + "].details.tripTime")
                             .select(page.getRawText()) + "\t")
 
-
                     .append(new JsonPathSelector("$.data.list.results[" + i + "].totalPrice")
                             .select(page.getRawText()) + "\t")
 
