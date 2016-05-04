@@ -6,9 +6,11 @@ import org.apache.hadoop.mapreduce.Reducer;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
+import us.codecraft.webmagic.monitor.SpiderMonitor;
 import us.codecraft.webmagic.processor.PageProcessor;
 import us.codecraft.webmagic.selector.JsonPathSelector;
 
+import javax.management.JMException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +28,13 @@ public class ExtractionDataReduce extends Reducer<Text, Text, NullWritable, Text
         List<String> urls = new ArrayList<String>();
 
         for (Text url : values) {
-            System.out.println(url);
             urls.add(url.toString());
         }
 
-
-        Spider.create(new PageProcessor() {
+       Spider.create(new PageProcessor() {
             private Site site = Site.me().setRetryTimes(3).setTimeOut(1000);
-            private  StringBuffer message;
+            private StringBuffer message;
+
             public void process(Page page) {
 
                 int size = new JsonPathSelector("$.data.list.results[*]").selectList(
@@ -78,9 +79,9 @@ public class ExtractionDataReduce extends Reducer<Text, Text, NullWritable, Text
 
                             .append(new JsonPathSelector("$.data.list.results[" + i + "].summary.supplier.name")
                                     .select(page.getRawText()) + "\t");
-                   // pageMessage.add(message.toString());
+                    // pageMessage.add(message.toString());
                     try {
-                        context.write(NullWritable.get(),new Text(message.toString()));
+                        context.write(NullWritable.get(), new Text(message.toString()));
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (InterruptedException e) {
@@ -96,12 +97,15 @@ public class ExtractionDataReduce extends Reducer<Text, Text, NullWritable, Text
             }
         }).thread(5).addUrl(urls.toArray(new String[urls.size()])).run();
 
-//        Spider.create(extractionDataSpider).thread(5).addUrl(urls.toArray(new String[urls.size()])).run();
-//        int len = extractionDataSpider.getPageMessage().size();
-//        System.out.println(9999999);
-//        for (int i = 0; i < len; i++) {
-//            System.out.println(extractionDataSpider.getPageMessage().get(i));
-//            context.write(NullWritable.get(), new Text(extractionDataSpider.getPageMessage().get(i)));
-//        }
+        // Spider spider = Spider.create(extractionDataSpider).thread(5).addUrl(urls.toArray(new String[urls.size()]));
+        // SpiderMonitor.instance().register(spider);
+        // spider.start();
+
+        /*int len = extractionDataSpider.getPageMessage().size();
+        System.out.println(9999999);
+        for (int i = 0; i < len; i++) {
+            System.out.println(extractionDataSpider.getPageMessage().get(i));
+            context.write(NullWritable.get(), new Text(extractionDataSpider.getPageMessage().get(i)));
+        }*/
     }
 }
