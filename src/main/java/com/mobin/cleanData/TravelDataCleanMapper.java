@@ -11,20 +11,20 @@ import java.io.IOException;
  * Created by hadoop on 3/9/16.
  */
 public class TravelDataCleanMapper extends Mapper<LongWritable, Text, Text, Text> {
-    protected void map(LongWritable key, Text value,Context context)
+    protected void map(LongWritable key, Text value, Context context)
             throws IOException, InterruptedException {
 
-        String line=value.toString();
+        String line = value.toString();
 
-        if (StringUtils.contains(line, "http")){
+        if (StringUtils.contains(line, "http")) {
 
-            String fields[]=StringUtils.split(line,"\t");
+            String fields[] = StringUtils.split(line, "\t");
 
-            if (fields.length>=12) {
+            if (fields.length >= 15) {
 
                 String fields1[] = StringUtils.split(line, "?");
 
-                String urlId = fields1[0];
+                String urlId = fields1[0]+fields[1]+fields[2];
                 context.write(new Text(urlId), new Text(line));
             }
         }
