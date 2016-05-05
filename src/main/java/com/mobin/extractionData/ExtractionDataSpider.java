@@ -30,6 +30,9 @@ public class ExtractionDataSpider implements PageProcessor {
                     .append(new JsonPathSelector("$.data.qdata.realQuery")
                             .selectList(page.getRawText()) + "\t")
 
+                    .append(new JsonPathSelector("$.data.list.results[" + i + "].title")
+                            .selectList(page.getRawText()) + "\t")
+
                     .append(new JsonPathSelector("$.data.list.results[" + i + "].sights[*]")
                             .selectList(page.getRawText()) + "\t")
 
@@ -39,6 +42,9 @@ public class ExtractionDataSpider implements PageProcessor {
                     .append(new JsonPathSelector("$.data.list.results[" + i
                             + "].details.hotel").select(page.getRawText()) + "\t")
 
+                    .append(new JsonPathSelector("$.data.list.results[" + i
+                            + "].hotelGradeText").select(page.getRawText()) + "\t")
+
                     .append(new JsonPathSelector("$.data.list.results[" + i + "].details.tripTime")
                             .select(page.getRawText()) + "\t")
 
@@ -46,6 +52,12 @@ public class ExtractionDataSpider implements PageProcessor {
                             .select(page.getRawText()) + "\t")
 
                     .append(new JsonPathSelector("$.data.list.results[" + i + "].details.traffic")
+                            .select(page.getRawText()) + "\t")
+
+                    .append(new JsonPathSelector("$.data.list.results[" + i + "].trafficInfo.traffic")
+                            .select(page.getRawText()) + "\t")
+
+                    .append(new JsonPathSelector("$.data.list.results[" + i + "].trafficInfo.transfer")
                             .select(page.getRawText()) + "\t")
 
                     .append(new JsonPathSelector("$.data.list.results[" + i + "].twoLeveltype")
