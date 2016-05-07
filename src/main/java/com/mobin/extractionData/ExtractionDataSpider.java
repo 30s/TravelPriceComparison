@@ -39,11 +39,6 @@ public class ExtractionDataSpider implements PageProcessor {
                     .append(new JsonPathSelector("$.data.list.results[" + i + "].allDate")
                             .select(page.getRawText()) + "\t")
 
-                    .append(new JsonPathSelector("$.data.list.results[" + i
-                            + "].details.hotel").select(page.getRawText()) + "\t")
-
-                    .append(new JsonPathSelector("$.data.list.results[" + i
-                            + "].hotelGradeText").select(page.getRawText()) + "\t")
 
                     .append(new JsonPathSelector("$.data.list.results[" + i + "].details.tripTime")
                             .select(page.getRawText()) + "\t")
@@ -67,7 +62,10 @@ public class ExtractionDataSpider implements PageProcessor {
                             .select(page.getRawText()) + "\t")
 
                     .append(new JsonPathSelector("$.data.list.results[" + i + "].summary.supplier.name")
-                            .select(page.getRawText()) + "\t");
+                            .select(page.getRawText()) + "\t")
+
+                    .append(new JsonPathSelector("$.data.list.results[" + i
+                            + "].details.hotel").select(page.getRawText()) + "\t");
             pageMessage.add(message.toString());
         }
 
