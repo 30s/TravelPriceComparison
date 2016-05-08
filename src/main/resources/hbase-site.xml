@@ -38,4 +38,33 @@
      <value>2</value>
    </property>
 
+    <property>
+        <name>hbase.master.info.port</name>
+        <value>60010</value>
+    </property>
+    <property>
+        <name>hbase.regionserver.wal.codec</name>
+        <value>org.apache.hadoop.hbase.regionserver.wal.IndexedWALEditCodec</value>
+    </property>
+
+    <property>
+        <name>hbase.master.loadbalancer.class</name>
+        <value>org.apache.phoenix.hbase.index.balancer.IndexLoadBalancer</value>
+    </property>
+    <property>
+        <name>hbase.coprocessor.master.classes</name>
+        <value>org.apache.phoenix.hbase.index.master.IndexMasterObserver</value>
+    </property>
+
+    <property>
+        <name>hbase.bulkload.staging.dir</name>
+        <value>/tmp/hbase-staging</value>
+    </property>
+    <property>
+        <name>hbase.coprocessor.region.classes</name>
+        <value>org.apache.hadoop.hbase.security.token.TokenProvider,
+            org.apache.hadoop.hbase.security.access.AccessController,org.apache.hadoop.hbase.security.access.SecureBulkLoadEndpoint</value>
+    </property>
+
+
 </configuration>
