@@ -9,6 +9,7 @@ import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.mapreduce.*;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
+import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
@@ -56,8 +57,8 @@ public class GenerateHFile {
             put.addColumn("INFO".getBytes(), "TITLE".getBytes(), items[3].getBytes());
             put.addColumn("INFO".getBytes(), "TOUATT".getBytes(), items[4].getBytes());  //旅游景点
             put.addColumn("INFO".getBytes(), "ST".getBytes(), items[5].getBytes());
-            put.addColumn("INFO".getBytes(), "TDATA".getBytes(), items[6].getBytes());//出游天数
-            put.addColumn("INFO".getBytes(), "PRICE".getBytes(), items[7].getBytes());
+            put.addColumn("INFO".getBytes(), "TDATA".getBytes(), Bytes.toBytes(Integer.valueOf(items[6])));//出游天数
+            put.addColumn("INFO".getBytes(), "PRICE".getBytes(), Bytes.toBytes(Integer.valueOf(items[7])));  // (int)
             put.addColumn("INFO".getBytes(), "TRAFFIC".getBytes(), items[8].getBytes());//交通方式
             put.addColumn("INFO".getBytes(), "RETURN".getBytes(), items[9].getBytes());//是否往返
             put.addColumn("INFO".getBytes(), "THROUGH".getBytes(), items[10].getBytes());//是否直达
@@ -66,12 +67,12 @@ public class GenerateHFile {
             put.addColumn("INFO".getBytes(), "PROXY".getBytes(), items[13].getBytes());
             put.addColumn("INFO".getBytes(), "HOTEL".getBytes(), items[14].getBytes()); //酒店
             put.addColumn("INFO".getBytes(), "ORIGIN".getBytes(), items[15].getBytes());  //数据来源
-            put.addColumn("INFO".getBytes(), "HGRADE".getBytes(), items[16].getBytes());   //酒店级别
+            put.addColumn("INFO".getBytes(), "HGRADE".getBytes(), Bytes.toBytes(Integer.valueOf(items[16])));   //酒店级别(int)
             put.addColumn("INFO".getBytes(), "COSTPER".getBytes(), items[17].getBytes());  ////性价比
 
             Put put1 = new Put(PRICEROWKEY.getBytes());
-            put1.addColumn("INFO".getBytes(), "ST".getBytes(), items[0].getBytes());
-            put1.addColumn("INFO".getBytes(), "CPERROWKEY".getBytes(), items[0].getBytes());//性价比rowkey
+            put1.addColumn("INFO".getBytes(), "ST".getBytes(), items[5].getBytes());
+            put1.addColumn("INFO".getBytes(), "CPERROWKEY".getBytes(), ROWKEY.getBytes());//性价比rowkey
 
             map.put(rowkey,put);
             map.put(pricerowkey,put);
