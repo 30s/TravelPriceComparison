@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by hadoop on 5/2/16.
@@ -30,12 +31,8 @@ public class GenerateHFile {
             Text, ImmutableBytesWritable,Put> {
 
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-            Map<ImmutableBytesWritable,Put> map = new HashedMap();
             String line = value.toString();
             String[] items = line.split("\t");
-
-            String ROWKEY = items[1] + items[2] + items[17];
-            ImmutableBytesWritable rowkey = new ImmutableBytesWritable(ROWKEY.getBytes());
 
             String price = null;
             //将价格转换为具有相同长度的字段，这样才能达到自然排序的效果
@@ -47,17 +44,31 @@ public class GenerateHFile {
                 price = "0" + items[7];
             else if (items[7].length() == 4)
                 price = items[7];
-            String PRICEROWKEY = items[1] + "PRICE" + items[2] + price;
-            ImmutableBytesWritable pricerowkey = new ImmutableBytesWritable(PRICEROWKEY.getBytes());
-            Put put = new Put(ROWKEY.getBytes());   //ROWKEY
 
+            //数据区的行键(ROWKEY)   SP-EP-性价比
+
+
+            //数据区的行键(ROWKEY)   SP-PRICE-EP-价格-随机值
+
+            //SP-EP-COSTPER
+            String ROWKEY = items[1] + items[2] + items[17];
+            ImmutableBytesWritable rowkey = new ImmutableBytesWritable(ROWKEY.getBytes());
+
+
+
+            //出发点-目的地-DH-出游天数-性价比-ROWKEY  => //直接加WHERE
+
+
+            //出发点-目的地-DH-酒店等级-性价比-ROWKEY   ////直接加WHERE
+
+            Put put = new Put(ROWKEY.getBytes());   //ROWKEY
             put.addColumn("INFO".getBytes(), "URL".getBytes(), items[0].getBytes());
             put.addColumn("INFO".getBytes(), "SP".getBytes(), items[1].getBytes());
             put.addColumn("INFO".getBytes(), "EP".getBytes(), items[2].getBytes());
             put.addColumn("INFO".getBytes(), "TITLE".getBytes(), items[3].getBytes());
             put.addColumn("INFO".getBytes(), "TOUATT".getBytes(), items[4].getBytes());  //旅游景点
             put.addColumn("INFO".getBytes(), "ST".getBytes(), items[5].getBytes());
-            put.addColumn("INFO".getBytes(), "TDATA".getBytes(), Bytes.toBytes(Integer.valueOf(items[6])));//出游天数
+            put.addColumn("INFO".getBytes(), "TDATA".getBytes(), items[6].getBytes());//出游天数
             put.addColumn("INFO".getBytes(), "PRICE".getBytes(), Bytes.toBytes(Integer.valueOf(items[7])));  // (int)
             put.addColumn("INFO".getBytes(), "TRAFFIC".getBytes(), items[8].getBytes());//交通方式
             put.addColumn("INFO".getBytes(), "RETURN".getBytes(), items[9].getBytes());//是否往返
@@ -70,18 +81,41 @@ public class GenerateHFile {
             put.addColumn("INFO".getBytes(), "HGRADE".getBytes(), Bytes.toBytes(Integer.valueOf(items[16])));   //酒店级别(int)
             put.addColumn("INFO".getBytes(), "COSTPER".getBytes(), items[17].getBytes());  ////性价比
 
+
+
+            //出发点-目的地-价格-随机值
+            //SP-EP-PRICE-ROWKEY
+            String PRICEROWKEY = items[1] + "PRICE" + items[2] + price + ROWKEY;
+            ImmutableBytesWritable pricerowkey = new ImmutableBytesWritable(PRICEROWKEY.getBytes());
             Put put1 = new Put(PRICEROWKEY.getBytes());
-            put1.addColumn("INFO".getBytes(), "ST".getBytes(), items[5].getBytes());
-            put1.addColumn("INFO".getBytes(), "CPERROWKEY".getBytes(), ROWKEY.getBytes());//性价比rowkey
+            put1.addColumn("INDEX".getBytes(),"IX".getBytes(),Bytes.toBytes(0));
 
-            map.put(rowkey,put);
-            map.put(pricerowkey,put);
 
-           // KeyValue kv = new KeyValue(ROWKEY.getBytes(), "INFO".getBytes(), "USERID".getBytes(), items[1].getBytes());
+
+            //SP-EP-DH-TDATA-HGRADE-PRICE-ROWKEY
+            //出发点-目的地-DH-出游天数-酒店等级-价格-ROWKEY
+            String PRROWKEY = items[1] + items[2] + "DH" + items[6] + items[16] + price +"-"+ ROWKEY;
+            ImmutableBytesWritable _PRROWKEY = new ImmutableBytesWritable(PRROWKEY.getBytes());
+            Put _PRROWKEYPut = new Put(PRROWKEY.getBytes());
+            _PRROWKEYPut.addColumn("INDEX".getBytes(),"IX".getBytes(),Bytes.toBytes(0));
+
+            //SP-EP-DH-TDATA-HGRADE-COSTPER-ROWKEY
+            //出发点-目的地-DH-出游天数-酒店等级-性价比-ROWKEY
+            String DHROWKEY = items[1] + items[2] + "DH" + items[6] + items[16] + items[17] + "-" + ROWKEY;
+            ImmutableBytesWritable _DHROWKEY = new ImmutableBytesWritable(DHROWKEY.getBytes());
+            Put _DHROWKEYPut = new Put(DHROWKEY.getBytes());
+            _DHROWKEYPut.addColumn("INDEX".getBytes(),"IX".getBytes(),Bytes.toBytes(0));
+
+
+
+
+
             //if(null != kv){
 
-                context.write(rowkey,put);
-                context.write(pricerowkey,put1);
+                context.write(rowkey,put);   //基于性价比
+                context.write(pricerowkey,put1);   ////基于价格
+                context.write(_DHROWKEY,_DHROWKEYPut);  //多列组合查询
+                context.write(_PRROWKEY,_PRROWKEYPut);   //多列组合查询
 
 
            //  }
