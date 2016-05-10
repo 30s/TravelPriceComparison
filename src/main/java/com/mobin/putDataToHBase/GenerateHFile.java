@@ -83,28 +83,33 @@ public class GenerateHFile {
 
 
 
+
             //出发点-目的地-价格-随机值
             //SP-EP-PRICE-ROWKEY
             String PRICEROWKEY = items[1] + "PRICE" + items[2] + price + ROWKEY;
             ImmutableBytesWritable pricerowkey = new ImmutableBytesWritable(PRICEROWKEY.getBytes());
             Put put1 = new Put(PRICEROWKEY.getBytes());
-            put1.addColumn("INDEX".getBytes(),"IX".getBytes(),Bytes.toBytes(0));
+            KeyValue kv = new KeyValue(PRICEROWKEY.getBytes(),"INDEX".getBytes(),"IX".getBytes());
+            put1.add(kv);
 
 
 
             //SP-EP-DH-TDATA-HGRADE-PRICE-ROWKEY
-            //出发点-目的地-DH-出游天数-酒店等级-价格-ROWKEY
-            String PRROWKEY = items[1] + items[2] + "DH" + items[6] + items[16] + price +"-"+ ROWKEY;
+            //出发点-DH-目的地-出游天数-酒店等级-价格-ROWKEY
+            String PRROWKEY = items[1] + "DH" + items[2]  + items[6] + "PRICE" + items[16]  +price +"-"+ ROWKEY;
             ImmutableBytesWritable _PRROWKEY = new ImmutableBytesWritable(PRROWKEY.getBytes());
             Put _PRROWKEYPut = new Put(PRROWKEY.getBytes());
             _PRROWKEYPut.addColumn("INDEX".getBytes(),"IX".getBytes(),Bytes.toBytes(0));
+            KeyValue kv1 = new KeyValue(PRROWKEY.getBytes(),"INDEX".getBytes(),"IX".getBytes());
+            _PRROWKEYPut.add(kv1);
 
-            //SP-EP-DH-TDATA-HGRADE-COSTPER-ROWKEY
+            //SP-DH-EP-TDATA-HGRADE-COSTPER-ROWKEY
             //出发点-目的地-DH-出游天数-酒店等级-性价比-ROWKEY
-            String DHROWKEY = items[1] + items[2] + "DH" + items[6] + items[16] + items[17] + "-" + ROWKEY;
+            String DHROWKEY = items[1]+ "DH" + items[2] + items[6] + items[16] + items[17] + "-" + ROWKEY;
             ImmutableBytesWritable _DHROWKEY = new ImmutableBytesWritable(DHROWKEY.getBytes());
             Put _DHROWKEYPut = new Put(DHROWKEY.getBytes());
-            _DHROWKEYPut.addColumn("INDEX".getBytes(),"IX".getBytes(),Bytes.toBytes(0));
+            KeyValue kv2 = new KeyValue(DHROWKEY.getBytes(),"INDEX".getBytes(),"IX".getBytes());
+            _DHROWKEYPut.add(kv2);
 
 
 
