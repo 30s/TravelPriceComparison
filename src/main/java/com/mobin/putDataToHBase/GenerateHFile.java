@@ -94,9 +94,9 @@ public class GenerateHFile {
 
 
 
-            //SP-EP-DH-TDATA-HGRADE-PRICE-ROWKEY
+            //SP-DH-EP-TDATA-HGRADE-PRICE-ROWKEY
             //出发点-DH-目的地-出游天数-酒店等级-价格-ROWKEY
-            String PRROWKEY = items[1] + "DH" + items[2]  + items[6] + "PRICE" + items[16]  +price +"-"+ ROWKEY;
+            String PRROWKEY = items[1] + "AAA" + items[2]  + items[6]  + items[16]  +price +"-"+ ROWKEY;
             ImmutableBytesWritable _PRROWKEY = new ImmutableBytesWritable(PRROWKEY.getBytes());
             Put _PRROWKEYPut = new Put(PRROWKEY.getBytes());
             _PRROWKEYPut.addColumn("INDEX".getBytes(),"IX".getBytes(),Bytes.toBytes(0));
@@ -105,11 +105,48 @@ public class GenerateHFile {
 
             //SP-DH-EP-TDATA-HGRADE-COSTPER-ROWKEY
             //出发点-目的地-DH-出游天数-酒店等级-性价比-ROWKEY
-            String DHROWKEY = items[1]+ "DH" + items[2] + items[6] + items[16] + items[17] + "-" + ROWKEY;
+            String DHROWKEY = items[1]+ "BBB" + items[2] + items[6] + items[16] + items[17] + "-" + ROWKEY;
             ImmutableBytesWritable _DHROWKEY = new ImmutableBytesWritable(DHROWKEY.getBytes());
             Put _DHROWKEYPut = new Put(DHROWKEY.getBytes());
             KeyValue kv2 = new KeyValue(DHROWKEY.getBytes(),"INDEX".getBytes(),"IX".getBytes());
             _DHROWKEYPut.add(kv2);
+
+            //按酒店等级分组并按性价比排序
+            //SP-HOTEL-EP-HGRADE-COSTPER-ROWKEY
+            //出发点-HOTEL-目的地-酒店等级-性价比-ROWKEY
+            String HOTELROWKEY = items[1]+ "CCC" + items[2] + items[16] + items[17] + "-" + ROWKEY;
+            ImmutableBytesWritable _HOTELROWKEY = new ImmutableBytesWritable(HOTELROWKEY.getBytes());
+            Put _HOTELROWKEYPut = new Put(HOTELROWKEY.getBytes());
+            KeyValue kv3 = new KeyValue(HOTELROWKEY.getBytes(),"INDEX".getBytes(),"IX".getBytes());
+            _DHROWKEYPut.add(kv3);
+
+
+            //按酒店等级分组并按性价比排序
+            //SP-HOTEL-EP-HGRADE-COSTPER-ROWKEY
+            //出发点-HOTEL-目的地-出游天数-性价比-ROWKEY
+            String TDATAROWKEY = items[1]+ "DDD" + items[2] + items[6] + items[17] + "-" + ROWKEY;
+            ImmutableBytesWritable _TDATAROWKEY = new ImmutableBytesWritable(TDATAROWKEY.getBytes());
+            Put _TDATAROWKEYPut = new Put(TDATAROWKEY.getBytes());
+            KeyValue kv4 = new KeyValue(TDATAROWKEY.getBytes(),"INDEX".getBytes(),"IX".getBytes());
+            _DHROWKEYPut.add(kv4);
+
+
+            //SP-HOTEL-EP-HGRADE-COSTPER-ROWKEY
+            //出发点-HOTEL-目的地-出游天数-价格-ROWKEY
+            String TDATAROWKEY1 = items[1]+ "EEE" + items[2] + items[6] + price+ "-" + ROWKEY;
+            ImmutableBytesWritable _TDATAROWKEY1 = new ImmutableBytesWritable(TDATAROWKEY1.getBytes());
+            Put _TDATAROWKEY1Put = new Put(TDATAROWKEY1.getBytes());
+            KeyValue kv5 = new KeyValue(TDATAROWKEY1.getBytes(),"INDEX".getBytes(),"IX".getBytes());
+            _DHROWKEYPut.add(kv5);
+
+
+            //SP-HOTEL-EP-HGRADE-COSTPER-ROWKEY
+            //出发点-HOTEL-目的地-酒店等级-价格-ROWKEY
+            String HOTELROWKEY1 = items[1]+ "FFF" + items[2] + items[6] + price+ "-" + ROWKEY;
+            ImmutableBytesWritable _HOTELROWKEY1 = new ImmutableBytesWritable(HOTELROWKEY1.getBytes());
+            Put _HOTELROWKEY11Put = new Put(HOTELROWKEY1.getBytes());
+            KeyValue kv6 = new KeyValue(HOTELROWKEY1.getBytes(),"INDEX".getBytes(),"IX".getBytes());
+            _DHROWKEYPut.add(kv6);
 
 
 
