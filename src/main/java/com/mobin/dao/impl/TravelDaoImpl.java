@@ -21,14 +21,59 @@ public class TravelDaoImpl implements TravelDao {
             return false;
     }
 
-    public List findPageRecords(int currentPageNum, int pageSize, String ST, String SP, String EP) {
+    //首页的分页
+    public List findPageRecords(int currentPageNum, int pageSize, String ST, String SP, String EP,int HGRADE,String TDATA) {
         //得到每种不同条件查询的起始值
-        int startkey = jdbcTemplate.queryForObject("SELECT PAGEID FROM MOBINCOSTPER WHERE ST >= ? AND ROWKEY LIKE ? LIMIT 1", Integer.class, ST, SP + EP + "%")+(currentPageNum - 1) * pageSize;
-        int endkey = jdbcTemplate.queryForObject("SELECT PAGEID FROM MOBINCOSTPER WHERE ST >= ? AND ROWKEY LIKE ? LIMIT 1", Integer.class, ST, SP + EP + "%")+(currentPageNum) * pageSize;
+        System.out.println(currentPageNum);
+        System.out.println(pageSize);
+        System.out.println(ST);
+        System.out.println(SP);
+        System.out.println(EP);
+        int startkey;
+        int endkey;
+        //查询都是基于行键
+       // String SQL = "SELECT RECORDID FROM TRAVEL WHERE ROWKEY LIKE ? AND ST >= ? " + ("".equals(HGRADE) ? "" : "AND HGRADE = ?") + ("".equals(TDATA) ? "" : "AND TDATA = ?") + "LIMIT 1";
+        if("".equals(HGRADE) && "".equals(TDATA)){
+            System.out.println(14);
+             startkey= jdbcTemplate.queryForObject("SELECT RECORDID FROM TRAVEL WHERE ROWKEY LIKE ? AND ST >= ? LIMIT 1", Integer.class, SP + EP + "%",ST)+(currentPageNum - 1) * pageSize;
+             endkey = jdbcTemplate.queryForObject("SELECT RECORDID FROM TRAVEL WHERE ROWKEY LIKE ? AND ST >= ?  LIMIT 1", Integer.class,SP + EP + "%", ST )+(currentPageNum) * pageSize;
+        }else if("".equals(HGRADE)){
+            System.out.println(24);
+            startkey= jdbcTemplate.queryForObject("SELECT RECORDID FROM TRAVEL WHERE ROWKEY LIKE ? AND ST >= ? AND TDATA = ? LIMIT 1", Integer.class, SP + EP + "%",ST,TDATA)+(currentPageNum - 1) * pageSize;
+            endkey = jdbcTemplate.queryForObject("SELECT RECORDID FROM TRAVEL WHERE ROWKEY LIKE ? AND ST >= ? AND TDATA = ? LIMIT 1", Integer.class,SP + EP + "%", ST,TDATA)+(currentPageNum) * pageSize;
+        }else if("".equals(TDATA)){
+            System.out.println(34+"   "+HGRADE+"  "+ST);
+            startkey= jdbcTemplate.queryForObject("SELECT RECORDID FROM TRAVEL WHERE ROWKEY LIKE ? AND ST >= ? AND HGRADE = ? LIMIT 1", Integer.class, SP + EP + "%",ST,HGRADE)+(currentPageNum - 1) * pageSize;
+            endkey = jdbcTemplate.queryForObject("SELECT RECORDID FROM TRAVEL WHERE ROWKEY LIKE ? AND ST >= ? AND HGRADE = ? LIMIT 1", Integer.class,SP + EP + "%", ST,HGRADE)+(currentPageNum) * pageSize;
+        }else {
+            System.out.println(44);
+            startkey= jdbcTemplate.queryForObject("SELECT RECORDID FROM TRAVEL WHERE ROWKEY LIKE ? AND ST >= ? AND HGRADE = ? AND TDATA = ? LIMIT 1", Integer.class, SP + EP + "%",ST,HGRADE,TDATA)+(currentPageNum - 1) * pageSize;
+            endkey = jdbcTemplate.queryForObject("SELECT RECORDID FROM TRAVEL WHERE ROWKEY LIKE ? AND ST >= ? AND HGRADE = ? AND TDATA = ? LIMIT 1", Integer.class,SP + EP + "%", ST,HGRADE,TDATA)+(currentPageNum) * pageSize;
+        }
+        //String rowkey = jdbcTemplate.queryForObject("SELECT * FROM TRAVELS WHERE ROWKEY LIKE 'aomenhangzhou%'")
+        String sql = "SELECT URL,SP,EP,TITLE,TOUATT,ST,TDATA,PRICE,TRAFFIC,RETURN,TTYPE,IMAGE,PROXY,HOTEL,ORIGIN FROM TRAVEL WHERE ROWKEY LIKE ? AND RECORDID >= ? AND RECORDID < ?";
+        List<Travel> travels = commonSort(sql,SP + EP + "%",startkey,endkey);
+        return travels;
+    }
+
+
+
+    //首页的分页
+    public List findPageRecords1(int currentPageNum, int pageSize, String ST, String SP, String EP) {
+        //得到每种不同条件查询的起始值
+        System.out.println(currentPageNum);
+        System.out.println(pageSize);
+        System.out.println(ST);
+        System.out.println(SP);
+        System.out.println(EP);
+        //查询都是基于行键
+        int startkey = jdbcTemplate.queryForObject("SELECT RECORDID FROM TRAVEL WHERE ROWKEY LIKE ? AND ST >= ? LIMIT 1", Integer.class, SP + EP + "%",ST)+(currentPageNum - 1) * pageSize;
+        int endkey = jdbcTemplate.queryForObject("SELECT RECORDID FROM TRAVEL WHERE ROWKEY LIKE ? AND ST >= ?  LIMIT 1", Integer.class,SP + EP + "%", ST )+(currentPageNum) * pageSize;
 
         //TODO RENAME TRAVELCOSTPER
-        String sql = "SELECT URL,SP,EP,ST,ET,SIGHTS,ALLDATE,HOTEL,TOTALPRICE,TRAFFIC,TRAVELTYPE,SUPPLIER,IMAGE FROM MOBIN  WHERE ROWKEY IN (SELECT ROWKEY FROM MOBINCOSTPER WHERE PAGEID >= ? AND PAGEID < ?)";
-        List<Travel> travels = commonSort(sql,startkey,endkey);
+        //String rowkey = jdbcTemplate.queryForObject("SELECT * FROM TRAVELS WHERE ROWKEY LIKE 'aomenhangzhou%'")
+        String sql = "SELECT URL,SP,EP,TITLE,TOUATT,ST,TDATA,PRICE,TRAFFIC,RETURN,TTYPE,IMAGE,PROXY,HOTEL,ORIGIN FROM TRAVEL WHERE ROWKEY LIKE ? AND RECORDID >= ? AND RECORDID < ?";
+        List<Travel> travels = commonSort(sql,SP + EP + "%",startkey,endkey);
         return travels;
     }
 
@@ -53,7 +98,7 @@ public class TravelDaoImpl implements TravelDao {
                     public Travel mapRow(ResultSet rs, int rowNum)
                             throws SQLException {
                         Travel travel = new Travel();
-                        travel.setSUPPLIER(rs.getString("SUPPLIER"));
+                        travel.setORIGIN(rs.getString("ORIGIN"));
                         travel.setSP(rs.getString("SP"));
                         travel.setEP(rs.getString("EP"));
                         return travel;
@@ -63,7 +108,7 @@ public class TravelDaoImpl implements TravelDao {
     }
 
     public int getTotalRecords(String ST, String SP, String EP) {
-        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM TRAVELS WHERE ST >= ? AND ROWKEY LIKE ?", Integer.class, ST, SP + EP + "%");
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM TRAVEL WHERE ST >= ? AND ROWKEY LIKE ?", Integer.class, ST, SP + EP + "%");
     }
 
     public int getTotalRecords(String SP) {
@@ -94,7 +139,7 @@ public class TravelDaoImpl implements TravelDao {
         System.out.println(rowkeysql);
         System.out.println(startkey+"rowkey....................................");
         System.out.println(endkey);
-        List<Travel> travels = commonSort(rowkeysql,startkey,endkey);
+        List<Travel> travels = commonSort(rowkeysql,SP + EP + "%",startkey,endkey);
         return travels;
     }
 
@@ -104,7 +149,7 @@ public class TravelDaoImpl implements TravelDao {
        int startkey = jdbcTemplate.queryForObject("SELECT PAGEID FROM MOBINHOTEL WHERE ROWKEYHOTEL LIKE ? AND ST=? AND HOTELLEVEL=? LIMIT 1", Integer.class,SP+EP+"%",ST,hotellevel)+(currentPageNum - 1) * pageSize;
        int endkey = jdbcTemplate.queryForObject("SELECT PAGEID FROM MOBINHOTEL WHERE ROWKEYHOTEL LIKE ? AND ST=? AND HOTELLEVEL=? LIMIT 1", Integer.class,SP+EP+"%",ST,hotellevel)+(currentPageNum) * pageSize;
         String sql = "SELECT URL,SP,EP,ST,ET,SIGHTS,ALLDATE,HOTEL,TOTALPRICE,TRAFFIC,TRAVELTYPE,SUPPLIER,IMAGE FROM MOBIN WHERE ROWKEY IN (SELECT ROWKEY FROM MOBINHOTEL WHERE PAGEID >= ? AND PAGEID < ?)";
-        List<Travel> travels = commonSort(sql,startkey,endkey);
+        List<Travel> travels = commonSort(sql,SP + EP + "%",startkey,endkey);
         return travels;
     }
 
@@ -118,7 +163,7 @@ public class TravelDaoImpl implements TravelDao {
     }
 
     //分页查询结果共用部分
-    public List<Travel> commonSort(String sql,int startkey,int endkey){
+    public List<Travel> commonSort(String sql,String rowkey,int startkey,int endkey){
         System.out.println(startkey);
         System.out.println(endkey);
         System.out.println(sql);
@@ -130,7 +175,7 @@ public class TravelDaoImpl implements TravelDao {
                        return  packingProerty(rs,rowNum);
                     }
 
-                }, startkey,endkey);
+                }, rowkey,startkey,endkey);
         return  travels;
     }
 
@@ -138,19 +183,25 @@ public class TravelDaoImpl implements TravelDao {
     public Travel packingProerty(ResultSet rs,int rowNum){
         Travel travel = new Travel();
         try {
+            //URL,SP,EP,TITLE,TOUATT,ST,TDATA,PRICE,TRAFFIC,RETURN,TTYPE,IMAGE,PROXY,HOTEL,ORIGIN
             travel.setURL(rs.getString("URL"));
             travel.setSP(rs.getString("SP"));
             travel.setEP(rs.getString("EP"));
+
+            travel.setTITLE(rs.getString("TITLE"));
+            travel.setTOUATT(rs.getString("TOUATT"));
             travel.setST(rs.getString("ST"));
-            travel.setET(rs.getString("ET"));
-            travel.setSIGHTS(rs.getString("SIGHTS"));
-            travel.setALLDATE(rs.getString("ALLDATE"));
-            travel.setHOTEL(rs.getString("HOTEL"));
-            travel.setTOTALPRICE(rs.getString("TOTALPRICE"));
+            travel.setTDATA(rs.getString("TDATA"));
+
+            travel.setPRICE(rs.getString("PRICE"));
             travel.setTRAFFIC(rs.getString("TRAFFIC"));
+            travel.setRETURN(rs.getString("RETURN"));
+
+            travel.setTTYPE(rs.getString("TTYPE"));
             travel.setIMAGE(rs.getString("IMAGE"));
-            travel.setTRAVELTYPE(rs.getString("TRAVELTYPE"));
-            travel.setSUPPLIER(rs.getString("SUPPLIER"));
+            travel.setPROXY(rs.getString("PROXY"));
+            travel.setHOTEL(rs.getString("HOTEL"));
+            travel.setORIGIN(rs.getString("ORIGIN"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
