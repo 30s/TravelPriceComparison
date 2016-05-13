@@ -2,6 +2,7 @@ package com.mobin.convert;
 
 import com.github.stuxuhai.jpinyin.PinyinFormat;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
+import com.mobin.util.TST;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
@@ -9,11 +10,10 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by hadoop on 3/9/16.
@@ -22,6 +22,25 @@ public class ConvertMapper extends Mapper<LongWritable, Text, NullWritable, Text
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat f = new SimpleDateFormat("yy年MM月dd日");
 
+    private InputStream inputStream;
+    private Properties properties;
+    private TST<String> tst;
+    private Text valueText;
+
+
+    protected void setup(Mapper<LongWritable, Text, NullWritable, Text>.Context context)
+            throws IOException, InterruptedException {
+        tst=new TST<String>();
+        valueText=new Text();
+        inputStream=getClass().getResourceAsStream("/interest.properties");
+        properties=new Properties();
+        properties.load(inputStream);
+        Set<String> stringPropertyNames = properties.stringPropertyNames();
+        for (String intresting : stringPropertyNames) {
+            tst.put(intresting, properties.getProperty(intresting));
+        }
+
+    }
 
 
     protected void map(LongWritable key, Text value,
@@ -29,6 +48,7 @@ public class ConvertMapper extends Mapper<LongWritable, Text, NullWritable, Text
             throws IOException, InterruptedException {
         String[] _info = null;
         String[] info = value.toString().split("\t");
+        place(info[4].replaceAll("[\\[\\]]", "").split(","));
         try {
             _info = change(info[5]);//
         } catch (ParseException e) {
@@ -40,9 +60,9 @@ public class ConvertMapper extends Mapper<LongWritable, Text, NullWritable, Text
         String hotellevel = hoteled(info[14]);//
         double _traffic = traffic(info[8]);  //
         double _sight = info[4].substring(1, info[4].length() - 1).split(",").length * 0.3;//
-        double total = (_hotel + _traffic + _sight+555) / Integer.valueOf(info[7]);//
+        double total = (_hotel + _traffic + _sight) / Integer.valueOf(info[7]);//
         StringBuffer sb = new StringBuffer();
-        String values = sb
+        String values = sb    //将Jpingyin的jar包放到各节点的Hadoop包目录下，否则会出现couldnotfoundclass错误
                 .append(info[0]).append("\t")
                 //出发点
                 .append(PinyinHelper.convertToPinyinString(info[1].replaceAll("[\\[\\]]", ""),"", PinyinFormat.WITHOUT_TONE)).append("\t")
@@ -50,10 +70,12 @@ public class ConvertMapper extends Mapper<LongWritable, Text, NullWritable, Text
                 .append(PinyinHelper.convertToPinyinString(info[2].replaceAll("[\\[\\]]", ""),"", PinyinFormat.WITHOUT_TONE)).append("\t")
                 //标题
                 .append(info[3].replaceAll("[\\[\\]]", "")).append("\t")
+                //目的地
+                .append(info[4].replaceAll("[\\[\\]]", "")).append("\t")
                 //出发时间
                 .append(String.valueOf(_info[0])).append("\t")
                 //结束时间
-                .append(String.valueOf(_info[1])).append("\t")
+                //.append(String.valueOf(_info[1])).append("\t")
 
                 //出游天数
                 .append(info[6]).append("\t")
@@ -71,7 +93,7 @@ public class ConvertMapper extends Mapper<LongWritable, Text, NullWritable, Text
                 .append(info[12]).append("\t")
                 //代理
                 .append(info[13]).append("\t")
-                //酒店级别
+                //酒店
                 .append(info[14]).append("\t")
                 //数据来源
                 .append("去哪儿网").append("\t")
@@ -159,5 +181,18 @@ public class ConvertMapper extends Mapper<LongWritable, Text, NullWritable, Text
         }
         return _traffic;
     }
+
+
+    public int place(String[] traffic) {
+        int count = 0;
+        for(String s : traffic) {
+            String p = PinyinHelper.convertToPinyinString(s,"",PinyinFormat.WITHOUT_TONE);
+            String i = tst.get(p);
+            if(i != null)
+                  count ++;
+        }
+        return  count;
+    }
+
 }
 
