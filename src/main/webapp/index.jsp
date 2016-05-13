@@ -1,189 +1,270 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
 
-<!DOCTYPE html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<title>Journey a Travel Category Flat Bootstarp Responsive Website Template | Home :: w3layouts</title>
+<base href="<%=basePath%>">
 
-<link href="css/search/style1.css" rel='stylesheet' type='text/css' media="all" />
-<!--theme-style-->
-<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />	
-<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
-<!--//theme-style-->
+<title>BusinessNews - Business</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
 
+<!--[if lt IE 9]>
+<![endif]-->
 
+<link rel="stylesheet" href="layout/style.css" type="text/css" />
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:400,700"
+	rel="stylesheet" type="text/css" />
+<link
+	href="http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700"
+	rel="stylesheet" type="text/css" />
+<link
+	href="http://fonts.googleapis.com/css?family=Droid+Serif:400,400italic"
+	rel="stylesheet" type="text/css" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- PrettyPhoto start -->
+<link rel="stylesheet"
+	href="layout/plugins/prettyphoto/css/prettyPhoto.css" type="text/css" />
+<!-- PrettyPhoto end -->
+
+<!-- jQuery tools start -->
+<!-- jQuery tools end -->
+
+<!-- Calendar start -->
+<link rel="stylesheet" href="layout/plugins/calendar/calendar.css"
+	type="text/css" />
+<!-- Calendar end -->
+
+<!-- ScrollTo start -->
+<!-- ScrollTo end -->
+
+<!-- MediaElements start -->
+<link rel="stylesheet"
+	href="layout/plugins/video-audio/mediaelementplayer.css" />
+<!-- MediaElements end -->
+
+<!-- FlexSlider start -->
+<link rel="stylesheet" href="layout/plugins/flexslider/flexslider.css"
+	type="text/css" />
+<!-- FlexSlider end -->
+
+<!-- iButtons start -->
+<link rel="stylesheet"
+	href="layout/plugins/ibuttons/css/jquery.ibutton.css" type="text/css" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="Journey Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template, 
-Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
-<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-<!-- web-font -->
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-<!-- web-font -->
-<!-- js -->
+<link rel="stylesheet" href="css/jquery-labelauty.css">
+<style>
+ul {
+	list-style-type: none;
+}
+
+li {
+	display: inline-block;
+}
+
+li {
+	margin: 10px 0;
+}
+
+input.labelauty+label {
+	font: 12px "Microsoft Yahei";
+}
+</style>
+
+
+
+
+<!-- aJax刷新筛选 -->
 <script src="js/jquery.min.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-<!-- js -->
-<!-- start-smoth-scrolling -->
-<script type="text/javascript" src="js/move-top.js"></script>
-<script type="text/javascript" src="js/easing.js"></script>
-<script type="text/javascript">
-			jQuery(document).ready(function($) {
-				$(".scroll").click(function(event){		
-					event.preventDefault();
-					$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
-				});
+<script type="text/javascript" src="js/mainContent.js" charset="utf-8"></script>
+
+<!-- aJax刷新筛选end -->
+
+</head>
+
+<body>
+	<div class="wrapper sticky_footer">
+		<!-- HEADER BEGIN -->
+		<header>
+		<div id="header">
+			<jsp:include page="head.jsp" flush="true" />
+		</div>
+		</header>
+		<!-- HEADER END -->
+
+		<!-- 复选框 -->
+
+		<div style="margin-top:40px">
+
+			<div style="margin-left:70px">
+				<div>
+					<div style="width:120px;float:left;height:56px;">
+						<h4 style="margin-top:13px;">出游天数：</h4>
+					</div>
+
+					<ul id="liDay" class="dowebok" style="margin-left:60px">
+						<li><input type="radio" name="day" value="1"
+							data-labelauty="1天&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
+						</li>
+						<li><input type="radio" name="day" value="2"
+							data-labelauty="2天&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
+						</li>
+						<li><input type="radio" name="day" value="3"
+							data-labelauty="3天&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
+						</li>
+						<li><input type="radio" name="day" value="4"
+							data-labelauty="4天&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
+						</li>
+					</ul>
+
+				</div>
+
+				<div>
+					<div style="width:120px;float:left;height:56px;">
+						<h4 style="margin-top:13px;">酒店星级：</h4>
+					</div>
+					<ul id="liHotel" class="dowebok" style="margin-left:60px">
+						<li><input type="radio" name="hotel" value="2"
+							data-labelauty="经济型&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"></li>
+						<li><input type="radio" name="hotel" value="3"
+							data-labelauty="高档型&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"></li>
+						<li><input type="radio" name="hotel" value="4"
+							data-labelauty="舒适型&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"></li>
+						<li><input type="radio" name="hotel" value="5"
+							data-labelauty="豪华型&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"></li>
+					</ul>
+				</div>
+
+				<div>
+					<div style="width:120px;float:left;height:56px;">
+						<h4 style="margin-top:13px;">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：</h4>
+					</div>
+					<ul id="liPrice" class="dowebok" style="margin-left:60px">
+						<li><input type="radio" name="sortPrice" value="HfromL"
+							data-labelauty="从高到低↓  "></li>
+						<li><input type="radio" name="sortPrice" value="LfromH"
+							data-labelauty="从低到高↑  "></li>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- CONTENT BEGIN -->
+		<div id="content" class="right_sidebar" style="margin-top:-60px;">
+			<div class="inner">
+				<div class="general_content">
+					<div class="main_content">
+						<div class="separator" style="height:30px;"></div>
+						<h2>搜索结果</h2>
+						<div class="line_4" style="margin:0px 0px 18px;"></div>
+
+
+						<!-- ---------------------------------------article_start -->
+<!-- 						<article class="block_topic_post_feature" -->
+<!-- 							style=" margin-bottom:40px"> -->
+<!-- 						<div class="f_pic"> -->
+<!-- 							<a href="news_post.html" class="general_pic_hover scale"><img -->
+<!-- 								src="images/pic_business_big.jpg" alt="" /></a> -->
+<!-- 						</div> -->
+<!-- 						<div class="content"> -->
+<!-- 							<p class="title"> -->
+<!-- 								<a href="news_post.html"><font color="red">（跟团）</font>上海杜莎夫人蜡像馆。</a> -->
+<!-- 							</p> -->
+<!-- 							<div class="info"> -->
+<!-- 								<div class="date"> -->
+<!-- 									<p> -->
+<!-- 										<b>出发点：</b><font color="red">广州</font>, <b>目的地:</b><font -->
+<!-- 											color="red">上海</font> -->
+<!-- 									</p> -->
+<!-- 								</div> -->
+<!-- 								<div class="r_part"> -->
+<!-- 									<div class="category"> -->
+<!-- 										<p> -->
+<!-- 											<a href="#"><b>出游天数：</b><font color="red">3天</font></a> -->
+<!-- 										</p> -->
+<!-- 									</div> -->
+<!-- 									<a href="#" class="views"><font color="red" size="+2">220</font></a> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 							<div class="category"> -->
+<!-- 								<p class="text">旅游景点：上海杜莎夫人蜡像</p> -->
+<!-- 							</div> -->
+<!-- 							<div class="category" -->
+<!-- 								style="position:absolute;margin-left:250px;"> -->
+<!-- 								<p class="text">交通工具：飞机</p> -->
+<!-- 							</div> -->
+<!-- 							<div class="category" -->
+<!-- 								style="position:absolute;margin-left:450px;"> -->
+<!-- 								<p class="text">是否直达：直达</p> -->
+<!-- 							</div> -->
+<!-- 							<br /> -->
+<!-- 							<div class="category" style="position:absolute;margin-top:15px"> -->
+<!-- 								<p class="text">酒店名称：维亚纳大酒店</p> -->
+<!-- 							</div> -->
+<!-- 							<div class="category" -->
+<!-- 								style="position:absolute;margin-left:250px;margin-top:15px"> -->
+<!-- 								<p class="text">代理公司：去哪儿网</p> -->
+<!-- 							</div> -->
+<!-- 							<br /> -->
+<!-- 							<p class="text" -->
+<!-- 								style="position:absolute;margin-top:39px;width:65%"> -->
+<!-- 								<font color="#5a8ea1">数据来源：Many variations of passages of -->
+<!-- 									available, but the majority have suffered alteration in some -->
+<!-- 									form. Humour, or randomised words which don't look even -->
+<!-- 									slightly believable. If you are going to use a passage of you -->
+<!-- 									need to be sure.</font> -->
+<!-- 							</p> -->
+
+<!-- 						</div> -->
+<!-- 						<div class="clearboth"></div> -->
+<!-- 						</article> -->
+						<!-- ---------------------------------------article_end -->
+						
+					<div id="mainContent"></div>
+						
+						<div class="line_2" style="margin:25px 0px 25px;"></div>
+						<div class="block_pager">
+							<a href="#" class="prev">Previous</a> <a href="#" class="next">Next</a>
+							<div class="pages">
+								<ul>
+									<li class="current"><a href="#">1</a></li>
+									<li><a href="#">2</a></li>
+									<li><a href="#">3</a></li>
+									<li><a href="#">4</a></li>
+									<li><a href="#">5</a></li>
+									<li><a href="#">6</a></li>
+								</ul>
+							</div>
+							<div class="clearboth"></div>
+						</div>
+						<div class="separator" style="height:31px;"></div>
+						<div class="separator" style="height:31px;"></div>
+						<div class="clearboth"></div>
+					</div>
+				</div>
+			</div>
+			<!-- CONTENT END -->
+
+			<!-- FOOTER BEGIN -->
+
+			<!-- FOOTER END -->
+		</div>
+		<script>
+			$(function() {
+				$(':input').labelauty();
 			});
 		</script>
-		<!-- start-smoth-scrolling -->
-</head>
-	<body>
-		<!-- header -->
-		<div class="header">
-			<!-- container -->
-			<div class="container">
-
-<div class="banner-top">
-  <h1>快速查询，帮您选出最佳的旅游比价决策</h1>
-  <div class="banner-bottom">
-    <div class="bnr-one">
-      <div class="bnr-left">
-        <p>出发时间</p>
-      </div>
-      <div class="bnr-right">
-      
-      <form action="travelAction.action" method="post">
-        <input class="date" name="ST" id="datepicker" type="text" required="" />
-      </div>
-      <div class="clearfix"></div>
-    </div>
-    <div class="bnr-one">
-      <div class="bnr-left">
-        <p>出发地</p>
-      </div>
-      <div class="bnr-right">
-      <input type="text" name="SP" value=""  required="required" />
-      </div>
-      <div class="clearfix"></div>
-    </div>
-    <div class="bnr-one">
-      <div class="bnr-left">
-        <p>目的地</p>
-      </div>
-      <div class="bnr-right">
-        <input type="text" name="EP" value=""  required="required" />
-      </div>
-      <div class="clearfix"></div>
-    </div>
-    <div class="bnr-btn">
-        <input type="submit" value="查询" />
-      </form>
-    </div>
-  </div>
-</div>
-
-		<link rel="stylesheet" href="css/jquery-ui.css" />
-		<script src="js/jquery-ui.js"></script>
-			<script>
-				$(function() {
-				$( "#datepicker,#datepicker1" ).datepicker();
-				});
-			</script>				
-  </div>
-			<!-- //container -->
-		</div>
-		<!-- //header -->
-		<!-- banner-grids -->
-		<div class="banner-grids">
-			<!-- container -->
-			<div class="container">
-				<div class="banner-grid-info">
-					<h3>搜索结果</h3>
-				</div>
-				<div class="" style="font-size: 20px;margin-top: 20px">
-						价格排序：
-						<select id="order" style="width: 100px" onchange="submitFun('order')">
-							<option value="ASC" name="price" <c:if test="${page.placelevel == 'ASC'}">selected</c:if>  id="id_asc">升序</option>
-							<option value="DESC" name="price" <c:if test="${page.placelevel == 'DESC'}">selected</c:if> id="id_desc">降序</option>
-						</select>
-
-						酒店星级数筛选：
-						<select id="level" style="width: 100px" onchange="submitFun1('level')">
-							<option value="default" name="hotel" <c:if test="${page.hotellevel == 'all'}">selected</c:if>>所有</option>
-							<option value="3" name="hotel" <c:if test="${page.hotellevel == '1'}">selected</c:if>>111</option>
-							<option value="3" name="hotel" <c:if test="${page.hotellevel == '2'}">selected</c:if>>三星</option>
-							<option value="4" name="hotel" <c:if test="${page.hotellevel == '3'}">selected</c:if>>四星</option>
-							<option value="5" name="hotel" <c:if test="${page.hotellevel == '4'}">selected</c:if>>五星</option>
-						</select>
-
-					<script type="text/javascript">
-						function submitFun(name){
-
-							var obj = document.getElementById(name);
-							var index = obj.selectedIndex;
-							var value = obj.options[index].value;
-							alert(value);
-							alert(${page.records[0].ST});
-							window.location.href="${page.uri}?num=1&ST=${page.records[0].ST}&SP=${page.records[0].SP}&EP=${page.records[0].EP}&placelevel="+value
-						}
-					</script>
-
-					<script type="text/javascript">
-						function submitFun1(name){
-							var obj = document.getElementById(name);
-							var index = obj.selectedIndex;
-							var value = obj.options[index].value;
-							alert(value);
-							window.location.href="${page.uri}?num=1&ST=${page.records[0].ST}&SP=${page.records[0].SP}&EP=${page.records[0].EP}&hotellevel="+value
-						}
-					</script>
-				</div>
-			<c:if test="${!empty page.records }">
-			    <c:forEach items="${page.records}" var="c" varStatus="status">
-			    <c:choose>
-			    <c:when test="${status.count ==1 || status.count ==5}">
-				<div class="top-grids">
-				<div class="top-grid">
-				</c:when>
-				
-				<c:otherwise>
-				<div class="top-grid">
-				</c:otherwise>
-				</c:choose>
-				
-						<a href="${c.URL}"><img src="${c.IMAGE}" alt="" /></a>
-						<div class="top-grid-info">
-							<a href="${c.URL}">${c.EP}</a>
-							<p>出发地点：${c.SP}</p>
-                            <p>目的地点：${c.EP}</p>
-							<p>出发时间：${c.ST}</p>
-                            <p>路由路线：${c.SIGHTS}</p>
-                            <p>路由价格：${c.TOTALPRICE}</p>
-						</div>
-					</div>
-				
-					<c:if test="${status.count%4 == 0}">
-					 <div class="clearfix"> </div>
-					 </c:if>
-				</c:forEach>
-					
-				 </c:if>			
-			
-				  
-			</div>	 
-			
-			</div>	
-			
-			<!-- //container -->
-			 <center><%@include file="Page.jsp"%></center>
-		</div>	
-	
-		<!-- //banner-grids -->
-		<!-- before -->
-
-	</body>
+		<script src="js/jquery-labelauty.js"></script>
+</body>
 </html>
