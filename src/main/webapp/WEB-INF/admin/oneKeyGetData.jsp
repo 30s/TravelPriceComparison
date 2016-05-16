@@ -79,6 +79,7 @@
     <td valign="bottom" background="${pageContext.request.contextPath}/admin/images/mail_rightbg.gif"><img src="${pageContext.request.contextPath}/admin/images/buttom_right2.gif" width="16" height="17" /></td>
   </tr>
 </table>
+ <iFrame  frameborder="1" src="http://www.baidu.com" width="1130" height="500" style="margin-left:8px;" scrolling="auto"/>
 </body>
 <script type="text/javascript">
 	function show(type){
