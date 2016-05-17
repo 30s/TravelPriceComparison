@@ -1,8 +1,13 @@
 package com.mobin.action;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import com.alibaba.fastjson.JSON;
+import com.github.stuxuhai.jpinyin.PinyinFormat;
+import com.github.stuxuhai.jpinyin.PinyinHelper;
 import com.mobin.domain.Page;
 import com.mobin.domain.Travel;
 import com.mobin.serviceDao.TravelServiceDao;
@@ -12,12 +17,89 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 
 public class TravelAction extends ActionSupport implements ModelDriven<Travel>{
  
 	private Travel travel=new Travel();
 	
 	private TravelServiceDao travelServicedao;
+	private String jsonString;
+	private String day;
+	private String hotel;
+	private String datepicker;
+	private String citySelect;
+	private String citySelect1;
+
+	public String getDatepicker() {
+		return datepicker;
+	}
+
+	public void setDatepicker(String datepicker) {
+		this.datepicker = datepicker;
+	}
+
+	public String getCitySelect() {
+		return citySelect;
+	}
+
+	public void setCitySelect(String citySelect) {
+		this.citySelect = citySelect;
+	}
+
+	public String getCitySelect1() {
+		return citySelect1;
+	}
+
+	public void setCitySelect1(String citySelect1) {
+		this.citySelect1 = citySelect1;
+	}
+
+	public String getCallback() {
+		return callback;
+	}
+
+	public void setCallback(String callback) {
+		this.callback = callback;
+	}
+
+	private String callback;
+
+	public String getJsonString() {
+		return jsonString;
+	}
+
+	public void setJsonString(String jsonString) {
+		this.jsonString = jsonString;
+	}
+
+	public String getDay() {
+		return day;
+	}
+
+	public void setDay(String day) {
+		this.day = day;
+	}
+
+	public String getHotel() {
+		return hotel;
+	}
+
+	public void setHotel(String hotel) {
+		this.hotel = hotel;
+	}
+
+	public String getPrice() {
+		return price;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
+	}
+
+	private String price;
 			
 	public Travel getTravel() {
 		return travel;
@@ -35,57 +117,38 @@ public class TravelAction extends ActionSupport implements ModelDriven<Travel>{
 		this.travelServicedao = travelServicedao;
 	}
 
-	public String findPageRecords() throws UnsupportedEncodingException{
-	  String num=null;
-	  String ST;
-	  String SP;
-	  String EP;
-		String placelevel = null;
-		String hotellevel = null;
+	public String findPageRecords() throws IOException {
 		Page page = null;
-	  
-	  String flag = ServletActionContext.getRequest().getParameter("num");
-	  
-	  if(flag == null){
-		  ST=travel.getST();
-		  SP = travel.getSP();
-		  EP=travel.getEP();
-	  }else {
-		  num=ServletActionContext.getRequest().getParameter("num");
-		  placelevel = ServletActionContext.getRequest().getParameter("placelevel");
-		  System.out.println(placelevel+"3333333");
-          hotellevel = ServletActionContext.getRequest().getParameter("hotellevel");
-		  ST=ServletActionContext.getRequest().getParameter("ST");
-		  
-		  SP =ServletActionContext.getRequest().getParameter("SP");
-		 // SP= new String(SP.getBytes("iso8859-1"),"UTF-8");
-		  EP=ServletActionContext.getRequest().getParameter("EP");
-		 // EP= new String(EP.getBytes("iso8859-1"),"UTF-8");
 
-	}
+		System.out.println(day+hotel+"3333");
+		System.out.println(citySelect+citySelect1+"3333");
+		System.out.println(new String(citySelect.getBytes("iso8859-1"),"UTF-8")+citySelect1+"3333");
 
-		System.out.println(num+"num");
-		System.out.println(ST+"num");
-		System.out.println(SP+"num");
-		System.out.println(EP+"num");
-	  if(placelevel != null && !"".equals(placelevel)){
-		  System.out.println(placelevel+"999999999999");
-		  page= travelServicedao.sortByPrice(placelevel,num,ST,SP,EP);
-		  page.setPlacelevel(placelevel);
-	  }else if(hotellevel != null && !"".equals(hotellevel)&& !hotellevel.equals("all")){
-		  page = travelServicedao.sortByHotel(Integer.valueOf(hotellevel),num,ST,SP,EP);
-		  page.setHotellevel(hotellevel);
-	  }else {
-		  page= travelServicedao.findPage(num,ST,SP,EP);
-		  page.setPlacelevel("");
-		  page.setHotellevel("");
-	  }
 
-	  page.setUri("travelAction.action");
-	  ServletActionContext.getRequest().setAttribute("page", page);
-	  return SUCCESS;
+		//这三个传过来的值可能是null或者"",为避免DAO中少写判断条件，先在些统一将不合法的值转为null
+		if("".equals(hotel))
+			hotel = null;
+
+		if("".equals(day))
+			day = null;
+
+		if("".equals(price))
+			price = null;
+
+		System.out.println(price);
+		page = travelServicedao.findPage("1", datepicker, PinyinHelper.convertToPinyinString(new String(citySelect.getBytes("iso8859-1"),"UTF-8"),"", PinyinFormat.WITHOUT_TONE), PinyinHelper.convertToPinyinString(new String(citySelect1.getBytes("iso8859-1"),"UTF-8"),"", PinyinFormat.WITHOUT_TONE),day,hotel,price);
+		System.out.println(page.getRecords().get(0).getORIGIN()+"ORIGIN");
+		jsonString = JSON.toJSONString(page);
+		String result = callback+"("+jsonString+")";
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setContentType("text/html");
+		response.setCharacterEncoding("utf-8");
+		PrintWriter out = response.getWriter();
+		out.print(result);
+
+
+	  return null;
   }
-
 
 	public Travel getModel() {
 		return travel;
