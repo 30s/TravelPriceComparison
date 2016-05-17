@@ -29,7 +29,7 @@
 				$.ajax({
 					type : "GET",
 					url : "http://192.168.31.128:8080/Travel/travelAction"+"?day="+liDay+"&hotel="+liHotel+"&price="+liPrice
-								+"&datepicker="+datepicker+"&citySelect="+citySelect+"&citySelect1="+citySelect,
+								+"&datepicker="+datepicker+"&citySelect="+citySelect+"&citySelect1="+citySelect1,
 					dataType : "jsonp",
 					success : function(data) {
 						$("#mainContent").html("");
@@ -55,9 +55,10 @@
 				liDay = $("input[name='day']:checked").val();
 				liHotel = $("input[name='hotel']:checked").val();
 				liPrice = $("input[name='sortPrice']:checked").val();
-				if (liDay == null) {liDay = ""}
-				if (liHotel == null) {liHotel = ""}
-				if (liPrice == null) {liPrice = ""}
+				liDay = ""
+				liHotel = ""
+				liPrice = ""
+
 
 				datepicker = $("#datepicker").val();
 				citySelect = $("#citySelect").val();
@@ -68,7 +69,8 @@
 
 				$.ajax({
 					type : "GET",
-					url : "http://192.168.31.128:8080/Travel/travelAction"+"?day="+liDay+"&hotel="+liHotel+"&price="+liPrice,
+					url : "http://192.168.31.128:8080/Travel/travelAction"+"?day="+liDay+"&hotel="+liHotel+"&price="+liPrice
+					+"&datepicker="+datepicker+"&citySelect="+citySelect+"&citySelect1="+citySelect1,
 					dataType : "jsonp",
 					success : function(data) {
 						alert("成功"+datepicker+citySelect+citySelect1+liDay);
