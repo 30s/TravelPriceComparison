@@ -29,18 +29,21 @@ public class TravelDaoImpl implements TravelDao {
         System.out.println(ST);
         System.out.println(SP);
         System.out.println(EP);
+        System.out.println(TDATA);
+        System.out.println("------");
+        System.out.println(sort);
         int startkey;
         int startRecord = 0;
         int endkey;
         String rowkey = "";
         final StringBuffer sb = new StringBuffer();
         //查询都是基于行键
-        if(!"".equals(sort)) { //按价格进行排序
-            if ("".equals(HGRADE) && "".equals(TDATA))  //查询条件为出发点,目的地,时间，按价格排序
+        if(sort != null && !"".equals(sort)) { //按价格进行排序
+            if (null == HGRADE && null == TDATA)  //查询条件为出发点,目的地,时间，按价格排序
                 rowkey = SP + "PRICE" + EP + "%";
-            else if ("".equals(HGRADE))                 //查询条件为出发点,目的地,时间，出游天数,按价格排序
+            else if (null == HGRADE)                 //查询条件为出发点,目的地,时间，出游天数,按价格排序
                 rowkey = SP + "EEE" + EP + TDATA + "天%";
-            else if ("".equals(TDATA))                   //查询条件为出发点,目的地,时间，酒店等级，按价格排序
+            else if (null == TDATA)                   //查询条件为出发点,目的地,时间，酒店等级，按价格排序
                 rowkey = SP + "FFF" + EP + HGRADE + "%";
             else                                          //查询条件为出发点,目的地,时间，出游天数,酒店等级，按价格排序
                 rowkey = SP + "AAA" + EP + TDATA + "天" + HGRADE + "%";
@@ -51,27 +54,29 @@ public class TravelDaoImpl implements TravelDao {
                 endkey= startRecord - (currentPageNum - 1) * pageSize;
                 startkey = startRecord-(currentPageNum) * pageSize;
             }else {  //升序（默认）
+                System.out.println(rowkey);
                 startRecord = jdbcTemplate.queryForObject("SELECT RECORDID FROM TRAVEL WHERE ROWKEY LIKE ? LIMIT 1 ", Integer.class, rowkey);
                 startkey= startRecord + (currentPageNum - 1) * pageSize;
                 endkey = startRecord+(currentPageNum) * pageSize;
             }
 
         }else{  //根据性价比排序
-            if("".equals(HGRADE) && "".equals(TDATA))    //参考上面if语句
+            if((null == HGRADE && null == TDATA) || ("".equals(HGRADE) && "".equals(TDATA)))    //参考上面if语句
                 rowkey = SP + EP + "%";
-            else if("".equals(HGRADE))
+            else if(null == HGRADE)
                 rowkey = SP + "DDD" + EP + TDATA + "天%";
-            else if("".equals(TDATA))
+            else if(null == TDATA)
                 rowkey = SP + "CCC" + EP + HGRADE +"%";
             else
                 rowkey = SP + "BBB" + EP + TDATA + "天" + HGRADE + "%";
 
+            System.out.println(rowkey);
             startRecord = jdbcTemplate.queryForObject("SELECT RECORDID FROM TRAVEL WHERE ROWKEY LIKE ? LIMIT 1", Integer.class, rowkey);
             startkey= startRecord + (currentPageNum - 1) * pageSize;
             endkey = startRecord+(currentPageNum) * pageSize;
         }
-            String iSsort = "".equals(sort) ? "" : "ORDER BY ROWKEY "+sort;
-            String sql = "SELECT ROWKEY FROM TRAVEL WHERE ROWKEY LIKE ? AND RECORDID >= ? AND RECORDID < ? " +iSsort;
+            String iSsort = null == sort ? "" : "ORDER BY ROWKEY "+sort;
+            String sql = "SELECT ROWKEY FROM TRAVEL WHERE ROWKEY LIKE ? AND RECORDID >= ? AND RECORDID < ? ";
 
             jdbcTemplate.query(sql,
                     new RowMapper<Integer>() {
@@ -92,7 +97,9 @@ public class TravelDaoImpl implements TravelDao {
                         }
                     }, rowkey,startkey,endkey);
 
-        String sql1 = "SELECT URL,SP,EP,TITLE,TOUATT,ST,TDATA,PRICE,TRAFFIC,RETURN,TTYPE,IMAGE,PROXY,HOTEL,ORIGIN FROM TRAVEL WHERE ROWKEY IN ("+sb.toString()+") ";
+
+        String isSortByPrice =  null == sort ? "" : "ORDER BY PRICE "+sort;
+         String sql1 = "SELECT URL,SP,EP,TITLE,TOUATT,ST,TDATA,PRICE,TRAFFIC,RETURN,TTYPE,IMAGE,PROXY,HOTEL,ORIGIN FROM TRAVEL WHERE ROWKEY IN ("+sb.toString()+")  " +isSortByPrice;
 
         List<Travel> travels = jdbcTemplate.query(sql1,
                     new RowMapper<Travel>() {
@@ -129,7 +136,7 @@ public class TravelDaoImpl implements TravelDao {
             travel.setTOUATT(rs.getString("TOUATT"));
             travel.setST(rs.getString("ST"));
             travel.setTDATA(rs.getString("TDATA"));
-
+            System.out.println(rs.getString("PRICE"));
             travel.setPRICE(rs.getString("PRICE"));
             travel.setTRAFFIC(rs.getString("TRAFFIC"));
             travel.setRETURN(rs.getString("RETURN"));
