@@ -40,6 +40,39 @@
       <tr>
         <td valign="middle"><span class="left_txt">
 			<div id="addSubjectForm" align="center">
+
+
+				<div style="overflow-x: auto; overflow-y: auto; height: 200px; width:1100px;">
+					<table id="table" align="center" width="1050px" height="200px">
+						<tbody>
+						<tr>
+							<th style="border-bottom:1px solid #000" width="190px">Permissio</th>
+							<th style="border-bottom:1px solid #000" width="190px">Owner</th>
+							<th style="border-bottom:1px solid #000" width="190px">Size</th>
+							<th style="border-bottom:1px solid #000" width="190px">Name</th>
+						</tr>
+						${fileslist}
+                     <s:iterator value="fileslist" var="f">
+							<tr>
+								<th style="border-bottom:1px solid #000" width="190px"><a href="#">${f.permission}</a></th>
+								<th style="border-bottom:1px solid #000" width="190px"><a href="#">${f.owner}</a></th>
+								<th style="border-bottom:1px solid #000" width="190px"><a href="#">${f.size}</a></th>
+								<th style="border-bottom:1px solid #000" width="190px"><a href="#" onclick="setCity('<s:property value="#f.name"/>')">${f.name}</a></th>
+							</tr>
+					 </s:iterator>
+						</tbody>
+					</table>
+					  </div>
+			<script>
+				function setCity(name){
+					var city = document.getElementById("city1");
+					city.setAttribute("value",name);
+				}
+
+			</script>
+
+
+
 				<form action="QuartzSpiderAction" method="post">
 				<table border="0" cellspacing="10" cellpadding="0">
 				  <tr>
@@ -48,19 +81,21 @@
 
 					<tr>
 					  <td>
-						设置爬虫周期-启动时间:<input name="hour"  type="text" size="5"/>  时  <input name="min" type="text" size="5"/>分
+						  请选择URL种子库:<input type="text" id="city1"/>设置爬虫周期-启动时间:<input name="hour"  type="text" size="5"/>  时  <input name="min" type="text" size="5"/>分
 					    循环次数:  <input name="repeateCount" type="text" size="3"/>次
 					  </td>
-					<tr>
 
-						<td>
-							请选择地区:<input type="text" id="city" size="6" autocomplete="off" value="澳门" name="place" onclick="this.value='';GetCityList(this);" onkeyup="selCity(event)" class="inputbox" />
-						</td>
-					</tr>
 				  </tr>
 				  <tr>
 				  	<td colspan="2"><div align="center">
 				  	  <s:submit value="开始爬虫" align="center" onclick="return confirm('是否开始爬取数据？')"/>
+						<input type="button" value="aaa" onclick="showIframe()"/>
+						<script>
+							function showIframe(){
+								var iframe1 = document.getElementById("iframe1");
+								iframe1.style.display="block";
+							}
+						</script>
 			  	  </div>
 				</td>
 				  </tr>
@@ -79,7 +114,7 @@
     <td valign="bottom" background="${pageContext.request.contextPath}/admin/images/mail_rightbg.gif"><img src="${pageContext.request.contextPath}/admin/images/buttom_right2.gif" width="16" height="17" /></td>
   </tr>
 </table>
- <iFrame  frameborder="1" src="http://www.baidu.com" width="1130" height="500" style="margin-left:8px;" scrolling="auto"/>
+ <iFrame id="iframe1" style="display:none" frameborder="1" src="http://www.baidu.com" width="1130" height="500" style="margin-left:8px;" scrolling="auto"/>
 </body>
 <script type="text/javascript">
 	function show(type){
@@ -90,5 +125,6 @@
 			select.setAttribute("style", "display:block");
 		}
 	}
+
 </script>
 </html>
