@@ -58,8 +58,9 @@
 				liDay = ""
 				liHotel = ""
 				liPrice = ""
-
-
+				$("input[name='day']:checked").attr("checked",false);
+				$("input[name='hotel']:checked").attr("checked",false);
+				$("input[name='sortPrice']:checked").attr("checked",false);
 				datepicker = $("#datepicker").val();
 				citySelect = $("#citySelect").val();
 				citySelect1 = $("#citySelect1").val();
