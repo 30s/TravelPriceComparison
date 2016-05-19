@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 
 <%
 	String path = request.getContextPath();
@@ -113,9 +114,7 @@ input.labelauty+label {
 					</div>
 
 					<ul id="liDay" class="dowebok" style="margin-left:60px">
-						<li><input type="radio" name="day" value="1"
-							data-labelauty="1天&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
-						</li>
+
 						<li><input type="radio" name="day" value="2"
 							data-labelauty="2天&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
 						</li>
@@ -124,6 +123,12 @@ input.labelauty+label {
 						</li>
 						<li><input type="radio" name="day" value="4"
 							data-labelauty="4天&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
+						</li>
+						<li><input type="radio" name="day" value="5"
+								   data-labelauty="5天&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
+						</li>
+						<li><input type="radio" name="day" value="6"
+								   data-labelauty="6天&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
 						</li>
 					</ul>
 
@@ -137,9 +142,9 @@ input.labelauty+label {
 						<li><input type="radio" name="hotel" value="2"
 							data-labelauty="经济型&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"></li>
 						<li><input type="radio" name="hotel" value="3"
-							data-labelauty="高档型&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"></li>
-						<li><input type="radio" name="hotel" value="4"
 							data-labelauty="舒适型&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"></li>
+						<li><input type="radio" name="hotel" value="4"
+							data-labelauty="高档型&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"></li>
 						<li><input type="radio" name="hotel" value="5"
 							data-labelauty="豪华型&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"></li>
 					</ul>
@@ -150,9 +155,9 @@ input.labelauty+label {
 						<h4 style="margin-top:13px;">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：</h4>
 					</div>
 					<ul id="liPrice" class="dowebok" style="margin-left:60px">
-						<li><input type="radio" name="sortPrice" value="HfromL"
+						<li><input type="radio" name="sortPrice" value="DESC"
 							data-labelauty="从高到低↓  "></li>
-						<li><input type="radio" name="sortPrice" value="LfromH"
+						<li><input type="radio" name="sortPrice" value="ASC"
 							data-labelauty="从低到高↑  "></li>
 					</ul>
 				</div>
