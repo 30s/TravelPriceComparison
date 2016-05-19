@@ -11,10 +11,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv=Content-Type content=text/html;charset=gb2312>
 </head>
 <frameset rows="64,*"  frameborder="NO" border="0" framespacing="0">
-	<frame src="showTopAc" noresize="noresize" frameborder="NO" name="topFrame" scrolling="no" marginwidth="0" marginheight="0" target="main" />
+	<frame src="showTopAction" noresize="noresize" frameborder="NO" name="topFrame" scrolling="no" marginwidth="0" marginheight="0" target="main" />
   <frameset cols="200,*"  rows="560,*" id="frame">
-	<frame src="showLeftAc" name="leftFrame" noresize="noresize" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" target="main" />
-	<frame src="showRightAc" name="main" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" target="_self" />
+	<frame src="showLeftAction" name="leftFrame" noresize="noresize" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" target="main" />
+	<frame src="showRightAction" name="main" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" target="_self" />
   </frameset>
 <noframes>
   <body></body>
