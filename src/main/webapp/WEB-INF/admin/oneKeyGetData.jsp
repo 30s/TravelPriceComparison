@@ -33,7 +33,8 @@
   </tr>
   <tr>
     <td valign="middle" background="${pageContext.request.contextPath}/admin/images/mail_leftbg.gif">&nbsp;</td>
-    <td valign="top" bgcolor="#F7F8F9"><table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+    <td valign="top" bgcolor="#F7F8F9">
+		<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
       <tr>
         <td width="53%" valign="top">&nbsp;</td>
         </tr>
@@ -51,7 +52,6 @@
 							<th style="border-bottom:1px solid #000" width="190px">Size</th>
 							<th style="border-bottom:1px solid #000" width="190px">Name</th>
 						</tr>
-						${fileslist}
                      <s:iterator value="fileslist" var="f">
 							<tr>
 								<th style="border-bottom:1px solid #000" width="190px"><a href="#">${f.permission}</a></th>
@@ -74,34 +74,35 @@
 
 
 				<form action="QuartzSpiderAction" method="post">
-				<table border="0" cellspacing="10" cellpadding="0">
+				<table >
 				  <tr>
 					<td  colspan="2"><FONT color="red"><s:actionerror/></FONT></td>
 				  </tr>
 
 					<tr>
-					  <td>
+					  <td  colspan="2">
 						  请选择URL种子库:<input type="text" id="city1"/>设置爬虫周期-启动时间:<input name="hour"  type="text" size="5"/>  时  <input name="min" type="text" size="5"/>分
 					    循环次数:  <input name="repeateCount" type="text" size="3"/>次
 					  </td>
 
 				  </tr>
-				  <tr>
-				  	<td colspan="2"><div align="center">
-				  	  <s:submit value="开始爬虫" align="center" onclick="return confirm('是否开始爬取数据？')"/>
-						<input type="button" value="aaa" onclick="showIframe()"/>
+				  <tr colspan="2">
+				  	<td >
+				  	  <s:submit value="开始爬虫" align="center" style="margin-left:-150px" onclick="return confirm('是否开始爬取数据？')"/>
+						<input type="button" value="查看爬虫监控信息" style="position: absolute;margin-top:36px;margin-left:36px" onclick="showIframe()"/>
 						<script>
 							function showIframe(){
 								var iframe1 = document.getElementById("iframe1");
 								iframe1.style.display="block";
+								iframe1.style.marginLeft="8px";
 							}
 						</script>
-			  	  </div>
-				</td>
+					</td>
 				  </tr>
 			</table>
 			</form>	
 			</div>
+			</span>
 		</td>
         </tr>
       
@@ -114,7 +115,7 @@
     <td valign="bottom" background="${pageContext.request.contextPath}/admin/images/mail_rightbg.gif"><img src="${pageContext.request.contextPath}/admin/images/buttom_right2.gif" width="16" height="17" /></td>
   </tr>
 </table>
- <iFrame id="iframe1" style="display:none" frameborder="1" src="http://www.baidu.com" width="1130" height="500" style="margin-left:8px;" scrolling="auto"/>
+ <iFrame id="iframe1" style="display:none;" frameborder="1" src="http://www.baidu.com" width="1160" height="500" style="margin-left:8px;" scrolling="auto"/>
 </body>
 <script type="text/javascript">
 	function show(type){
