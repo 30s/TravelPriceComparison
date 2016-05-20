@@ -12,10 +12,7 @@ import com.mobin.serviceDao.TravelServiceDao;
 import com.mobin.serviceDao.impl.TravelServiceDaoImpl;
 import org.apache.avro.generic.GenericData;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.LocatedFileStatus;
-import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.fs.RemoteIterator;
+import org.apache.hadoop.fs.*;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.struts2.ServletActionContext;
@@ -31,7 +28,7 @@ public class AdminAction extends ActionSupport {
 	private SpiderAction spider;
 	private String type;
 	private HBaseDao hBaseDao;
-	private List<DFSFile> fileslist;
+	private static List<DFSFile> fileslist;
 
 	public List<DFSFile> getFileslist() {
 		return fileslist;
@@ -106,6 +103,7 @@ public class AdminAction extends ActionSupport {
 
 	}
 
+
 	/*public String showData(){
 		String num=null;
 		String SP;
@@ -125,24 +123,39 @@ public class AdminAction extends ActionSupport {
 	public String dfsfile() throws IOException {
 		fileslist = new ArrayList<DFSFile>();
 		Configuration configuration = new Configuration();
-		Path dst = new Path("hdfs://master:9000/");
+		Path dst = new Path("hdfs://master:9000/Spider");
 		FileSystem fs = dst.getFileSystem(configuration);
-		//FileSystem fs=FileSystem.get(configuration);   此方法必须在项目下的bin目录下添加hadoop的hdfs/core-site.xml文件
-
-		RemoteIterator<LocatedFileStatus> files = fs.listFiles(new Path("hdfs://master:9000/dir"), true);
-
-		while (files.hasNext()) {
-			DFSFile f = new DFSFile();
-			LocatedFileStatus file = files.next();
-			System.out.println(file.getPath());
-			f.setPermission(file.getPermission().toString());
-			f.setOwner(file.getOwner());
-			f.setSize(file.getLen());
-			f.setName(file.getPath().getName());
-			fileslist.add(f);
-		}
+		getFiles(fs,new Path("/Spider"));   //遍历/Spider目录下的非_SUCCESS文件
 		return  "dfsfile";
 	}
+
+	public static void getFiles(FileSystem fs, Path folderPath) throws IOException {
+		List<Path> paths = new ArrayList<Path>();
+		if (fs.exists(folderPath)) {
+			FileStatus[] fileStatus = fs.listStatus(folderPath);
+			for (int i = 0; i < fileStatus.length; i++) {
+				FileStatus fileType = fileStatus[i];
+				if (fileType.isDirectory()) {
+					getFiles(fs,fileType.getPath());
+				}
+				else{
+
+					String fileName = fileType.getPath().getName();
+					if(!fileName.equals("_SUCCESS")){
+						DFSFile f = new DFSFile();
+						f.setPermission(fileType.getPermission().toString());
+						f.setOwner(fileType.getOwner());
+						f.setSize(fileType.getLen());
+						f.setName(fileType.getPath().getName());
+						System.out.println(fileType.getPath().getName());
+						fileslist.add(f);
+					}
+				}
+
+			}
+		}
+	}
+
 
 	public String showTop(){
 		return "showTop";
@@ -151,6 +164,8 @@ public class AdminAction extends ActionSupport {
 	public String showLeft(){
 		return "showLeft";
 	}
+
+
 
 	public String showRight(){
 		return "showRight";
