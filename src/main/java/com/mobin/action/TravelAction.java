@@ -16,6 +16,8 @@ import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import org.springframework.data.hadoop.mapreduce.JobRunner;
+import org.springframework.web.context.ContextLoaderListener;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,11 +29,29 @@ public class TravelAction extends ActionSupport implements ModelDriven<Travel>{
 	
 	private TravelServiceDao travelServicedao;
 	private String jsonString;
+	private String pagejson;
 	private String day;
 	private String hotel;
 	private String datepicker;
 	private String citySelect;
 	private String citySelect1;
+	private  String pageNum;
+
+	public String getPageNum() {
+		return pageNum;
+	}
+
+	public void setPageNum(String pageNum) {
+		this.pageNum = pageNum;
+	}
+
+	public String getPagejson() {
+		return pagejson;
+	}
+
+	public void setPagejson(String pagejson) {
+		this.pagejson = pagejson;
+	}
 
 	public String getDatepicker() {
 		return datepicker;
@@ -119,7 +139,6 @@ public class TravelAction extends ActionSupport implements ModelDriven<Travel>{
 
 	public String findPageRecords() throws IOException {
 		Page page = null;
-
 		System.out.println(day+hotel+"3333");
 		System.out.println(citySelect+citySelect1+"3333");
 		System.out.println(new String(citySelect.getBytes("iso8859-1"),"UTF-8")+citySelect1+"3333");
@@ -136,7 +155,9 @@ public class TravelAction extends ActionSupport implements ModelDriven<Travel>{
 			price = null;
 
 		System.out.println(price);
-		page = travelServicedao.findPage("1", datepicker, PinyinHelper.convertToPinyinString(new String(citySelect.getBytes("iso8859-1"),"UTF-8"),"", PinyinFormat.WITHOUT_TONE), PinyinHelper.convertToPinyinString(new String(citySelect1.getBytes("iso8859-1"),"UTF-8"),"", PinyinFormat.WITHOUT_TONE),day,hotel,price);
+		System.out.println(pageNum+"llllllllllllllll");
+		page = travelServicedao.findPage(pageNum, datepicker, PinyinHelper.convertToPinyinString(new String(citySelect.getBytes("iso8859-1"),"UTF-8"),"", PinyinFormat.WITHOUT_TONE), PinyinHelper.convertToPinyinString(new String(citySelect1.getBytes("iso8859-1"),"UTF-8"),"", PinyinFormat.WITHOUT_TONE),day,hotel,price);
+		page.setUri("travelAction.action");
 		System.out.println(page.getRecords().get(0).getORIGIN()+"ORIGIN");
 		jsonString = JSON.toJSONString(page);
 		String result = callback+"("+jsonString+")";
@@ -144,8 +165,9 @@ public class TravelAction extends ActionSupport implements ModelDriven<Travel>{
 		response.setContentType("text/html");
 		response.setCharacterEncoding("utf-8");
 		PrintWriter out = response.getWriter();
+		System.out.println(page);
+		ServletActionContext.getRequest().setAttribute("p", page);
 		out.print(result);
-
 
 	  return null;
   }
