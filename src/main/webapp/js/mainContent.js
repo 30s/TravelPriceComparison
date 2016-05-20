@@ -79,6 +79,14 @@
 						var index = eval(data);
 						for(var i=0;i<index.records.length;i++)
 							showMainContent(i,index);
+						var forLi = $("#forLi");
+						for(var i=0;i<index.totalPage;i++){
+							forLi.append("<li>"
+								+'<a href="#" onclick="eachPage('+(i+1)+')">'+(i+1)+'</a>'
+								+"</li>");
+
+						}
+
 
 					},
 					error : function(jqXHR) {
@@ -91,7 +99,34 @@
 
 	});
 
-
+function eachPage(num){
+	liDay = $("input[name='day']:checked").val();
+	liHotel = $("input[name='hotel']:checked").val();
+	liPrice = $("input[name='sortPrice']:checked").val();
+	if (liDay == null) {liDay = ""}
+	if (liHotel == null) {liHotel = ""}
+	if (liPrice == null) {liPrice = ""}
+	datepicker = $("#datepicker").val();
+	citySelect = $("#citySelect").val();
+	citySelect1 = $("#citySelect1").val();
+	$.ajax({
+		type : "GET",
+		url : "http://192.168.31.128:8080/Travel/travelAction"+"?pageNum="+num+"&day="+liDay+"&hotel="+liHotel+"&price="+liPrice
+		+"&datepicker="+datepicker+"&citySelect="+citySelect+"&citySelect1="+citySelect1,
+		dataType : "jsonp",
+		success : function(data) {
+			alert("成功"+datepicker+citySelect+citySelect1+liDay);
+			$("#mainContent").html("");
+			var index = eval(data);
+			for(var i=0;i<index.records.length;i++)
+				showMainContent(i,index);
+		},
+		error : function(jqXHR) {
+			alert(123);
+			$("#mainContent").html("");
+		}
+	});
+}
 
 function showMainContent(i,index){
 	var mainContent = $("#mainContent");
