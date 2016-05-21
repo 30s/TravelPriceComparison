@@ -1,16 +1,9 @@
 package com.mobin.action;
 
-import com.mobin.putDataToHBase.PutDataToHBaseDefault;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.hbase.HBaseConfiguration;
-import org.apache.hadoop.hbase.client.Connection;
-import org.apache.hadoop.hbase.client.ConnectionFactory;
 import org.apache.hadoop.hbase.client.HTable;
-import org.apache.hadoop.hbase.client.Put;
-import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
-import org.apache.hadoop.hbase.mapreduce.LoadIncrementalHFiles;
-import org.apache.hadoop.hbase.mapreduce.TableOutputFormat;
+import org.apache.hadoop.hbase.mapreduce.HFileOutputFormat2;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
@@ -18,61 +11,57 @@ import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.JobKey;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.hadoop.hbase.HbaseTemplate;
 import org.springframework.data.hadoop.mapreduce.JobRunner;
 import org.springframework.web.context.ContextLoaderListener;
-
-import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by hadoop on 3/8/16.
  */
 public class SpiderAction implements org.quartz.Job {
-
     private String file;
+
+    private static Job cleanDataJob;
+    private static Job convertDataJob;
+    private Job cartesianMRJob;
+    private Job downURLSpiderJob;
+    private Job tuniuURLJob;
+    private Job extractionDataSpiderJob;
+    private static Job geneateHFileJob;
+
+    private static JobRunner cleanDataJobRunner;
+    private static JobRunner convertDataJobRunner;
+    private JobRunner cartesianjobRunner;
     private JobRunner downURLjobRunner;
     private JobRunner tuniuURLJobRrunner;
     private JobRunner extractionDatajobRunner;
-    private JobRunner cartesianjobRunner;
-    private JobRunner convertDataJobRunner;
-    private JobRunner cleanDataJobRunner;
-    private Job cleanDataJob;
-    private Job convertDataJob;
-    private Job cartesianMRJob;
-    private Job downURLSpider;
-    private Job tuniuURLJob;
-    private Job extractionDataSpider;
+    private static  JobRunner generateHFilejobRunner;
 
+    private static  HbaseTemplate htemplate;
 
-    ApplicationContext context = null;
-
+    private static Path extractionFilePath;
+    private static Path cleanFilePath;
+    private static Path converFilePath;
+    private Configuration hadoopConfiguration;
 
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         JobKey key = jobExecutionContext.getJobDetail().getKey();
         JobDataMap dataMap = jobExecutionContext.getJobDetail().getJobDataMap();
-        System.out.println("The key is  " + key + "  ,and name is  " + file);
+        String file = dataMap.getString("place");
         SpiderAction spiderAction = new SpiderAction();
         spiderAction.extractionData(file);//抽取数据
-        spiderAction.cleanData(file);     //清洗数据
-        spiderAction.convertData(file);   //数据转换
     }
-
-
-
-
 
     public void downURLByPlace(String file) {
         try {
-            //TODO 后期要改，现在只能用这个蠢办法了
-            context = new ClassPathXmlApplicationContext("applicationContext.xml");
-            downURLSpider = ContextLoaderListener.getCurrentWebApplicationContext().getBean("downURLSpiderJob", Job.class);
+            downURLSpiderJob = ContextLoaderListener.getCurrentWebApplicationContext().getBean("downURLSpiderJob", Job.class);
             downURLjobRunner = ContextLoaderListener.getCurrentWebApplicationContext().getBean("downURLjobRunner", JobRunner.class);
-            downURLSpider.getConfiguration().set("mapred.jar", "/home/hadoop/TravelProject/out/artifacts/Travel/Travel.jar");
+            downURLSpiderJob.getConfiguration().set("mapred.jar", "/home/hadoop/TravelProject/out/artifacts/Travel/Travel.jar");
             System.out.println("downURL.................................");
-            FileInputFormat.setInputPaths(downURLSpider, "/" + file);
-            FileOutputFormat.setOutputPath(downURLSpider, new Path("/" + file + "URL"));
+            FileInputFormat.setInputPaths(downURLSpiderJob, "/Spider" + file);
+            FileOutputFormat.setOutputPath(downURLSpiderJob, new Path("/" + file + "URL" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())));
             downURLjobRunner.call();
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,7 +71,6 @@ public class SpiderAction implements org.quartz.Job {
 
     public void downURLFromTuniu(String file){
         try {
-            //TODO 后期要改，现在只能用这个蠢办法了
            // context = new ClassPathXmlApplicationContext("applicationContext.xml");
             tuniuURLJob = ContextLoaderListener.getCurrentWebApplicationContext().getBean("tuniuURLJob", Job.class);
             tuniuURLJobRrunner = ContextLoaderListener.getCurrentWebApplicationContext().getBean("tuniuURLJobRrunner", JobRunner.class);
@@ -98,10 +86,10 @@ public class SpiderAction implements org.quartz.Job {
 
     public void cartesian(String file) {
         try {
-            context = new ClassPathXmlApplicationContext("applicationContext.xml");
+           // context = new ClassPathXmlApplicationContext("applicationContext.xml");
             cartesianMRJob = ContextLoaderListener.getCurrentWebApplicationContext().getBean("cartesianMRJob", Job.class);
             cartesianjobRunner = ContextLoaderListener.getCurrentWebApplicationContext().getBean("cartesianjobRunner", JobRunner.class);
-            cartesianMRJob.getConfiguration().set("mapred.jar", "/home/hadoop/TravelProject/out/artifacts/Travel_jar/Travel.jar");
+            cartesianMRJob.getConfiguration().set("mapred.jar", "/home/hadoop/TravelProject/out/artifacts/Travel/Travel.jar");
             System.out.println("extraction.................................");
             FileInputFormat.setInputPaths(cartesianMRJob, "/url1.txt");
             FileOutputFormat.setOutputPath(cartesianMRJob, new Path("/" + file));
@@ -109,136 +97,73 @@ public class SpiderAction implements org.quartz.Job {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
-    //cartesianMRJob
 
     public void extractionData(String file) {
         try {
-            context = new ClassPathXmlApplicationContext("applicationContext.xml");
-            extractionDataSpider = ContextLoaderListener.getCurrentWebApplicationContext().getBean("extractionDataSpiderJob", Job.class);
+            extractionDataSpiderJob = ContextLoaderListener.getCurrentWebApplicationContext().getBean("extractionDataSpiderJob", Job.class);
             extractionDatajobRunner = ContextLoaderListener.getCurrentWebApplicationContext().getBean("extractionDatajobRunner", JobRunner.class);
-            extractionDataSpider.getConfiguration().set("mapred.jar", "/home/hadoop/TravelProject/out/artifacts/Travel/Travel.jar");
+            extractionDataSpiderJob.getConfiguration().set("mapred.jar", "/home/hadoop/TravelProject/out/artifacts/Travel/Travel.jar");
             System.out.println("extraction.................................");
-            FileInputFormat.setInputPaths(extractionDataSpider, "/" + file + "URL");
-            FileOutputFormat.setOutputPath(extractionDataSpider, new Path("/" + file + "DATA"));
+            FileInputFormat.setInputPaths(extractionDataSpiderJob, "/Spider/" + file);
+            extractionFilePath = new Path("/UnClean/"+  file  + new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+            FileOutputFormat.setOutputPath(extractionDataSpiderJob, extractionFilePath);
             extractionDatajobRunner.call();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
-    public void cleanData(String file) {
+    //cleanData  convertData  generateHFile是一连串的操作
+    public static  void cleanData(String file) {
         try {
-            context = new ClassPathXmlApplicationContext("applicationContext.xml");
             cleanDataJob = ContextLoaderListener.getCurrentWebApplicationContext().getBean("cleanDataJob", Job.class);
             cleanDataJobRunner = ContextLoaderListener.getCurrentWebApplicationContext().getBean("cleanDataJobRunner", JobRunner.class);
-            cleanDataJob.getConfiguration().set("mapred.jar", "/home/hadoop/TravelProject/out/artifacts/Travel_jar/Travel.jar");
+            cleanDataJob.getConfiguration().set("mapred.jar", "/home/hadoop/TravelProject/out/artifacts/Travel/Travel.jar");
             System.out.println("CLEAN.................................");
-            FileInputFormat.setInputPaths(cleanDataJob, "/" + file + "DATA");
-            FileOutputFormat.setOutputPath(cleanDataJob, new Path("/" + file + "CLEANEDDATA"));
+            FileInputFormat.setInputPaths(cleanDataJob, new Path("/UnClean/"+file));
+            cleanFilePath = new Path("/Clean/" +  file  + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            FileOutputFormat.setOutputPath(cleanDataJob, cleanFilePath);
             cleanDataJobRunner.call();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
-    public void putDataToHBase(String HFile)  {
+    public static void convertData(String file) {
         try {
-            context = new ClassPathXmlApplicationContext("applicationContext.xml");
-            HbaseTemplate template = ContextLoaderListener.getCurrentWebApplicationContext().getBean("htemplate",HbaseTemplate.class);
-            Configuration configuration = template.getConfiguration();
-            Connection connection = ConnectionFactory.createConnection(configuration);
-            LoadIncrementalHFiles loder = new LoadIncrementalHFiles(configuration);
-            loder.doBulkLoad(new Path("hdfs://master:9000/"+HFile),new HTable(configuration,"TRAVELS"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    public void convertData(String file) {
-        try {
-            context = new ClassPathXmlApplicationContext("applicationContext.xml");
             convertDataJob = ContextLoaderListener.getCurrentWebApplicationContext().getBean("convertDataJob", Job.class);
             convertDataJobRunner = ContextLoaderListener.getCurrentWebApplicationContext().getBean("convertDataJobRunner", JobRunner.class);
-            convertDataJob.getConfiguration().set("mapred.jar", "/home/hadoop/TravelProject/out/artifacts/Travel_jar/Travel.jar");
+            convertDataJob.getConfiguration().set("mapred.jar", "/home/hadoop/TravelProject/out/artifacts/Travel/Travel.jar");
             System.out.println("convertData.................................");
-            FileInputFormat.setInputPaths(convertDataJob, "/" + file + "CLEANEDDATA");
-            FileOutputFormat.setOutputPath(convertDataJob, new Path("/" + file + "INFO"));  //INFO为最终要导入到HBase的数据
+            FileInputFormat.setInputPaths(convertDataJob, cleanFilePath);
+            converFilePath = new Path("/INFO/" +  file + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            FileOutputFormat.setOutputPath(convertDataJob, converFilePath);  //INFO为最终要导入到HBase的数据
             convertDataJobRunner.call();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    public static void generateHFile(String file) throws Exception {
+        Configuration conf = htemplate.getConfiguration();
+        HTable table =  new HTable(conf,"TRAVELTEST");
+        geneateHFileJob.getInstance(conf);
+        geneateHFileJob.getConfiguration().set("mapred.jar", "/home/hadoop/TravelProject/out/artifacts/Travel/Travel.jar");
+        System.out.println("generate......................");
+        HFileOutputFormat2.configureIncrementalLoad(geneateHFileJob,table,table.getRegionLocator());
+        FileInputFormat.setInputPaths(geneateHFileJob,new Path("hdfs://master:9000/澳门INFO"));//
+        FileOutputFormat.setOutputPath(geneateHFileJob,new Path("hdfs://master:9000/HFILE/" + "澳门" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())));
+        generateHFilejobRunner.call();
     }
 
 
-    public JobRunner getDownURLjobRunner() {
-        return downURLjobRunner;
+    public HbaseTemplate getHtemplate() {
+        return htemplate;
     }
 
-    public void setDownURLjobRunner(JobRunner downURLjobRunner) {
-        this.downURLjobRunner = downURLjobRunner;
-    }
-
-    public JobRunner getExtractionDatajobRunner() {
-        return extractionDatajobRunner;
-    }
-
-    public void setExtractionDatajobRunner(JobRunner extractionDatajobRunner) {
-        this.extractionDatajobRunner = extractionDatajobRunner;
-    }
-
-    public Job getDownURLSpider() {
-        return downURLSpider;
-    }
-
-    public void setDownURLSpider(Job downURLSpider) {
-        this.downURLSpider = downURLSpider;
-    }
-
-    public Job getExtractionDataSpider() {
-        return extractionDataSpider;
-    }
-
-    public void setExtractionDataSpider(Job extractionDataSpider) {
-        this.extractionDataSpider = extractionDataSpider;
-    }
-
-    public Job getCartesianMRJob() {
-        return cartesianMRJob;
-    }
-
-    public void setCartesianMRJob(Job cartesianMRJob) {
-        this.cartesianMRJob = cartesianMRJob;
-    }
-
-    public JobRunner getCartesianjobRunner() {
-        return cartesianjobRunner;
-    }
-
-    public void setCartesianjobRunner(JobRunner cartesianjobRunner) {
-        this.cartesianjobRunner = cartesianjobRunner;
-    }
-
-    public JobRunner getConvertDataJobRunner() {
-        return convertDataJobRunner;
-    }
-
-    public void setConvertDataJobRunner(JobRunner convertDataJobRunner) {
-        this.convertDataJobRunner = convertDataJobRunner;
-    }
-
-    public Job getConvertDataJob() {
-        return convertDataJob;
-    }
-
-    public void setConvertDataJob(Job convertDataJob) {
-        this.convertDataJob = convertDataJob;
+    public void setHtemplate(HbaseTemplate htemplate) {
+        this.htemplate = htemplate;
     }
 
     public String getFile() {
@@ -247,5 +172,37 @@ public class SpiderAction implements org.quartz.Job {
 
     public void setFile(String file) {
         this.file = file;
+    }
+
+    public Path getConverFilePath() {
+        return converFilePath;
+    }
+
+    public void setConverFilePath(Path converFilePath) {
+        this.converFilePath = converFilePath;
+    }
+
+    public Path getCleanFilePath() {
+        return cleanFilePath;
+    }
+
+    public void setCleanFilePath(Path cleanFilePath) {
+        this.cleanFilePath = cleanFilePath;
+    }
+
+    public Path getExtractionFilePath() {
+        return extractionFilePath;
+    }
+
+    public void setExtractionFilePath(Path extractionFilePath) {
+        this.extractionFilePath = extractionFilePath;
+    }
+
+    public Configuration getHadoopConfiguration() {
+        return hadoopConfiguration;
+    }
+
+    public void setHadoopConfiguration(Configuration hadoopConfiguration) {
+        this.hadoopConfiguration = hadoopConfiguration;
     }
 }
