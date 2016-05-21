@@ -157,7 +157,7 @@ H1 a {
           </tr>
         </table>
         <ul class="MM">
-          <li><a href="oneKeyGetDataAc" target="main">爬取数据</a></li>
+          <li><a href="dfsfileAction" target="main">爬取数据</a></li>
         </ul>
       </div>
       <h1 class="type"><a href="javascript:void(0)">更新数据</a></h1>
@@ -168,8 +168,8 @@ H1 a {
           </tr>
         </table>
         <ul class="MM">
-          <li><a href="showDataAction?SP=all" target="main">旅游信息数据集</a></li>
-          <li><a href="oneKeyUpdateAc" target="main">更新旅游信息</a></li>
+          <li><a href="unCleanFileAction" target="main">ETL操作</a></li>
+          <li><a href="hfileFileAction" target="main">更新旅游信息</a></li>
         </ul>
       </div>
       </div>

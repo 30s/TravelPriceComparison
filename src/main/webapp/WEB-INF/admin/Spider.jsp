@@ -81,7 +81,7 @@
 
 					<tr>
 					  <td  colspan="2">
-						  请选择URL种子库:<input type="text" id="city1"/>设置爬虫周期-启动时间:<input name="hour"  type="text" size="5"/>  时  <input name="min" type="text" size="5"/>分
+						  请选择URL种子库:<input type="text" id="city1" name="file"/>设置爬虫周期-启动时间:<input name="hour"  type="text" size="5"/>  时  <input name="min" type="text" size="5"/>分
 					    循环次数:  <input name="repeateCount" type="text" size="3"/>次
 					  </td>
 
@@ -115,7 +115,7 @@
     <td valign="bottom" background="${pageContext.request.contextPath}/admin/images/mail_rightbg.gif"><img src="${pageContext.request.contextPath}/admin/images/buttom_right2.gif" width="16" height="17" /></td>
   </tr>
 </table>
- <iFrame id="iframe1" style="display:none;" frameborder="1" src="http://www.baidu.com" width="1160" height="500" style="margin-left:8px;" scrolling="auto"/>
+ <iFrame id="iframe1" style="display:none;" frameborder="1" src="http://node2:9999/ViewObjectRes//WebMagic%3Aname%3Ddujia.qunar.com" width="1160" height="500" style="margin-left:8px;" scrolling="auto"/>
 </body>
 <script type="text/javascript">
 	function show(type){
