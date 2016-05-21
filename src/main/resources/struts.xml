@@ -4,10 +4,12 @@
 	"http://struts.apache.org/dtds/struts-2.3.dtd">
 <struts>
     <constant name="struts.devMode" value="true" />
-    
-    <package name="struts" extends="struts-default">
-        <action name="travelAction" class="travelAction" method="findPageRecords">
-           <result>/index.jsp</result>
+
+    <package name="struts" extends="json-default,struts-default">
+       <action name="travelAction" class="travelAction" method="findPageRecords">
+           <result type="json" name="success">
+               <param name="root">jsonString</param>
+           </result>
         </action>
 
         <action name="*Ac" class="loginAction" method="{1}">
@@ -15,21 +17,29 @@
             <result name="error">login.jsp</result>
             <result name="showTop">/WEB-INF/admin/admin_top.jsp</result>
             <result name="showLeft">/WEB-INF/admin/left.jsp</result>
-            <result name="showRight">/WEB-INF/admin/oneKeyGetData.jsp</result>
-            <result name="oneKeyUpdate">/WEB-INF/admin/oneKeyUpdate.jsp</result>
+            <result name="showRight">/WEB-INF/admin/Spider.jsp</result>
+            <result name="oneKeyUpdate">/WEB-INF/admin/UpData.jsp</result>
         </action>
 
-        <!-- 管理数据 -->
+
         <action name="*Action" class="adminAction" method="{1}">
             <result name="success">/WEB-INF/admin/index.jsp</result>
-            <result name="showdata">/WEB-INF/admin/showData.jsp</result>
+            <result name="showTop">/WEB-INF/admin/admin_top.jsp</result>
+            <result name="showLeft">/WEB-INF/admin/left.jsp</result>
+            <result name="showRight">/WEB-INF/admin/Spider.jsp</result>
+
             <result name="delete" type="redirectAction">/WEB-INF/admin/index.jsp</result>
+            <result name="dfsfile">/WEB-INF/admin/index.jsp</result>
+            <result name="uncleanfile">/WEB-INF/admin/ETL.jsp</result>
+            <result name="etl">/WEB-INF/admin/ETL.jsp</result>
+
+
+            <result name="hfileFile">/WEB-INF/admin/UpData.jsp</result>
+            <result name="putDataToHBase">/WEB-INF/admin/UpData.jsp</result>
         </action>
         
         <action name="QuartzSpiderAction" class="quartzSpiderAction">
-            <result>/WEB-INF/admin/oneKeyGetData.jsp</result>
+            <result>/WEB-INF/admin/Spider.jsp</result>
         </action>
-
-
     </package>
 </struts>
