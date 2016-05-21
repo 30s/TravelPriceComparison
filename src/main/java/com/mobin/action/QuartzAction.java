@@ -20,31 +20,27 @@ import static org.quartz.TriggerBuilder.newTrigger;
  * 爬虫调度器
  */
 public class QuartzAction extends ActionSupport{
-    private String place;
+    private String file;
     private String startTime;   //"0 0 0/12 ? * MON,WED,FRI"
     private int repeateCount;
     private static  int hour;
     private static  int min;
     private static  Date date = null;
 
-
     public String execute() throws Exception {
-        System.out.println(222);
         Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
         scheduler.start();
         JobDetail jobDetail = newJob(SpiderAction.class)
                 .withIdentity("spiderJob","groupSpider")
-                .usingJobData("place",place)
+                .usingJobData("place",file)
                 .build();
 
-        System.out.println(repeateCount+"55555");
         Trigger trigger = newTrigger()
                 .withIdentity("simpleTigger","groupSpider")
-                .startAt(QuartzAction.coventDate())
-                .withSchedule(simpleSchedule().withIntervalInHours(6).withRepeatCount(repeateCount))
+                .startAt(QuartzAction.coventDate())   //任务启动时间
+                .withSchedule(simpleSchedule().withIntervalInHours(12).withRepeatCount(repeateCount))  //隔6小时执行一次，周期为repeateCount
                 .forJob(jobDetail)
                 .build();
-
 
         scheduler.scheduleJob(jobDetail,trigger);
         return this.SUCCESS;
@@ -60,12 +56,12 @@ public class QuartzAction extends ActionSupport{
         return  date;
     }
 
-    public String getPlace() {
-        return place;
+    public String getFile() {
+        return file;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
+    public void setFile(String file) {
+        this.file = file;
     }
 
     public String getStartTime() {
