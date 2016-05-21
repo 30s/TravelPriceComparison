@@ -7,7 +7,9 @@
    xsi:schemaLocation="  
     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  
     http://www.springframework.org/schema/hadoop http://www.springframework.org/schema/hadoop/spring-hadoop.xsd">
-   <bean id="phoenixDataSource" class="org.apache.commons.dbcp.BasicDataSource">
+
+
+    <bean id="phoenixDataSource" class="org.apache.commons.dbcp.BasicDataSource">
        <property name="driverClassName" value="org.apache.phoenix.jdbc.PhoenixDriver"/>
        <property name="url" value="jdbc:phoenix:master"/>
        <property name="initialSize" value="15"/>
@@ -20,7 +22,6 @@
    </bean>
 
 
-
     <hdp:configuration id="hadoopConfiguration">
         fs.defaultFS=hdfs://master:9000
         hadoop.tmp.dir=/home/hadoop/hadoop-2.6.0/tmp
@@ -28,6 +29,7 @@
         dfs.datanode.data.dir=/home/hadoop/hadoop-2.6.0/dfs/data
         dfs.replication = 2
         mapreduce.framework.name=yarn
+        mapreduce.task.timeout=30000000
         yarn.nodemanager.aux-services=mapreduce_shuffle
         yarn.nodemanager.aux-services.mapreduce.shuffle.class=org.apache.hadoop.mapred.ShuffleHandler
 
@@ -37,18 +39,17 @@
         yarn.resourcemanager.webapp.address=master:50030
     </hdp:configuration>
 
+
     <bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean"/>
     <bean id="transactionManager" class="org.springframework.batch.support.transaction.ResourcelessTransactionManager"/>
     <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher" p:jobRepository-ref="jobRepository"/>
 
-<!--
- input-path="hdfs://master:9000/澳门"
-             output-path="hdfs://master:9000/澳门URL"
--->
     <!--Creating a Hadoop Job-->
     <hdp:job id="downURLSpiderJob"
-             mapper="com.mobin.downURL.DownURLMapper"
+             mapper="com.mobin.downURL.DownURLMapper"/>
+    <!--
              number-reducers="0"/>
+             -->
 
     <hdp:job id="extractionDataSpiderJob"
              mapper="com.mobin.extractionData.ExtractionDataMap"
@@ -66,9 +67,15 @@
              mapper="com.mobin.convert.ConvertMapper"/>
 
     <hdp:job id="putDataToHBaseJob"
-             mapper="com.mobin.putDataToHBase.PutDataToHBaseDefault"/>
+             mapper="com.mobin.putDataToHBase.PutDataToHBaseDefault" configuration-ref="hadoopConfiguration"/>
 
+    <hdp:job id="tuniuURLJob"
+             mapper="com.mobin.downURL.DownURLTuniuMapper"/>
 
+    <hdp:job id="geneateHFileJob" map-key="org.apache.hadoop.hbase.io.ImmutableBytesWritable"
+             map-value="org.apache.hadoop.hbase.client.Put"
+             output-format="org.apache.hadoop.hbase.mapreduce.HFileOutputFormat2"
+             mapper="com.mobin.putDataToHBase.GenerateHFile" number-reducers="0"/>
 
     <!--Running a Hadoop Job-->
     <hdp:job-runner id="downURLjobRunner"
@@ -88,6 +95,12 @@
 
     <hdp:job-runner id="putDataToHBaseJobRunner"
                     job-ref="putDataToHBaseJob" run-at-startup="false"/>
+
+    <hdp:job-runner id="tuniuURLJobRrunner"
+                    job-ref="tuniuURLJob"  run-at-startup="false"/>
+
+    <hdp:job-runner id="generateHFilejobRunner"
+                    job-ref="geneateHFileJob"  run-at-startup="false"/>
 
 
     <hdp:hbase-configuration configuration-ref="hadoopConfiguration" id="hbaseConfiguration"/>
@@ -113,9 +126,11 @@
     </bean>
 
     <bean id="spiderAction" class="com.mobin.action.SpiderAction">
+        <property name="htemplate" ref="htemplate"/>
     </bean>
 
-    <bean id="adminAction" class="com.mobin.action.AdminAction">
+    <bean id="adminAction" class="com.mobin.action.AdminAction" scope="prototype">
+        <property name="hadoopConfiguration" ref="hadoopConfiguration"/>
         <property name="service" ref="travelService"/>
         <property name="spider" ref="spiderAction"/>
     </bean>
@@ -130,6 +145,7 @@
     <bean id="hbaseDao" class="com.mobin.dao.impl.HBaseDaoImpl">
         <property name="htemplate" ref="htemplate"/>
     </bean>
+
 
 
     
