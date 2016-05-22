@@ -11,6 +11,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -48,25 +49,31 @@ public class ConvertMapper extends Mapper<LongWritable, Text, NullWritable, Text
             throws IOException, InterruptedException {
         String[] _info = null;
         String[] info = value.toString().split("\t");
-        place(info[4].replaceAll("[\\[\\]]", "").split(","));
+
+        double _touristSpots = touristSpots(info[4].replaceAll("[\\[\\]]", "").split(","));
+        double _shop = shopping(info[15]);
+
         try {
-            _info = change(info[5]);//
+            _info = change(info[5]);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        double _hotel = hotel(info[14]);//
+        double _hotel = hotel(info[14]);
         // info[5] = hoteled(info[5]);
-        String hotellevel = hoteled(info[14]);//
-        double _traffic = traffic(info[8]);  //
-        double _sight = info[4].substring(1, info[4].length() - 1).split(",").length * 0.3;//
-        double total = (_hotel + _traffic + _sight) / Integer.valueOf(info[7]);//
+        String hotellevel = hoteled(info[14]);
+        double _traffic = traffic(info[8]);
+        double _sight = info[4].substring(1, info[4].length() - 1).split(",").length * 0.3;
+
+        double total = (_hotel + _traffic + _sight + _touristSpots + _shop) / Integer.valueOf(info[7]);
+        String _total = String.format("%.19f", total);
+
         StringBuffer sb = new StringBuffer();
         String values = sb    //将Jpingyin的jar包放到各节点的Hadoop包目录下，否则会出现couldnotfoundclass错误
                 .append(info[0]).append("\t")
-                //出发点
+                //出发点(拼音)
                 .append(PinyinHelper.convertToPinyinString(info[1].replaceAll("[\\[\\]]", ""),"", PinyinFormat.WITHOUT_TONE)).append("\t")
-                //目的地
+                //目的地(拼音)
                 .append(PinyinHelper.convertToPinyinString(info[2].replaceAll("[\\[\\]]", ""),"", PinyinFormat.WITHOUT_TONE)).append("\t")
                 //标题
                 .append(info[3].replaceAll("[\\[\\]]", "")).append("\t")
@@ -99,8 +106,12 @@ public class ConvertMapper extends Mapper<LongWritable, Text, NullWritable, Text
                 .append("去哪儿网").append("\t")
                 //酒店等级
                 .append(hotellevel).append("\t")
+                //出发点
+                .append((info[1].replaceAll("[\\[\\]]", ""))).append("\t")
+                //目的地
+                .append((info[2].replaceAll("[\\[\\]]", ""))).append("\t")
                 //性价比
-                .append(total)
+                .append(_total)
                 .toString();
         context.write(NullWritable.get(), new Text(values));
     }
@@ -137,7 +148,7 @@ public class ConvertMapper extends Mapper<LongWritable, Text, NullWritable, Text
 
     ////估算酒店星性价比
     public double hotel(String hotel) {
-        double _hotel = 0.2;
+        double _hotel = 0.21;
         if (hotel.contains("经济型")) {
             _hotel = _hotel * 2;
         } else if (hotel.contains("舒适型")) {
@@ -150,6 +161,13 @@ public class ConvertMapper extends Mapper<LongWritable, Text, NullWritable, Text
             _hotel = _hotel * 1;
         }
         return _hotel;
+    }
+
+    //计算旅游天数的性价比
+    public double tData(String data){
+        double _data = 0.12;
+        String d =  data.split("[\u4e00-\u9fa5]+")[0];
+        return  _data * (Integer.valueOf(d));
     }
 
     //判断酒店星级数
@@ -169,7 +187,7 @@ public class ConvertMapper extends Mapper<LongWritable, Text, NullWritable, Text
     }
 
     public double traffic(String traffic) {
-        double _traffic = 0.3;
+        double _traffic = 0.21;
         if (traffic.contains("航班") || traffic.contains("飞机")) {
             _traffic = _traffic * 5;
         } else if (traffic.contains("高铁")) {
@@ -182,16 +200,31 @@ public class ConvertMapper extends Mapper<LongWritable, Text, NullWritable, Text
         return _traffic;
     }
 
-
-    public int place(String[] traffic) {
+    //著名景点个数
+    public double touristSpots(String[] traffic) {
+        double _traffic = 0.38;
         int count = 0;
-        for(String s : traffic) {
-            String p = PinyinHelper.convertToPinyinString(s,"",PinyinFormat.WITHOUT_TONE);
-            String i = tst.get(p);
-            if(i != null)
-                  count ++;
-        }
-        return  count;
+
+            for(String s : traffic) {
+                String p = PinyinHelper.convertToPinyinString(s,"",PinyinFormat.WITHOUT_TONE);
+                if(!"".equals(p) && p != null){
+                    String i = tst.get(p);
+                    if(i != null)
+                        count ++;
+                }
+            }
+
+
+
+        return  count * _traffic;
+    }
+
+    public double shopping(String shop){
+        double _shop = 0.07;
+        if(shop.contains("购物"))
+            return  _shop;
+        else
+           return  0;
     }
 
 }
