@@ -82,19 +82,27 @@
 					<tr>
 					  <td  colspan="2">
 						  请选择URL种子库:<input type="text" id="city1" name="file"/>设置爬虫周期-启动时间:<input name="hour"  type="text" size="5"/>  时  <input name="min" type="text" size="5"/>分
-					    循环次数:  <input name="repeateCount" type="text" size="3"/>次
+
 					  </td>
 
 				  </tr>
 				  <tr colspan="2">
 				  	<td >
-				  	  <s:submit value="开始爬虫" align="center" style="margin-left:-150px" onclick="return confirm('是否开始爬取数据？')"/>
-						<input type="button" value="查看爬虫监控信息" style="position: absolute;margin-top:36px;margin-left:36px" onclick="showIframe()"/>
+				  	  <s:submit value="开始爬虫" align="center" style="margin-top:-29px;margin-left:580px" onclick="return confirm('是否开始爬取数据？')"/>
+						<b style="position: absolute;margin-top:36px;margin-left:-325px">端口号:</b><input id="port" type="text" style="width:100px;position: absolute;margin-top:36px;margin-left:-275px" />
+						<a href="#iframeLabel"><input type="button" value="查看爬虫监控信息" style="position: absolute;margin-top:35px;margin-left:-150px" onclick="showIframe()"/></a>
 						<script>
 							function showIframe(){
 								var iframe1 = document.getElementById("iframe1");
-								iframe1.style.display="block";
-								iframe1.style.marginLeft="8px";
+								var port = document.getElementById("port").value;
+								if(port == ""){ alert("请输入端口号");}
+								else {
+									url = "http://"+port+"/ViewObjectRes//WebMagic%3Aname%3Ddujia.qunar.com";
+									alert(url);
+									iframe1.setAttribute("src", url);
+									iframe1.style.display = "block";
+									iframe1.style.marginLeft = "8px";
+								}
 							}
 						</script>
 					</td>
@@ -115,7 +123,8 @@
     <td valign="bottom" background="${pageContext.request.contextPath}/admin/images/mail_rightbg.gif"><img src="${pageContext.request.contextPath}/admin/images/buttom_right2.gif" width="16" height="17" /></td>
   </tr>
 </table>
- <iFrame id="iframe1" style="display:none;" frameborder="1" src="http://node2:9999/ViewObjectRes//WebMagic%3Aname%3Ddujia.qunar.com" width="1160" height="500" style="margin-left:8px;" scrolling="auto"/>
+
+ <a name="iframeLabel"></a><iFrame id="iframe1" style="display:none;" frameborder="1" width="1160" height="500" style="margin-left:8px;" scrolling="auto"/>
 </body>
 <script type="text/javascript">
 	function show(type){

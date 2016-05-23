@@ -108,7 +108,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<div class="clearfix"></div>
 					</div>
 					<div class="bnr-btn">
-						<input id="check" type="submit" value="查询" />
+						<a href="#indexContent"><input id="check" type="submit" value="查询" /></a>
 
 					</div>
 				</div>

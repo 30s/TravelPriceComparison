@@ -105,6 +105,7 @@ input.labelauty+label {
 
 		<!-- 复选框 -->
 
+		<a name="indexContent"></a>
 		<div style="margin-top:40px">
 
 			<div style="margin-left:70px">
@@ -113,16 +114,42 @@ input.labelauty+label {
 						<h4 style="margin-top:13px;">出游天数：</h4>
 					</div>
 
+					<ul id="liSection" class="dowebok" style="margin-left:60px">
+
+						<li><input type="radio" name="section" value="2"
+							data-labelauty="0-800&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
+						</li>
+						<li><input type="radio" name="section" value="3"
+							data-labelauty="800-1500">
+						</li>
+						<li><input type="radio" name="section" value="4"
+							data-labelauty="1500-2000">
+						</li>
+						<li><input type="radio" name="section" value="5"
+								   data-labelauty="2000-2500">
+						</li>
+						<li><input type="radio" name="section" value="6"
+								   data-labelauty="2500-3000">
+						</li>
+					</ul>
+
+				</div>
+
+				<div>
+					<div style="width:120px;float:left;height:56px;">
+						<h4 style="margin-top:13px;">出游天数：</h4>
+					</div>
+
 					<ul id="liDay" class="dowebok" style="margin-left:60px">
 
 						<li><input type="radio" name="day" value="2"
-							data-labelauty="2天&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
+								   data-labelauty="2天&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
 						</li>
 						<li><input type="radio" name="day" value="3"
-							data-labelauty="3天&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
+								   data-labelauty="3天&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
 						</li>
 						<li><input type="radio" name="day" value="4"
-							data-labelauty="4天&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
+								   data-labelauty="4天&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
 						</li>
 						<li><input type="radio" name="day" value="5"
 								   data-labelauty="5天&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
