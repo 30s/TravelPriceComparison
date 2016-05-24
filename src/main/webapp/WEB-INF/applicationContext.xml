@@ -66,9 +66,6 @@
     <hdp:job id="convertDataJob"
              mapper="com.mobin.convert.ConvertMapper"/>
 
-    <hdp:job id="putDataToHBaseJob"
-             mapper="com.mobin.putDataToHBase.PutDataToHBaseDefault" configuration-ref="hadoopConfiguration"/>
-
     <hdp:job id="tuniuURLJob"
              mapper="com.mobin.downURL.DownURLTuniuMapper"/>
 
@@ -92,9 +89,6 @@
 
     <hdp:job-runner id="convertDataJobRunner"
                     job-ref="convertDataJob" run-at-startup="false"/>
-
-    <hdp:job-runner id="putDataToHBaseJobRunner"
-                    job-ref="putDataToHBaseJob" run-at-startup="false"/>
 
     <hdp:job-runner id="tuniuURLJobRrunner"
                     job-ref="tuniuURLJob"  run-at-startup="false"/>

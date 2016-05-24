@@ -2,7 +2,6 @@ package com.mobin.test;
 import java.io.IOException;
 
 import com.mobin.putDataToHBase.GenerateHFile;
-import com.mobin.putDataToHBase.PutDataToHBaseDefault;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.HBaseConfiguration;
