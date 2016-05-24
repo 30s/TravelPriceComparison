@@ -21,7 +21,6 @@
             <result name="oneKeyUpdate">/WEB-INF/admin/UpData.jsp</result>
         </action>
 
-
         <action name="*Action" class="adminAction" method="{1}">
             <result name="success">/WEB-INF/admin/index.jsp</result>
             <result name="showTop">/WEB-INF/admin/admin_top.jsp</result>
@@ -29,17 +28,17 @@
             <result name="showRight">/WEB-INF/admin/Spider.jsp</result>
 
             <result name="delete" type="redirectAction">/WEB-INF/admin/index.jsp</result>
-            <result name="dfsfile">/WEB-INF/admin/index.jsp</result>
+            <result name="index">/WEB-INF/admin/index.jsp</result>
+            <result name="dfsfile">/WEB-INF/admin/Spider.jsp</result>
             <result name="uncleanfile">/WEB-INF/admin/ETL.jsp</result>
             <result name="etl">/WEB-INF/admin/ETL.jsp</result>
-
 
             <result name="hfileFile">/WEB-INF/admin/UpData.jsp</result>
             <result name="putDataToHBase">/WEB-INF/admin/UpData.jsp</result>
         </action>
         
         <action name="QuartzSpiderAction" class="quartzSpiderAction">
-            <result>/WEB-INF/admin/Spider.jsp</result>
+            <result type="chain">dfsfileAction</result>
         </action>
     </package>
 </struts>

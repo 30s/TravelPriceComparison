@@ -17,14 +17,16 @@ public class TravelServiceDaoImpl implements TravelServiceDao {
 
     private TravelDao travelDao;
 
-    public Page findPage(String num, String ST, String SP, String EP,String TDATA,String HGRADE,String sort) {
+    public Page findPage(String num, String ST, String SP, String EP,String TDATA,String HGRADE,String sort,String firstPrice,String secondPrice,String TRAFFIC) {
         int pageNum = 1;
         if(num!=null&&!"".equals(num)){
             pageNum = Integer.parseInt(num);
         }
-        int totalRecords = travelDao.getTotalRecords(ST,SP,EP);//获取记录的条数
+         travelDao.getXkey(pageNum,Page.getPageSize(),ST,SP,EP,TDATA,HGRADE,sort,firstPrice,secondPrice,TRAFFIC);//获取记录的条数
+        int totalRecords = travelDao.getTotalRecords();
+        System.out.println(totalRecords+"pppppppppppp");
         Page page = new Page(pageNum, totalRecords);
-        List records = travelDao.findPageRecords(page.getCurrentPageNum(),page.getPageSize(),ST,SP,EP,TDATA,HGRADE,sort);
+        List records = travelDao.findPageRecords();
         page.setRecords(records);
 
         return page;

@@ -22,16 +22,13 @@ import org.springframework.data.hadoop.mapreduce.JobRunner;
 
 public class ConvertDate {
     public static void main(String[] args) throws Exception {
-        final String INPUT_PATH = "hdfs://master:9000/澳门INFO";
-        final String OUTPUT_PATH = "hdfs://master:9000/澳门ConvertData";
+        final String INPUT_PATH = "hdfs://master:9000/Clean/澳门URL2016-05-212016-05-21";
+        final String OUTPUT_PATH = "hdfs://master:9000/INFO/澳门ConvertData";
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
         JobRunner jobRunner = context.getBean("convertDataJobRunner", JobRunner.class);
         Job job = context.getBean("convertDataJob", Job.class);
-
         FileInputFormat.setInputPaths(job, INPUT_PATH);
         FileOutputFormat.setOutputPath(job, new Path(OUTPUT_PATH));
         jobRunner.call();
     }
-
-
 }

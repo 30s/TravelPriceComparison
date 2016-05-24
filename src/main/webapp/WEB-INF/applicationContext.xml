@@ -46,7 +46,7 @@
 
     <!--Creating a Hadoop Job-->
     <hdp:job id="downURLSpiderJob"
-             mapper="com.mobin.downURL.DownURLMapper"/>
+             mapper="com.mobin.downURL.DownURLMapper" number-reducers="0"/>
     <!--
              number-reducers="0"/>
              -->

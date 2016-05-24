@@ -71,6 +71,14 @@ public class AdminAction extends ActionSupport {
 		return  "dfsfile";
 	}
 
+	public String index() throws IOException {
+		fileslist = new ArrayList<DFSFile>();
+		Path dst = new Path("hdfs://master:9000/");
+		FileSystem fs = dst.getFileSystem(hadoopConfiguration);
+		getFiles(fs,new Path("/Spider"));   //遍历/Spider目录下的非_SUCCESS文件
+		return  "index";
+	}
+
 	//遍历HDFS下/UnClean
 	//UncClean为爬虫提取数据的存放位置
 	public String unCleanFile() throws IOException {

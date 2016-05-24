@@ -65,7 +65,10 @@ public class ExtractionDataSpider implements PageProcessor {
                             .select(page.getRawText()) + "\t")
 
                     .append(new JsonPathSelector("$.data.list.results[" + i
-                            + "].details.hotel").select(page.getRawText()) + "\t");
+                            + "].details.hotel").select(page.getRawText()) + "\t")
+
+                    .append(new JsonPathSelector("$.data.list.results[" + i
+                            + "].tagInfos[*].title").selectList(page.getRawText()) + "\t");
             pageMessage.add(message.toString());
         }
 

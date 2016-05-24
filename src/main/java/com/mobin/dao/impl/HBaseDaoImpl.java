@@ -46,6 +46,10 @@ public class HBaseDaoImpl implements HBaseDao{
 
     }
 
+    public void generateHFile() {
+
+    }
+
     public HbaseTemplate getHtemplate() {
         return htemplate;
     }

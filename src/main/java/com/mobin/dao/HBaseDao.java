@@ -6,4 +6,5 @@ package com.mobin.dao;
 public interface HBaseDao {
 
     public void truncate();
+    public void generateHFile();
 }

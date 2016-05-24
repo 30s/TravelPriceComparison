@@ -62,6 +62,7 @@ public class ConvertMapper extends Mapper<LongWritable, Text, NullWritable, Text
         double _hotel = hotel(info[14]);
         // info[5] = hoteled(info[5]);
         String hotellevel = hoteled(info[14]);
+        String trafficlevel = trafficLevel(info[8]);
         double _traffic = traffic(info[8]);
         double _sight = info[4].substring(1, info[4].length() - 1).split(",").length * 0.3;
 
@@ -111,7 +112,9 @@ public class ConvertMapper extends Mapper<LongWritable, Text, NullWritable, Text
                 //目的地
                 .append((info[2].replaceAll("[\\[\\]]", ""))).append("\t")
                 //性价比
-                .append(_total)
+                .append(_total).append("\t")
+                //交通工具
+                .append(trafficlevel).append("\t")
                 .toString();
         context.write(NullWritable.get(), new Text(values));
     }
@@ -184,6 +187,20 @@ public class ConvertMapper extends Mapper<LongWritable, Text, NullWritable, Text
         } else
             level = "1";
         return level;
+    }
+
+
+    public String trafficLevel(String traffic) {
+        if (traffic.contains("航班") || traffic.contains("飞机"))
+            return "5";
+         else if (traffic.contains("高铁"))
+            return  "4";
+         else if (traffic.contains("火车"))
+            return "3";
+         else if (traffic.contains("大巴"))
+           return "2";
+        else
+            return "1";
     }
 
     public double traffic(String traffic) {

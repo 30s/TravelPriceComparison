@@ -17,5 +17,4 @@ public class ExtractionDataMap extends Mapper<LongWritable,Text,Text,Text>{
         System.out.println(urls[1]);
         context.write(new Text(urls[0]),new Text(urls[1]));
     }
-
 }

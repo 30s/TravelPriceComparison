@@ -113,13 +113,54 @@ public class GenerateHFile extends Mapper<LongWritable,
             KeyValue kv6 = new KeyValue(HOTELROWKEY1.getBytes(), "INDEX".getBytes(), "IX".getBytes());
             _HOTELROWKEY1Put.add(kv6);
 
+            //出发点-GGG-目的地-交通等级-价格-ROWKEY
+            String TRAFFICROWKEY = items[1] + "GGG" + items[2] + items[20] + price + "-" + ROWKEY;
+            ImmutableBytesWritable _TRAFFICROWKEY = new ImmutableBytesWritable(TRAFFICROWKEY.getBytes());
+            Put _TRAFFICROWKEYPut = new Put(TRAFFICROWKEY.getBytes());
+            KeyValue kv7 = new KeyValue(TRAFFICROWKEY.getBytes(), "INDEX".getBytes(), "IX".getBytes());
+            _TRAFFICROWKEYPut.add(kv7);
+
+            //出发点-HHH-目的地-交通等级-酒店等级-出游天数-价格-ROWKEY
+            String TRAFFICROWKEY1 = items[1] + "HHH" + items[2] + items[20] + items[16] + items[6] + price + "-" + ROWKEY;
+            ImmutableBytesWritable _TRAFFICROWKEY1 = new ImmutableBytesWritable(TRAFFICROWKEY1.getBytes());
+            Put _TRAFFICROWKEY1Put = new Put(TRAFFICROWKEY1.getBytes());
+            KeyValue kv8 = new KeyValue(TRAFFICROWKEY1.getBytes(), "INDEX".getBytes(), "IX".getBytes());
+            _TRAFFICROWKEY1Put.add(kv8);
+
+
+            //出发点-KKK-目的地-交通等级-性价比-ROWKEY
+            String TRAFFICROWKEY2 = items[1] + "KKK" + items[2] + items[20] + items[19] + "-" + ROWKEY;
+            ImmutableBytesWritable _TRAFFICROWKEY2 = new ImmutableBytesWritable(TRAFFICROWKEY2.getBytes());
+            Put _TRAFFICROWKEY2Put = new Put(TRAFFICROWKEY2.getBytes());
+            KeyValue kv9 = new KeyValue(TRAFFICROWKEY2.getBytes(), "INDEX".getBytes(), "IX".getBytes());
+            _TRAFFICROWKEY2Put.add(kv9);
+
+
+            //出发点-LLL-目的地-交通等级-酒店等级-出游天数-性价比-ROWKEY
+            String TRAFFICROWKEY3 = items[1] + "LLL" + items[2] + items[20] + items[16] + items[6] + items[19] + "-" + ROWKEY;
+            ImmutableBytesWritable _TRAFFICROWKEY3 = new ImmutableBytesWritable(TRAFFICROWKEY3.getBytes());
+            Put _TRAFFICROWKEY3Put = new Put(TRAFFICROWKEY3.getBytes());
+            KeyValue kv10 = new KeyValue(TRAFFICROWKEY3.getBytes(), "INDEX".getBytes(), "IX".getBytes());
+            _TRAFFICROWKEY3Put.add(kv10);
+
+
+
             context.write(rowkey, put);   //基于性价比
             context.write(pricerowkey, put1);   ////基于价格
             context.write(_DHROWKEY, _DHROWKEYPut);  //多列组合查询
             context.write(_PRROWKEY, _PRROWKEYPut);   //多列组合查询
-            context.write(_HOTELROWKEY, _HOTELROWKEYPut);   //多列组合查询
+
             context.write(_TDATAROWKEY, _TDATAROWKEYPut);   //多列组合查询
             context.write(_TDATAROWKEY1, _TDATAROWKEY1Put);   //多列组合查询
+
             context.write(_HOTELROWKEY1, _HOTELROWKEY1Put);   //多列组合查询
+            context.write(_HOTELROWKEY, _HOTELROWKEYPut);   //多列组合查询
+
+            context.write(_TRAFFICROWKEY, _TRAFFICROWKEYPut);   //多列组合查询
+            context.write(_TRAFFICROWKEY1, _TRAFFICROWKEY1Put);   //多列组合查询
+            context.write(_TRAFFICROWKEY2, _TRAFFICROWKEY2Put);   //多列组合查询
+            context.write(_TRAFFICROWKEY3, _TRAFFICROWKEY3Put);   //多列组合查询
+
+
         }
 }

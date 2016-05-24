@@ -24,14 +24,11 @@ public class DownURLMapper extends Mapper<LongWritable,Text,Text,Text> {
         for (int i = 0; i < s.length; i++) {
             String url = "http://dujia.qunar.com/pqkd/list_" + s[i] + "_all_" + start + "?ti=3&tm=l01_all_search_origin&searchfrom=all";
             urls[i] = url;   //出发点到目的地的所有URL
-            System.out.println(url);
         }
         DownURLSpider downURLSpider = new DownURLSpider(start);
         Spider.create(downURLSpider).addUrl(urls).thread(10).run();//每一个出发点和目的地就去获取所有记录的URL
         for (String page_recordURL : downURLSpider.getAllPageURL()) {
-            System.out.println(page_recordURL);
             context.write(new Text(start), new Text(page_recordURL));
-
         }
     }
 }

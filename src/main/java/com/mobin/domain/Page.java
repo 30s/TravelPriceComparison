@@ -5,24 +5,26 @@ import java.util.List;
 public class Page {
 	private List<Travel> records;//存放分页记录
 
-	private int currentPageNum;//当前页码
-	private int totalPage;//总页数
-	private int pageSize = 8;//每页显示的记录条数
+	private int currentPageNum;
+	private int totalPage;
+	private final static  int pageSize = 8;
 
-	private int totalRecords;//总记录条数
-	private int startIndex;//每页记录开始的索引
+	private int totalRecords;
+	private int startIndex;
 
-	private int prePageNum;//上一页
-	private int nextPageNum;//下一页
+	private int prePageNum;
+	private int nextPageNum;
 
 
-	private int startPage;//开始页码
-	private int endPage;//结束页码
+	private int startPage;
+	private int endPage;
 
-	private String uri;//查询分页的地址
+	private String uri;
 
 	private String placelevel;
 	private String hotellevel;
+
+	public Page(){}
 
 
 	public Page(int currentPageNum,int totalRecords){
@@ -124,14 +126,10 @@ public class Page {
 	}
 
 
-	public int getPageSize() {
+	public static  int getPageSize() {
 		return pageSize;
 	}
 
-
-	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
-	}
 
 
 	public int getTotalRecords() {
@@ -195,5 +193,23 @@ public class Page {
 		this.nextPageNum = nextPageNum;
 	}
 
+
+	@Override
+	public String toString() {
+		return "Page{" +
+				"records=" + records +
+				", currentPageNum=" + currentPageNum +
+				", totalPage=" + totalPage +
+				", totalRecords=" + totalRecords +
+				", startIndex=" + startIndex +
+				", prePageNum=" + prePageNum +
+				", nextPageNum=" + nextPageNum +
+				", startPage=" + startPage +
+				", endPage=" + endPage +
+				", uri='" + uri + '\'' +
+				", placelevel='" + placelevel + '\'' +
+				", hotellevel='" + hotellevel + '\'' +
+				'}';
+	}
 }
 

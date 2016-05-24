@@ -31,7 +31,7 @@ public class ExtractionDataReduce extends Reducer<Text, Text, NullWritable, Text
             urls.add(url.toString());
         }
 
-       Spider.create(new PageProcessor() {
+       /*Spider.create(new PageProcessor() {
             private Site site = Site.me().setRetryTimes(3).setTimeOut(1000);
             private StringBuffer message;
 
@@ -95,17 +95,20 @@ public class ExtractionDataReduce extends Reducer<Text, Text, NullWritable, Text
             public Site getSite() {
                 return site;
             }
-        }).thread(5).addUrl(urls.toArray(new String[urls.size()])).run();
+        }).thread(5).addUrl(urls.toArray(new String[urls.size()])).run();*/
 
-        // Spider spider = Spider.create(extractionDataSpider).thread(5).addUrl(urls.toArray(new String[urls.size()]));
-        // SpiderMonitor.instance().register(spider);
-        // spider.start();
+        try {
+            Spider spider = Spider.create(extractionDataSpider).addUrl(urls.toArray(new String[urls.size()]));
+            SpiderMonitor.instance().register(spider);
+            spider.run();
+        } catch (JMException e) {
+            e.printStackTrace();
+        }
 
-        /*int len = extractionDataSpider.getPageMessage().size();
-        System.out.println(9999999);
-        for (int i = 0; i < len; i++) {
-            System.out.println(extractionDataSpider.getPageMessage().get(i));
+
+        int len = extractionDataSpider.getPageMessage().size();
+        for (int i = 0; i < len; i++)
             context.write(NullWritable.get(), new Text(extractionDataSpider.getPageMessage().get(i)));
-        }*/
+
     }
 }

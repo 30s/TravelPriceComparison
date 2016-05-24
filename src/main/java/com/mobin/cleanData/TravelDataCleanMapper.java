@@ -20,7 +20,7 @@ public class TravelDataCleanMapper extends Mapper<LongWritable, Text, Text, Text
 
             String fields[] = StringUtils.split(line, "\t");
 
-            if (fields.length >= 15) {
+            if (fields.length >= 16) {
 
                 String fields1[] = StringUtils.split(line, "?");
 
