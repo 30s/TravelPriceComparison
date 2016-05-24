@@ -6,9 +6,10 @@ import com.mobin.domain.Travel;
 
 public interface TravelDao {
 
-	public List findPageRecords(int currentPageNum, int pageSize,String ST,String SP,String EP,String TDATA,String HGRADE,String sort);
+	public List findPageRecords();
+	public void getXkey(int currentPageNum, int pageSize,String ST,String SP,String EP,String TDATA,String HGRADE,String sort,String firstPrice,String secondPrice);
 	//public List findPageRecords(int startIndex, int pageSize,String ST);//管理员页面的数据分页
-	public int getTotalRecords(String ST,String SP,String EP);
+	public int getTotalRecords();
 	public int getTotalRecords(String SP);
 	public Boolean login(String user,String password);
 
