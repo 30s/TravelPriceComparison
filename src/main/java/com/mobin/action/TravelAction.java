@@ -36,6 +36,64 @@ public class TravelAction extends ActionSupport implements ModelDriven<Travel>{
 	private String citySelect;
 	private String citySelect1;
 	private  String pageNum;
+	private String priceSection;
+
+
+
+	public String findPageRecords() throws IOException {
+		Page page = null;
+		String firstPrice = null;
+		String secondPrice = null;
+		System.out.println(new String(citySelect.getBytes("iso8859-1"),"UTF-8")+citySelect1+"3333");
+
+
+		//这三个传过来的值可能是null或者"",为避免DAO中少写判断条件，先在些统一将不合法的值转为null
+		if("".equals(hotel))
+			hotel = null;
+
+		if("".equals(day))
+			day = null;
+
+		if("".equals(price))
+			price = null;
+
+		System.out.println(price);
+		System.out.println(pageNum+"llllllllllllllll");
+		System.out.println(priceSection+"llllllllllllllll");
+		if(priceSection != null && !"".equals(priceSection)){
+			String[] pricesection = priceSection.split("-");
+			firstPrice = pricesection[0];
+			secondPrice = pricesection[1];
+		}
+		System.out.println(firstPrice + "=====");
+		System.out.println(secondPrice + "=====");
+		page = travelServicedao.findPage(pageNum, datepicker, PinyinHelper.convertToPinyinString(new String(citySelect.getBytes("iso8859-1"),"UTF-8"),"", PinyinFormat.WITHOUT_TONE), PinyinHelper.convertToPinyinString(new String(citySelect1.getBytes("iso8859-1"),"UTF-8"),"", PinyinFormat.WITHOUT_TONE),day,hotel,price,firstPrice,secondPrice);
+		page.setUri("travelAction.action");
+		System.out.println(page.getRecords().get(0).getORIGIN()+"ORIGIN");
+		jsonString = JSON.toJSONString(page);
+		String result = callback+"("+jsonString+")";
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setContentType("text/html");
+		response.setCharacterEncoding("utf-8");
+		PrintWriter out = response.getWriter();
+		System.out.println(page);
+		ServletActionContext.getRequest().setAttribute("p", page);
+		out.print(result);
+
+	  return null;
+  }
+
+	public Travel getModel() {
+		return travel;
+	}
+
+	public String getPriceSection() {
+		return priceSection;
+	}
+
+	public void setPriceSection(String priceSection) {
+		this.priceSection = priceSection;
+	}
 
 	public String getPageNum() {
 		return pageNum;
@@ -120,7 +178,7 @@ public class TravelAction extends ActionSupport implements ModelDriven<Travel>{
 	}
 
 	private String price;
-			
+
 	public Travel getTravel() {
 		return travel;
 	}
@@ -137,43 +195,5 @@ public class TravelAction extends ActionSupport implements ModelDriven<Travel>{
 		this.travelServicedao = travelServicedao;
 	}
 
-	public String findPageRecords() throws IOException {
-		Page page = null;
-		System.out.println(day+hotel+"3333");
-		System.out.println(citySelect+citySelect1+"3333");
-		System.out.println(new String(citySelect.getBytes("iso8859-1"),"UTF-8")+citySelect1+"3333");
-
-
-		//这三个传过来的值可能是null或者"",为避免DAO中少写判断条件，先在些统一将不合法的值转为null
-		if("".equals(hotel))
-			hotel = null;
-
-		if("".equals(day))
-			day = null;
-
-		if("".equals(price))
-			price = null;
-
-		System.out.println(price);
-		System.out.println(pageNum+"llllllllllllllll");
-		page = travelServicedao.findPage(pageNum, datepicker, PinyinHelper.convertToPinyinString(new String(citySelect.getBytes("iso8859-1"),"UTF-8"),"", PinyinFormat.WITHOUT_TONE), PinyinHelper.convertToPinyinString(new String(citySelect1.getBytes("iso8859-1"),"UTF-8"),"", PinyinFormat.WITHOUT_TONE),day,hotel,price);
-		page.setUri("travelAction.action");
-		System.out.println(page.getRecords().get(0).getORIGIN()+"ORIGIN");
-		jsonString = JSON.toJSONString(page);
-		String result = callback+"("+jsonString+")";
-		HttpServletResponse response = ServletActionContext.getResponse();
-		response.setContentType("text/html");
-		response.setCharacterEncoding("utf-8");
-		PrintWriter out = response.getWriter();
-		System.out.println(page);
-		ServletActionContext.getRequest().setAttribute("p", page);
-		out.print(result);
-
-	  return null;
-  }
-
-	public Travel getModel() {
-		return travel;
-	}
 
 }
