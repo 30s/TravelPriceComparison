@@ -10,7 +10,6 @@ import java.util.List;
  */
 public interface TravelServiceDao {
     public Page findPage(String num, String ST, String SP, String EP,String TDATA,String HGRADE,String sort,String firstPrice,String secondPrice,String TRAFFIC);
-   // public Page findPage(String num,String SP);
     public Boolean login(String user,String password);
 
 

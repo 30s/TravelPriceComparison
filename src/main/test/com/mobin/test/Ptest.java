@@ -117,7 +117,7 @@ public class Ptest {
     public void sortCostPer() {
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
         TravelServiceDao travelDao = (TravelServiceDao) context.getBean("travelService");//"2000","3000"
-        Page page = travelDao.findPage("1", "2016-05-24", "aomen", "hangzhou","6",null,null,null,null,"5");
+        Page page = travelDao.findPage("1", "2016-05-24", "aomen", "hangzhou","6","2","ASC","2000","3000","5");
         System.out.println(page.getRecords().get(0).getHOTEL());
         System.out.println(page.getRecords().size());
     }

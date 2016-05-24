@@ -56,6 +56,11 @@ public class SpiderAction implements org.quartz.Job {
         spiderAction.extractionData(file);//抽取数据
     }
 
+    /*  以下函数单元测试使用该方式来获取Bean实例  如：
+            ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+            extractionDataSpiderJob = context.getBean("extractionDataSpiderJob", Job.class);
+            extractionDatajobRunner = context.getBean("extractionDatajobRunner", JobRunner.class);*/
+
     public void downURLByPlace(String file) {
         try {
             ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
@@ -104,11 +109,12 @@ public class SpiderAction implements org.quartz.Job {
 
     public void extractionData(String file) {
         try {
+           /* 单元测试使用该方式来获取Bean实例
             ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
             extractionDataSpiderJob = context.getBean("extractionDataSpiderJob", Job.class);
-           // extractionDataSpiderJob = ContextLoaderListener.getCurrentWebApplicationContext().getBean("extractionDataSpiderJob", Job.class);
-            extractionDatajobRunner = context.getBean("extractionDatajobRunner", JobRunner.class);
-           // extractionDatajobRunner = ContextLoaderListener.getCurrentWebApplicationContext().getBean("extractionDatajobRunner", JobRunner.class);
+            extractionDatajobRunner = context.getBean("extractionDatajobRunner", JobRunner.class);*/
+            extractionDataSpiderJob = ContextLoaderListener.getCurrentWebApplicationContext().getBean("extractionDataSpiderJob", Job.class);
+            extractionDatajobRunner = ContextLoaderListener.getCurrentWebApplicationContext().getBean("extractionDatajobRunner", JobRunner.class);
             extractionDataSpiderJob.getConfiguration().set("mapred.jar", "/home/hadoop/TravelProject/out/artifacts/Travel/Travel.jar");
             System.out.println("extraction.................................");
             FileInputFormat.setInputPaths(extractionDataSpiderJob, "/Spider/" + file);

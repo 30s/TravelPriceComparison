@@ -188,14 +188,6 @@ public class TravelDaoImpl implements TravelDao {
             return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM TRAVELTESTS WHERE  ROWKEY >= ? AND ROWKEY <= ?", Integer.class, rk1,rk2);
     }
 
-    public int getTotalRecords(String SP) {
-        if(SP.equals("all")){
-            return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM TRAVELTESTS",Integer.class);
-        }else{
-           return  jdbcTemplate.queryForObject("SELECT COUNT(*) FROM TRAVELTESTS WHERE SP=?",Integer.class,SP);
-        }
-    }
-
     //包装对象属性
     public Travel packingProerty(ResultSet rs,int rowNum){
         Travel travel = new Travel();

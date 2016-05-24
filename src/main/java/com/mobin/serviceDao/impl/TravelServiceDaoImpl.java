@@ -22,9 +22,8 @@ public class TravelServiceDaoImpl implements TravelServiceDao {
         if(num!=null&&!"".equals(num)){
             pageNum = Integer.parseInt(num);
         }
-         travelDao.getXkey(pageNum,Page.getPageSize(),ST,SP,EP,TDATA,HGRADE,sort,firstPrice,secondPrice,TRAFFIC);//获取记录的条数
+        travelDao.getXkey(pageNum,Page.getPageSize(),ST,SP,EP,TDATA,HGRADE,sort,firstPrice,secondPrice,TRAFFIC);//获取记录的条数
         int totalRecords = travelDao.getTotalRecords();
-        System.out.println(totalRecords+"pppppppppppp");
         Page page = new Page(pageNum, totalRecords);
         List records = travelDao.findPageRecords();
         page.setRecords(records);
