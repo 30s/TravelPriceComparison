@@ -34,15 +34,7 @@ public class TravelDaoImpl implements TravelDao {
 
     //得到rowkey,startkey,endkey
     public void getXkey(int currentPageNum, int pageSize, String ST, String SP, String EP,String TDATA,String HGRADE,String sort
-            ,String firstPrice,String secondPrice,String TRAFFIC) {
-        System.out.println(currentPageNum);
-        System.out.println(pageSize);
-        System.out.println(ST);
-        System.out.println(SP);
-        System.out.println(EP);
-        System.out.println(TDATA);
-        System.out.println("------");
-        System.out.println(sort);
+            ,String firstPrice,String secondPrice,String TRAFFIC) {;
 
         if (firstPrice != null && secondPrice != null) {
              if (null == HGRADE && null == TDATA && null == TRAFFIC) {
@@ -70,15 +62,18 @@ public class TravelDaoImpl implements TravelDao {
                 rk2 = SP + "EEE" + EP + TRAFFIC + "%" +  TDATA + "天" + secondPrice + "%";
                 rowkey = SP + "EEE" + EP + TRAFFIC + "%" +  TDATA + "天";
              } else if (null == TDATA) {
-                rk1 = SP + "FFF" + EP + HGRADE + firstPrice + "%";
-                rk2 = SP + "FFF" + EP + HGRADE + secondPrice + "%";
-                rowkey = SP + "FFF" + EP + HGRADE + "%";
-             } else {
+                rk1 = SP + "HHH" + EP + TRAFFIC + HGRADE + firstPrice + "%";
+                rk2 = SP + "HHH" + EP + TRAFFIC + HGRADE + secondPrice + "%";
+                rowkey = SP + "HHH" + EP + TRAFFIC + HGRADE + "%";
+             } else if(null == TRAFFIC){
                 rk1 = SP + "AAA" + EP + TDATA + "天" + HGRADE + firstPrice + "%";
                 rk2 = SP + "AAA" + EP + TDATA + "天" + HGRADE + secondPrice + "%";
                 rowkey = SP + "AAA" + EP + TDATA + "天" + HGRADE + "%";
+             }else{
+                 rk1 = SP + "HHH" + EP + TRAFFIC + HGRADE + TDATA + "天" + firstPrice + "%";
+                 rk2 = SP + "HHH" + EP + TRAFFIC + HGRADE + TDATA + "天" + secondPrice + "%";
+                 rowkey = SP + "HHH" + EP + TRAFFIC + HGRADE + TDATA + "%";
              }
-             System.out.println(rk1);
              startRecord = jdbcTemplate.queryForObject("SELECT RECORDID FROM TRAVELTESTS WHERE ROWKEY >= ?  LIMIT 1 ", Integer.class, rk1);
              startkey = startRecord + (currentPageNum - 1) * pageSize;
              endkey = startRecord + (currentPageNum) * pageSize;
@@ -105,7 +100,6 @@ public class TravelDaoImpl implements TravelDao {
                     rowkey = SP + "HHH" + EP + TRAFFIC + HGRADE +TDATA + "天%";
 
                 if ("DESC".equals(sort)) {  //降序
-                    System.out.println(99 + rowkey);
                     startRecord = jdbcTemplate.queryForObject("SELECT RECORDID FROM TRAVELTESTS WHERE ROWKEY LIKE ? ORDER BY ROWKEY DESC LIMIT 1 ", Integer.class, rowkey);
                     endkey = startRecord - (currentPageNum - 1) * pageSize;
                     startkey = startRecord - (currentPageNum) * pageSize;
@@ -135,7 +129,6 @@ public class TravelDaoImpl implements TravelDao {
                 else
                     rowkey = SP + "LLL" + EP + TRAFFIC + HGRADE +TDATA + "天%";
 
-                System.out.println(rowkey + "KPOP");
                 //得到行记录数
                 startRecord = jdbcTemplate.queryForObject("SELECT RECORDID FROM TRAVELTESTS WHERE  " + r + "  ? LIMIT 1", Integer.class, rowkey);
                 startkey = startRecord + (currentPageNum - 1) * pageSize;
@@ -151,10 +144,6 @@ public class TravelDaoImpl implements TravelDao {
 
     //调用该函数之前，该函数中所用到的变量如startkey,endkey等都已被getXKey初始化好了
     public List findPageRecords() {
-        System.out.println(isSortByPrice+"llllll");
-        System.out.println(startkey+"llllll");
-        System.out.println(endkey+"llllll");
-        System.out.println(findPageRecords_sql+"llllll");
 
         //查询都是基于行键
             final StringBuffer sb = new StringBuffer();
