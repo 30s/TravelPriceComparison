@@ -37,8 +37,15 @@ public class TravelAction extends ActionSupport implements ModelDriven<Travel>{
 	private String citySelect1;
 	private  String pageNum;
 	private String priceSection;
+	private String traffic;
 
+	public String getTraffic() {
+		return traffic;
+	}
 
+	public void setTraffic(String traffic) {
+		this.traffic = traffic;
+	}
 
 	public String findPageRecords() throws IOException {
 		Page page = null;
@@ -56,6 +63,8 @@ public class TravelAction extends ActionSupport implements ModelDriven<Travel>{
 
 		if("".equals(price))
 			price = null;
+		if("".equals(traffic))
+			traffic = null;
 
 		System.out.println(price);
 		System.out.println(pageNum+"llllllllllllllll");
@@ -67,7 +76,10 @@ public class TravelAction extends ActionSupport implements ModelDriven<Travel>{
 		}
 		System.out.println(firstPrice + "=====");
 		System.out.println(secondPrice + "=====");
-		page = travelServicedao.findPage(pageNum, datepicker, PinyinHelper.convertToPinyinString(new String(citySelect.getBytes("iso8859-1"),"UTF-8"),"", PinyinFormat.WITHOUT_TONE), PinyinHelper.convertToPinyinString(new String(citySelect1.getBytes("iso8859-1"),"UTF-8"),"", PinyinFormat.WITHOUT_TONE),day,hotel,price,firstPrice,secondPrice);
+		System.out.println(traffic + "=====");
+		page = travelServicedao.findPage(pageNum, datepicker, PinyinHelper.convertToPinyinString(new String(citySelect.getBytes("iso8859-1"),"UTF-8"),"",
+				PinyinFormat.WITHOUT_TONE), PinyinHelper.convertToPinyinString(new String(citySelect1.getBytes("iso8859-1"),"UTF-8"),"",
+				PinyinFormat.WITHOUT_TONE),day,hotel,price,firstPrice,secondPrice,traffic);
 		page.setUri("travelAction.action");
 		System.out.println(page.getRecords().get(0).getORIGIN()+"ORIGIN");
 		jsonString = JSON.toJSONString(page);
