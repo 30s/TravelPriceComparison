@@ -54,7 +54,7 @@ public class DownURLSpider implements PageProcessor {
             for (int i = 0; i < len; i++) {
                 String currentURL = page.getUrl().toString();//当前的用于获取总页数URL，也是获取其他数据的URL
                 String[] recordURL = currentURL.split("lm=0");
-                String recordURL_ = recordURL[0] + "lm=" + n + recordURL[1];
+                String recordURL_ = recordURL[0] + "lm=" + n + recordURL[1] + "," + start;
                 allPageURL.add(recordURL_);//一个出发点-目的地对应的所有页数的数据的URL
                 n = n + 20;
             }
