@@ -5,6 +5,7 @@
 		var liHotel = null;
 		var liPrice = null;
 		var liSection = null;
+		var liTraffic = null;
 
 
 		var datepicker = null;
@@ -29,7 +30,12 @@
 					$("input[name='section']:checked").attr("checked",false);
 					liSection="";
 				}else liSection = $("input[name='section']:checked").val();
+				if($(this).val() == liTraffic){
+					$("input[name='traffic']:checked").attr("checked",false);
+					liTraffic="";
+				}else liTraffic = $("input[name='traffic']:checked").val();
 
+				if (liTraffic == null) {liTraffic = ""}
 				if (liSection == null) {liSection = ""}
 				if (liDay == null) {liDay = ""}
 				if (liHotel == null) {liHotel = ""}
@@ -46,7 +52,7 @@
 				$.ajax({
 					type : "GET",
 					url : "http://192.168.31.128:8080/Travel/travelAction"+"?day="+liDay+"&hotel="+liHotel+"&price="+liPrice+"&priceSection="+liSection
-					+"&datepicker="+datepicker+"&citySelect="+citySelect+"&citySelect1="+citySelect1,
+					+"&traffic="+liTraffic+"&datepicker="+datepicker+"&citySelect="+citySelect+"&citySelect1="+citySelect1,
 					dataType : "jsonp",
 					success : function(data) {
 						$("#mainContent").html("");
@@ -73,10 +79,13 @@
 				liHotel = $("input[name='hotel']:checked").val();
 				liPrice = $("input[name='sortPrice']:checked").val();
 				liSection = $("input[name='section']:checked").val();
+				liTraffic = $("input[name='traffic']:checked").val();
+				liTraffic = ""
 				liSection = ""
 				liDay = ""
 				liHotel = ""
 				liPrice = ""
+				$("input[name='traffic']:checked").attr("checked",false);
 				$("input[name='section']:checked").attr("checked",false);
 				$("input[name='day']:checked").attr("checked",false);
 				$("input[name='hotel']:checked").attr("checked",false);
@@ -91,7 +100,7 @@
 				$.ajax({
 					type : "GET",
 					url : "http://192.168.31.128:8080/Travel/travelAction"+"?day="+liDay+"&hotel="+liHotel+"&price="+liPrice+"&priceSection="+liSection
-					+"&datepicker="+datepicker+"&citySelect="+citySelect+"&citySelect1="+citySelect1,
+					+"&traffic="+liTraffic+"&datepicker="+datepicker+"&citySelect="+citySelect+"&citySelect1="+citySelect1,
 					dataType : "jsonp",
 					success : function(data) {
 						alert("成功"+datepicker+citySelect+citySelect1+liDay);
