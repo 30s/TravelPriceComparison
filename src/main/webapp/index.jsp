@@ -105,31 +105,30 @@ input.labelauty+label {
 
 		<!-- 复选框 -->
 
-		<a name="indexContent"></a>
 		<div style="margin-top:40px">
 
 			<div style="margin-left:70px">
 				<div>
 					<div style="width:120px;float:left;height:56px;">
-						<h4 style="margin-top:13px;">出游天数：</h4>
+						<h4 style="margin-top:13px;">价格范围：</h4>
 					</div>
 
 					<ul id="liSection" class="dowebok" style="margin-left:60px">
 
-						<li><input type="radio" name="section" value="2"
+						<li><input type="radio" name="section" value="0-800"
 							data-labelauty="0-800&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
 						</li>
-						<li><input type="radio" name="section" value="3"
-							data-labelauty="800-1500">
+						<li><input type="radio" name="section" value="800-1600"
+							data-labelauty="800-1600">
 						</li>
-						<li><input type="radio" name="section" value="4"
-							data-labelauty="1500-2000">
+						<li><input type="radio" name="section" value="1600-2400"
+							data-labelauty="1600-2400">
 						</li>
-						<li><input type="radio" name="section" value="5"
-								   data-labelauty="2000-2500">
+						<li><input type="radio" name="section" value="2400-3200"
+								   data-labelauty="2400-3200">
 						</li>
-						<li><input type="radio" name="section" value="6"
-								   data-labelauty="2500-3000">
+						<li><input type="radio" name="section" value="3200-4000"
+								   data-labelauty="3200-4000">
 						</li>
 					</ul>
 
@@ -156,6 +155,29 @@ input.labelauty+label {
 						</li>
 						<li><input type="radio" name="day" value="6"
 								   data-labelauty="6天&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
+						</li>
+					</ul>
+
+				</div>
+
+				<div>
+					<div style="width:120px;float:left;height:56px;">
+						<h4 style="margin-top:13px;">交通方式：</h4>
+					</div>
+
+					<ul id="liTraffic" class="dowebok" style="margin-left:60px">
+
+						<li><input type="radio" name="traffic" value="5"
+								   data-labelauty="飞机&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
+						</li>
+						<li><input type="radio" name="traffic" value="4"
+								   data-labelauty="高铁&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
+						</li>
+						<li><input type="radio" name="traffic" value="3"
+								   data-labelauty="火车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
+						</li>
+						<li><input type="radio" name="traffic" value="2"
+								   data-labelauty="大巴&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
 						</li>
 					</ul>
 
