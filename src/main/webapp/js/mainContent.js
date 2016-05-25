@@ -48,7 +48,6 @@
 				if (citySelect == "城市名") {citySelect = ""}
 				if (citySelect1 == "城市名") {citySelect1 = ""}
 
-				alert("this:"+$(this).val()+"quanju:"+liSection);
 				$.ajax({
 					type : "GET",
 					url : "http://192.168.31.128:8080/Travel/travelAction"+"?day="+liDay+"&hotel="+liHotel+"&price="+liPrice+"&priceSection="+liSection
@@ -57,7 +56,6 @@
 					success : function(data) {
 						$("#mainContent").html("");
 						var index = eval(data);
-						alert("chenggong+"+index.records.length);
 						for(var i=0;i<index.records.length;i++)
 							showMainContent(i,index);
 					},
@@ -103,14 +101,12 @@
 					+"&traffic="+liTraffic+"&datepicker="+datepicker+"&citySelect="+citySelect+"&citySelect1="+citySelect1,
 					dataType : "jsonp",
 					success : function(data) {
-						alert("成功"+datepicker+citySelect+citySelect1+liDay);
 						$("#mainContent").html("");
 						var index = eval(data);
 						for(var i=0;i<index.records.length;i++)
 							showMainContent(i,index);
 						var forLi = $("#forLi");
 						forLi.html("");
-						alert(index.totalPage);
 						for(var i=0;i<index.totalPage;i++){
 							forLi.append("<li>"
 								+'<a href="#" onclick="eachPage('+(i+1)+')">'+(i+1)+'</a>'
@@ -121,7 +117,7 @@
 
 					},
 					error : function(jqXHR) {
-						alert(123);
+						alert("服务器请求失败!");
 						$("#mainContent").html("");
 					}
 				});
@@ -148,14 +144,13 @@ function eachPage(num){
 		+"&datepicker="+datepicker+"&citySelect="+citySelect+"&citySelect1="+citySelect1,
 		dataType : "jsonp",
 		success : function(data) {
-			alert("成功"+datepicker+citySelect+citySelect1+liDay);
 			$("#mainContent").html("");
 			var index = eval(data);
 			for(var i=0;i<index.records.length;i++)
 				showMainContent(i,index);
 		},
 		error : function(jqXHR) {
-			alert(123);
+			alert("服务器请求失败!");
 			$("#mainContent").html("");
 		}
 	});
