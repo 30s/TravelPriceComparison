@@ -48,6 +48,7 @@ public class TravelAction extends ActionSupport implements ModelDriven<Travel>{
 	}
 
 	public String findPageRecords() throws IOException {
+		System.out.println("llllll");
 		Page page = null;
 		String firstPrice = null;
 		String secondPrice = null;

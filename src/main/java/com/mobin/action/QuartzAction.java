@@ -1,6 +1,7 @@
 package com.mobin.action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ServletActionContext;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.context.ApplicationContext;
@@ -26,6 +27,7 @@ public class QuartzAction extends ActionSupport{
     private static  int hour;
     private static  int min;
     private static  Date date = null;
+    private static int thread;
 
     public String execute() throws Exception {
         Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
@@ -33,6 +35,7 @@ public class QuartzAction extends ActionSupport{
         JobDetail jobDetail = newJob(SpiderAction.class)
                 .withIdentity("spiderJob","groupSpider")
                 .usingJobData("place",file)
+                .usingJobData("SpiderThread",thread)
                 .build();
 
         Trigger trigger = newTrigger()
@@ -43,6 +46,7 @@ public class QuartzAction extends ActionSupport{
                 .build();
 
         scheduler.scheduleJob(jobDetail,trigger);
+
         return this.SUCCESS;
     }
 
@@ -80,19 +84,27 @@ public class QuartzAction extends ActionSupport{
         this.repeateCount = repeateCount;
     }
 
-    public static int getHour() {
+    public  int getHour() {
         return hour;
     }
 
-    public static void setHour(int hour) {
+    public  void setHour(int hour) {
         QuartzAction.hour = hour;
     }
 
-    public static int getMin() {
+    public  int getMin() {
         return min;
     }
 
-    public static void setMin(int min) {
+    public  void setMin(int min) {
         QuartzAction.min = min;
+    }
+
+    public int getThread() {
+        return thread;
+    }
+
+    public void setThread(int thread) {
+        this.thread = thread;
     }
 }

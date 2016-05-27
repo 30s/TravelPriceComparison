@@ -8,6 +8,7 @@ public class DFSFile {
     private String owner;
     private Long size;
     private String name;
+    private String parent;
 
     public String getPermission() {
         return permission;
@@ -39,5 +40,13 @@ public class DFSFile {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getParent() {
+        return parent;
+    }
+
+    public void setParent(String parent) {
+        this.parent = parent;
     }
 }

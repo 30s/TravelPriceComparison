@@ -20,11 +20,11 @@ public class TravelDataCleanMapper extends Mapper<LongWritable, Text, Text, Text
 
             String fields[] = StringUtils.split(line, "\t");
 
-            if (fields.length >= 16) {
+            if (fields.length == 16) {
 
                 String fields1[] = StringUtils.split(line, "?");
 
-                String urlId = fields1[0] + fields[1] + fields[2];
+                String urlId = fields[0] + fields[1] + fields[2];
                 context.write(new Text(urlId), new Text(line));
             }
         }

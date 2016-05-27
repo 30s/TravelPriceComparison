@@ -16,12 +16,15 @@ import org.apache.hadoop.fs.*;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.ConnectionFactory;
 import org.apache.hadoop.hbase.client.HTable;
+import org.apache.hadoop.hbase.io.crypto.aes.TestAES;
 import org.apache.hadoop.hbase.mapreduce.LoadIncrementalHFiles;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.hadoop.hbase.HbaseTemplate;
 import org.springframework.web.context.ContextLoaderListener;
 
@@ -41,21 +44,27 @@ public class AdminAction extends ActionSupport {
 	private String generatehfile;
 	private String hfile;
 	private String htable;
+	private String delfile;
 
 	private Configuration hadoopConfiguration;
 
 
 	//通过移动HFile文件到表目录下来达到导入数据的目的
-	public String putDataToHBase(String HFile)  {
+	public String putDataToHBase()  {
 		try {
+			//ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+
 			HbaseTemplate template = ContextLoaderListener.getCurrentWebApplicationContext().getBean("htemplate",HbaseTemplate.class);
+			//HbaseTemplate template = context.getBean("htemplate",HbaseTemplate.class);
 			Configuration configuration = template.getConfiguration();
 			Connection connection = ConnectionFactory.createConnection(configuration);
 			LoadIncrementalHFiles loder = new LoadIncrementalHFiles(configuration);
+			System.out.println("load......");
 			loder.doBulkLoad(new Path("hdfs://master:9000/HFILE/"+hfile),new HTable(configuration,htable));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		ServletActionContext.getRequest().setAttribute("message","完成数据导入！");
 		return "putDataToHBase";
 	}
 
@@ -109,6 +118,7 @@ public class AdminAction extends ActionSupport {
 					hfile.setOwner(fileType.getOwner());
 					hfile.setSize(fileType.getLen());
 					hfile.setName(fileType.getPath().getName());
+				    hfile.setParent(fileType.getPath().getParent().getName());
 					System.out.println(fileType.getPath().getName());
 				    fileslist.add(hfile);
 				}
@@ -120,7 +130,32 @@ public class AdminAction extends ActionSupport {
 		SpiderAction.cleanData(etlFile);
 		SpiderAction.convertData(etlFile);
 		SpiderAction.generateHFile(etlFile);//生成HFILE文件
+        ServletActionContext.getRequest().setAttribute("message","ETL结束！");
 		return  "etl";
+	}
+
+	public String dfsDel() throws IOException {
+		delete(delfile);
+		return "dfsdel";
+	}
+
+	public String hfileDel() throws IOException {
+		delete(delfile);
+		return "hfiledel";
+	}
+
+
+	public String updateDel() throws IOException {
+		delete(delfile);
+		return "updatedel";
+	}
+
+	public void delete(String file) throws IOException {
+		Path dst = new Path("hdfs://master:9000/");
+		FileSystem fs = dst.getFileSystem(hadoopConfiguration);
+		System.out.println(delfile + "   del");
+		fs.delete(new Path(delfile));
+
 	}
 
 	public String showTop(){
@@ -241,5 +276,19 @@ public class AdminAction extends ActionSupport {
 	public void setHtable(String htable) {
 		this.htable = htable;
 	}
+
+	public String getDelfile() {
+		return delfile;
+	}
+
+	public void setDelfile(String delfile) {
+		this.delfile = delfile;
+	}
+
+
+
+
+
+
 }
 

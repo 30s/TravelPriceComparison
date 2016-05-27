@@ -7,6 +7,7 @@ import org.apache.hadoop.hbase.mapreduce.HFileOutputFormat2;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.struts2.ServletActionContext;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -52,8 +53,9 @@ public class SpiderAction implements org.quartz.Job {
         JobKey key = jobExecutionContext.getJobDetail().getKey();
         JobDataMap dataMap = jobExecutionContext.getJobDetail().getJobDataMap();
         String file = dataMap.getString("place");
+        int thread = dataMap.getInt("SpiderThread");
         SpiderAction spiderAction = new SpiderAction();
-        spiderAction.extractionData(file);//抽取数据
+        spiderAction.extractionData(file,thread);//抽取数据
     }
 
     /*  以下函数单元测试使用该方式来获取Bean实例  如：
@@ -107,15 +109,16 @@ public class SpiderAction implements org.quartz.Job {
         }
     }
 
-    public void extractionData(String file) {
+    public void extractionData(String file,int spiderthread) {
         try {
            /* 单元测试使用该方式来获取Bean实例*/
-           //ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+          // ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
             extractionDataSpiderJob = ContextLoaderListener.getCurrentWebApplicationContext().getBean("extractionDataSpiderJob", Job.class);
             extractionDatajobRunner = ContextLoaderListener.getCurrentWebApplicationContext().getBean("extractionDatajobRunner", JobRunner.class);
             //extractionDataSpiderJob = context.getBean("extractionDataSpiderJob", Job.class);
-            //extractionDatajobRunner = context.getBean("extractionDatajobRunner", JobRunner.class);
+           // extractionDatajobRunner = context.getBean("extractionDatajobRunner", JobRunner.class);
             extractionDataSpiderJob.getConfiguration().set("mapred.jar", "/home/hadoop/TravelProject/out/artifacts/Travel/Travel.jar");
+            extractionDataSpiderJob.getConfiguration().setInt("SpiderThread",spiderthread);
             System.out.println("extraction.................................");
             FileInputFormat.setInputPaths(extractionDataSpiderJob, "/Spider/" + file);
             extractionFilePath = new Path("/UnClean/"+  file  + new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
@@ -129,11 +132,11 @@ public class SpiderAction implements org.quartz.Job {
     //cleanData  convertData  generateHFile是一连串的操作
     public static  void cleanData(String file) {
         try {
-          //  ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-          //  cleanDataJob = context.getBean("cleanDataJob", Job.class);
+            //ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+           //cleanDataJob = context.getBean("cleanDataJob", Job.class);
             cleanDataJob = ContextLoaderListener.getCurrentWebApplicationContext().getBean("cleanDataJob", Job.class);
             cleanDataJobRunner = ContextLoaderListener.getCurrentWebApplicationContext().getBean("cleanDataJobRunner", JobRunner.class);
-          //  cleanDataJobRunner = context.getBean("cleanDataJobRunner", JobRunner.class);
+           // cleanDataJobRunner = context.getBean("cleanDataJobRunner", JobRunner.class);
             cleanDataJob.getConfiguration().set("mapred.jar", "/home/hadoop/TravelProject/out/artifacts/Travel/Travel.jar");
             System.out.println("CLEAN.................................");
             FileInputFormat.setInputPaths(cleanDataJob, new Path("/UnClean/"+file));
@@ -148,9 +151,9 @@ public class SpiderAction implements org.quartz.Job {
     public static void convertData(String file) {
         try {
            // ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-            //convertDataJob = context.getBean("convertDataJob", Job.class);
+           // convertDataJob = context.getBean("convertDataJob", Job.class);
             convertDataJob = ContextLoaderListener.getCurrentWebApplicationContext().getBean("convertDataJob", Job.class);
-           // convertDataJobRunner = context.getBean("convertDataJobRunner", JobRunner.class);
+           //convertDataJobRunner = context.getBean("convertDataJobRunner", JobRunner.class);
             convertDataJobRunner = ContextLoaderListener.getCurrentWebApplicationContext().getBean("convertDataJobRunner", JobRunner.class);
             convertDataJob.getConfiguration().set("mapred.jar", "/home/hadoop/TravelProject/out/artifacts/Travel/Travel.jar");
             System.out.println("convertData.................................");
@@ -164,8 +167,13 @@ public class SpiderAction implements org.quartz.Job {
     }
 
     public static void generateHFile(String file) throws Exception {
+       // ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        //geneateHFileJob = context.getBean("geneateHFileJob", Job.class);
+        geneateHFileJob = ContextLoaderListener.getCurrentWebApplicationContext().getBean("geneateHFileJob", Job.class);
+        generateHFilejobRunner = ContextLoaderListener.getCurrentWebApplicationContext().getBean("generateHFilejobRunner", JobRunner.class);
+        //generateHFilejobRunner = context.getBean("generateHFilejobRunner", JobRunner.class);
         Configuration conf = htemplate.getConfiguration();
-        HTable table =  new HTable(conf,"TRAVELTEST");
+        HTable table =  new HTable(conf,"TRAVELCOSTPER");
         geneateHFileJob.getInstance(conf);
         geneateHFileJob.getConfiguration().set("mapred.jar", "/home/hadoop/TravelProject/out/artifacts/Travel/Travel.jar");
         System.out.println("generate......................");

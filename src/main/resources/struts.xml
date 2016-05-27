@@ -33,12 +33,16 @@
             <result name="uncleanfile">/WEB-INF/admin/ETL.jsp</result>
             <result name="etl">/WEB-INF/admin/ETL.jsp</result>
 
+            <result name="dfsdel" type="chain">dfsfileAction</result>
+            <result name="hfiledel" type="chain">unCleanFileAction</result>
+            <result name="updatedel" type="chain">hfileFileAction</result>
+
             <result name="hfileFile">/WEB-INF/admin/UpData.jsp</result>
             <result name="putDataToHBase">/WEB-INF/admin/UpData.jsp</result>
         </action>
         
         <action name="QuartzSpiderAction" class="quartzSpiderAction">
-            <result type="chain">dfsfileAction</result>
+            <result type="chain">dfsfileAction </result>
         </action>
     </package>
 </struts>
