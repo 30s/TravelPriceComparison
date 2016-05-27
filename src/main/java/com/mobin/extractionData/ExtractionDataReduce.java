@@ -1,5 +1,6 @@
 package com.mobin.extractionData;
 
+import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -19,6 +20,12 @@ import java.util.List;
  * Created by hadoop on 3/8/16.
  */
 public class ExtractionDataReduce extends Reducer<Text, Text, NullWritable, Text> {
+
+    private int thread;
+    protected void setup(Context context) throws IOException, InterruptedException {
+        String spiderThread = context.getConfiguration().get("SpiderThread");
+        thread = Integer.valueOf(spiderThread);
+    }
 
     protected void reduce(Text key, Iterable<Text> values,
                           final Context context)
@@ -98,7 +105,7 @@ public class ExtractionDataReduce extends Reducer<Text, Text, NullWritable, Text
         }).thread(5).addUrl(urls.toArray(new String[urls.size()])).run();*/
 
         try {
-            Spider spider = Spider.create(extractionDataSpider).addUrl(urls.toArray(new String[urls.size()]));
+            Spider spider = Spider.create(extractionDataSpider).thread(thread).addUrl(urls.toArray(new String[urls.size()]));
             SpiderMonitor.instance().register(spider);
             spider.run();
         } catch (JMException e) {
