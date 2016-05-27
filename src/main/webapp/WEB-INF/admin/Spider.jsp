@@ -46,18 +46,20 @@
 				<div style="overflow-x: auto; overflow-y: auto; height: 200px; width:1100px;">
 					<table id="table" align="center" width="1050px" height="200px">
 						<tbody>
+						${demo}
 						<tr>
 							<th style="border-bottom:1px solid #000" width="190px">Permissio</th>
 							<th style="border-bottom:1px solid #000" width="190px">Owner</th>
-							<th style="border-bottom:1px solid #000" width="190px">Size</th>
 							<th style="border-bottom:1px solid #000" width="190px">Name</th>
+							<th style="border-bottom:1px solid #000" width="190px">Action</th>
 						</tr>
                      <s:iterator value="fileslist" var="f">
 							<tr>
 								<th style="border-bottom:1px solid #000" width="190px"><a href="#">${f.permission}</a></th>
 								<th style="border-bottom:1px solid #000" width="190px"><a href="#">${f.owner}</a></th>
-								<th style="border-bottom:1px solid #000" width="190px"><a href="#">${f.size}</a></th>
 								<th style="border-bottom:1px solid #000" width="190px"><a href="#" onclick="setCity('<s:property value="#f.name"/>')">${f.name}</a></th>
+								<th style="border-bottom:1px solid #000" width="190px"><a href="dfsDelAction?delfile=/${f.parent}/${f.name}" onclick="return confirm('是否确认删除文件！')">删除</a></th>
+
 							</tr>
 					 </s:iterator>
 						</tbody>
@@ -81,16 +83,17 @@
 
 					<tr>
 					  <td  colspan="2">
-						  请选择URL种子库:<input type="text" id="city1" name="file"/>设置爬虫周期-启动时间:<input name="hour"  type="text" size="5"/>  时  <input name="min" type="text" size="5"/>分
+						  请选择URL种子库:<input type="text" id="city1" name="file"/>设置爬虫周期-启动时间:<input name="hour"  type="text" size="5"/>  时  <input name="min" type="text" size="5"/>分,
+						  线程数:<input tpye="text" name="thread" style="width:30px"/>
 
 					  </td>
 
 				  </tr>
 				  <tr colspan="2">
 				  	<td >
-				  	  <s:submit value="开始爬虫" align="center" style="margin-top:-29px;margin-left:580px" onclick="return confirm('是否开始爬取数据？')"/>
-						<b style="position: absolute;margin-top:36px;margin-left:-325px">端口号:</b><input id="port" type="text" style="width:100px;position: absolute;margin-top:36px;margin-left:-275px" />
-						<a href="#iframeLabel"><input type="button" value="查看爬虫监控信息" style="position: absolute;margin-top:35px;margin-left:-150px" onclick="showIframe()"/></a>
+				  	  <s:submit value="开始爬虫" align="center" style="margin-top:-29px;margin-left:660px" onclick="return confirm('是否开始爬取数据？')"/>
+						<b style="position: absolute;margin-top:36px;margin-left:-365px">端口号:</b><input id="port" type="text" style="width:100px;position: absolute;margin-top:36px;margin-left:-320px" />
+						<a href="#iframeLabel"><input type="button" value="查看爬虫监控信息" style="position: absolute;margin-top:35px;margin-left:-210px" onclick="showIframe()"/></a>
 						<script>
 							function showIframe(){
 								var iframe1 = document.getElementById("iframe1");
@@ -98,7 +101,6 @@
 								if(port == ""){ alert("请输入端口号");}
 								else {
 									url = "http://"+port+"/ViewObjectRes//WebMagic%3Aname%3Ddujia.qunar.com";
-									alert(url);
 									iframe1.setAttribute("src", url);
 									iframe1.style.display = "block";
 									iframe1.style.marginLeft = "8px";

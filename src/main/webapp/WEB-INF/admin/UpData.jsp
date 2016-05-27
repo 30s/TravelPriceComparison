@@ -44,20 +44,23 @@
 
 
 				<div style="overflow-x: auto; overflow-y: auto; height: 200px; width:1100px;">
+					${demo}
+					<s:property value="#demo"/>
 					<table id="table" align="center" width="1050px" height="200px">
 						<tbody>
 						<tr>
 							<th style="border-bottom:1px solid #000" width="190px">Permissio</th>
 							<th style="border-bottom:1px solid #000" width="190px">Owner</th>
-							<th style="border-bottom:1px solid #000" width="190px">Size</th>
 							<th style="border-bottom:1px solid #000" width="190px">Name</th>
+							<th style="border-bottom:1px solid #000" width="190px">Action</th>
 						</tr>
 						<s:iterator value="fileslist" var="f">
 							<tr>
 								<th style="border-bottom:1px solid #000" width="190px"><a href="#">${f.permission}</a></th>
 								<th style="border-bottom:1px solid #000" width="190px"><a href="#">${f.owner}</a></th>
-								<th style="border-bottom:1px solid #000" width="190px"><a href="#">${f.size}</a></th>
 								<th style="border-bottom:1px solid #000" width="190px"><a href="#" onclick="setCity('<s:property value="#f.name"/>')">${f.name}</a></th>
+								<th style="border-bottom:1px solid #000" width="190px"><a href="updateDelAction?delfile=/${f.parent}/${f.name}" onclick="return confirm('是否确认删除文件！')">删除</a></th>
+
 							</tr>
 						</s:iterator>
 						</tbody>
@@ -73,7 +76,7 @@
 
 
 
-				<form action="QuartzSpiderAction" method="post">
+				<form action="putDataToHBaseAction" method="post">
 					<table >
 						<tr>
 							<td  colspan="2"><FONT color="red"><s:actionerror/></FONT></td>
@@ -81,7 +84,7 @@
 
 						<tr>
 							<td  colspan="2">
-								请选择需要导入的HFile文件:<input type="text" id="city1" name="generatehfile"/>
+								请选择需要导入的HFile文件:<input type="text" id="city1" name="hfile"/>
 							</td>
 							<td  colspan="2">
 								请输入需要导进的HBase表:<input type="text" name="htable"/>
@@ -89,7 +92,7 @@
 						</tr>
 						<tr colspan="2">
 							<td >
-								<s:submit value="开始导入" align="center" style="margin-left:-150px" onclick="return confirm('是否开始导入数据？')"/>
+								<s:submit value="开始导入" align="center" style="margin-left:-150px" onclick="return confirm('是否开始导入数据？')"/><font color="red">${message}</font>
 							</td>
 						</tr>
 					</table>

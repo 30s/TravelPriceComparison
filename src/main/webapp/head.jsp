@@ -104,11 +104,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							<p>目的地</p>
 						</div>
 						<div class="bnr-right"></div>
-							<input type="text" class="cityinput" id="citySelect1" value="城市名">
+							<input type="text" class="cityinput" id="citySelect1" value="景点">
 						<div class="clearfix"></div>
 					</div>
 					<div class="bnr-btn">
-						<a href="#indexContent"><input id="check" type="submit" value="查询" /></a>
+						<a href="#mainContent"><input id="check" type="submit" value="查询" /></a>
 
 					</div>
 				</div>
@@ -126,9 +126,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<!-- //header -->
 
 <script src="js/citySelector.js" type="text/javascript"></script>
+	<script src="js/citySelector1.js" type="text/javascript"></script>
 <script type="text/javascript">
     var test=new Vcity.CitySelector({input:'citySelect'});
-    var test2=new Vcity.CitySelector({input:'citySelect1'});
+    var test2=new Vcity1.CitySelector({input:'citySelect1'});
 </script>
 </body>
 </html>
