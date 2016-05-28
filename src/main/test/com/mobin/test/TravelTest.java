@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
-public class Ptest {
+public class TravelTest {
 
 
     @Test
@@ -86,7 +86,7 @@ public class Ptest {
         //AdminAction adminAction = context.getBean("adminAction",AdminAction.class);
         //adminAction.oneKeyGet();
         SpiderAction spiderAction = context.getBean("spiderAction", SpiderAction.class);
-         spiderAction.downURLByPlace("South");
+         spiderAction.downURLByPlace("South01");
        // spiderAction.downURLFromTuniu("tuniu");
     }
 
@@ -99,18 +99,21 @@ public class Ptest {
         //AdminAction adminAction = context.getBean("adminAction",AdminAction.class);
         //adminAction.oneKeyGet();DATA-TH1-page6
         SpiderAction spiderAction = context.getBean("spiderAction", SpiderAction.class);
-        spiderAction.extractionData("澳门URL");
+        spiderAction.extractionData("澳门URL",2);
     }
 
 
     @Test
-    public void shuffleaction() throws InterruptedException, IOException, ClassNotFoundException {
+    public void shuffleaction() throws Exception {
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
         //AdminAction adminAction = context.getBean("adminAction",AdminAction.class);
         //adminAction.oneKeyGet();
-        SpiderAction spiderAction = context.getBean("spiderAction", SpiderAction.class);
-       // spiderAction.cleanData("澳门URL2016-05-21");
-        spiderAction.convertData("澳门URL2016-05-212016-05-21");
+        //SpiderAction spiderAction = context.getBean("spiderAction", SpiderAction.class);
+        AdminAction spiderAction = context.getBean("adminAction", AdminAction.class);
+       //spiderAction.cleanData("South012016-05-26");
+        //spiderAction.convertData("South012016-05-26");
+       // spiderAction.generateHFile("South012016-05-26");
+       // spiderAction.putDataToHBase("South012016-05-26");
     }
 
     @Test
