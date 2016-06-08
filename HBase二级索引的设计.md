@@ -2,6 +2,7 @@
 
 >* 其设计思路如下图：
 
+<img src="https://github.com/MOBIN-F/TravelPriceComparison/blob/master/%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E5%9B%BE.png" width="600" height="310"/>
 
 
 二级索引的本质就是建立各列值与行键之间的映射关系，如上图，当要对F:C1这列建立索引时，只需要建立F:C1各列值到其对应行键的映射关系，如C11->RK1等，这样就完成了对F:C1列值的二级索引的构建，当要查询符合F:C1=C11对应的F:C2的列值时（即根据C1=C11来查询C2的值,图中青色部分）其查询步骤如下：
