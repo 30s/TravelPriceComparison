@@ -42,6 +42,7 @@
 需要额外的存储空间，属 一种以空间换时间的方式
 
 参考资料
+
 [HBase高性能复杂条件查询引擎](http://blog.csdn.net/bluishglc/article/details/31799255)
 
 [奇虎360 HBASE二级索引的设计与实践](http://www.infoq.com/cn/presentations/qihoo360-hbase-two-stage-index-design-and-practice)
