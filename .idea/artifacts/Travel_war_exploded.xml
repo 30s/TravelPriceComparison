@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" build-on-make="true" name="Travel:war exploded">
-    <output-path>$PROJECT_DIR$/web/WEB-INF/classes</output-path>
+    <output-path>$PROJECT_DIR$/target/hadoopweb</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
@@ -173,19 +173,6 @@
           <element id="library" level="project" name="Maven: org.quartz-scheduler:quartz-jobs:2.2.2" />
           <element id="library" level="project" name="Maven: net.sf.ezmorph:ezmorph:1.0.6" />
           <element id="library" level="project" name="Maven: org.apache.struts:struts2-json-plugin:2.3.24" />
-          <element id="library" level="project" name="jdmkrt" />
-          <element id="library" level="project" name="fastjson-1.2.9" />
-          <element id="file-copy" path="$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/jstl.jar" />
-          <element id="file-copy" path="$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/jsp-api.jar" />
-          <element id="file-copy" path="$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/standard.jar" />
-          <element id="file-copy" path="$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/servlet-api.jar" />
-          <element id="file-copy" path="$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/httpcore-4.3.2.jar" />
-          <element id="file-copy" path="$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/commons-logging.jar" />
-          <element id="file-copy" path="$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/httpclient-4.3.3.jar" />
-          <element id="file-copy" path="$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/json-simple-1.1.1.jar" />
-          <element id="file-copy" path="$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/commons-beanutils-1.8.0.jar" />
-          <element id="file-copy" path="$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/jolokia-client-java-1.2.3.jar" />
-          <element id="library" level="module" name="Maven: jdk.tools:jdk.tools:1.7" module-name="Travel" />
         </element>
       </element>
       <element id="directory" name="META-INF">
