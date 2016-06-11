@@ -36,8 +36,8 @@ public class GenerateHFile extends Mapper<LongWritable,
 
             Put put = new Put(ROWKEY.getBytes());   //ROWKEY
             put.addColumn("INFO".getBytes(), "URL".getBytes(), items[0].getBytes());
-            put.addColumn("INFO".getBytes(), "SP".getBytes(), items[18].getBytes());
-            put.addColumn("INFO".getBytes(), "EP".getBytes(), items[19].getBytes());
+            put.addColumn("INFO".getBytes(), "SP".getBytes(), items[17].getBytes());
+            put.addColumn("INFO".getBytes(), "EP".getBytes(), items[18].getBytes());
             put.addColumn("INFO".getBytes(), "TITLE".getBytes(), items[3].getBytes());
             put.addColumn("INFO".getBytes(), "TOUATT".getBytes(), items[4].getBytes());  //旅游景点
             put.addColumn("INFO".getBytes(), "ST".getBytes(), items[5].getBytes());
