@@ -5,7 +5,7 @@
 
 > 其设计思路如(图1)：
 
-<img src="https://github.com/MOBIN-F/TravelPriceComparison/blob/master/image/%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E5%9B%BE.png" width="600" height="310"/>
+<img src="https://github.com/MOBIN-F/TravelPriceComparison/blob/master/image/%E4%BA%8C%E7%BA%A7%E7%B4%A2%E5%BC%95%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E5%9B%BE.png" width="600" height="310"/>
                                        
                                        (图1) 
 > 二级索引的本质就是建立各列值与行键之间的映射关系
